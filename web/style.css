@@ -260,3 +260,7 @@ body {
 .leaflet-control-layers {
   font-size: 13px;
 }
+
+.leaflet-interactive {
+  transition: fill-opacity 0.15s linear, stroke-width 0.15s linear;
+}

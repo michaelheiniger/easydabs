@@ -129,6 +129,24 @@ function styleFor(feature) {
   };
 }
 
+const BLINK_FLASHES = 4;
+const BLINK_INTERVAL_MS = 300;
+const BLINK_STYLE = { fillOpacity: 0.85, weight: 5 };
+
+function blinkLayer(layer, baseStyle) {
+  let step = 0;
+  const toggle = () => {
+    layer.setStyle(step % 2 === 0 ? BLINK_STYLE : baseStyle);
+    step++;
+    if (step < BLINK_FLASHES * 2) {
+      setTimeout(toggle, BLINK_INTERVAL_MS);
+    } else {
+      layer.setStyle(baseStyle);
+    }
+  };
+  toggle();
+}
+
 let currentFc = null;
 
 function renderFeatures(fc) {
@@ -142,10 +160,12 @@ function renderFeatures(fc) {
 
   const bounds = [];
   for (const feature of fc.features) {
-    const layer = L.geoJSON(feature, { style: styleFor });
+    const baseStyle = styleFor(feature);
+    const layer = L.geoJSON(feature, { style: baseStyle });
     layer.bindPopup(popupHtml(feature.properties));
     (feature.properties.on_chart ? onChartLayer : notOnChartLayer).addLayer(layer);
     bounds.push(layer.getBounds());
+    blinkLayer(layer, baseStyle);
   }
 
   if (bounds.length) {
