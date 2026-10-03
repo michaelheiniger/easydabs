@@ -62,20 +62,33 @@ function formatAlt(limit) {
   return limit.raw;
 }
 
+const CH_HM_FMT = new Intl.DateTimeFormat("en-GB", {
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "Europe/Zurich",
+});
+const CH_DATETIME_FMT = new Intl.DateTimeFormat("en-GB", {
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "Europe/Zurich",
+  timeZoneName: "short",
+});
+
+function chZoneLabel(date) {
+  return CH_DATETIME_FMT.formatToParts(date).find((p) => p.type === "timeZoneName").value;
+}
+
 function formatTimeRange(fromIso, toIso) {
   const from = new Date(fromIso);
   const to = new Date(toIso);
-  const utcFmt = new Intl.DateTimeFormat("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "UTC",
-  });
-  const localFmt = new Intl.DateTimeFormat("en-GB", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Europe/Zurich",
-  });
-  return `${utcFmt.format(from)}–${utcFmt.format(to)} UTC (${localFmt.format(from)}–${localFmt.format(to)} CH time)`;
+  return `${CH_HM_FMT.format(from)}–${CH_HM_FMT.format(to)} ${chZoneLabel(from)} (Swiss local time)`;
+}
+
+function formatSwissDateTime(iso) {
+  return CH_DATETIME_FMT.format(new Date(iso));
 }
 
 function popupHtml(props) {
@@ -135,7 +148,7 @@ async function loadDate(date) {
   const fc = await res.json();
   const p = fc.properties || {};
   metaEl.textContent = p.dabs_date
-    ? `DABS ${p.dabs_date} · v${p.version} · generated ${new Date(p.generated_utc).toUTCString()}`
+    ? `DABS ${p.dabs_date} · v${p.version} · generated ${formatSwissDateTime(p.generated_utc)}`
     : "";
 
   const bounds = [];
@@ -169,18 +182,23 @@ function buildTabs() {
     const tab = document.createElement("button");
     tab.className = "date-tab";
     tab.dataset.date = date;
+    tab.dataset.offset = offset;
     tab.innerHTML = `<span class="day">${dayLabel(d, offset)}</span><span class="ymd">${date}</span>`;
-    tab.addEventListener("click", () => selectTab(date));
+    tab.addEventListener("click", () => selectTab(date, offset));
     tabsEl.appendChild(tab);
   }
 }
 
-function selectTab(date) {
+const officialLinkEl = document.getElementById("official-link");
+
+function selectTab(date, offset) {
   for (const tab of tabsEl.querySelectorAll(".date-tab")) {
     tab.classList.toggle("active", tab.dataset.date === date);
   }
+  officialLinkEl.href = `https://www.skybriefing.com/o/dabs?${offset === 0 ? "today" : "tomorrow"}`;
   loadDate(date);
 }
 
 buildTabs();
-selectTab(tabsEl.querySelector(".date-tab").dataset.date);
+const firstTab = tabsEl.querySelector(".date-tab");
+selectTab(firstTab.dataset.date, Number(firstTab.dataset.offset));
