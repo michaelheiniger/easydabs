@@ -239,6 +239,65 @@ body {
   }
 }
 
+@media (max-width: 480px) {
+  #app-header {
+    gap: 8px 10px;
+    padding: 8px 10px;
+  }
+
+  #app-header h1 {
+    font-size: 16px;
+  }
+
+  .meta {
+    flex-basis: 100%;
+    order: 1;
+    font-size: 11px;
+  }
+
+  .date-tabs {
+    order: 2;
+  }
+
+  .lang-switch {
+    order: 3;
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .date-tab {
+    padding: 9px 12px;
+  }
+
+  .lang-btn {
+    padding: 9px 11px;
+  }
+
+  #disclaimer {
+    padding: 6px 10px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  #area-list-panel {
+    max-height: 32vh;
+  }
+
+  .area-item {
+    padding: 11px 10px;
+  }
+
+  .legend {
+    max-width: calc(100vw - 20px);
+    font-size: 11px;
+  }
+
+  .area-popup {
+    max-width: calc(100vw - 70px);
+  }
+}
+
 .status {
   position: absolute;
   top: 16px;
@@ -269,8 +328,12 @@ body {
   max-width: 260px;
 }
 
-.legend-title {
+.legend summary {
   font-weight: 700;
+  cursor: pointer;
+}
+
+.legend[open] summary {
   margin-bottom: 6px;
 }
 

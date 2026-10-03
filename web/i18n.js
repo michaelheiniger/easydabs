@@ -40,6 +40,7 @@ const TRANSLATIONS = {
     overlayNotOnChart: "Not on official chart",
     areaListTitle: "Airspace areas",
     areaListHint: "↑ ↓ to navigate, click to select",
+    areaListHintTouch: "Tap an area to select it",
     areaListEmpty: "No airspace areas for this day.",
   },
   fr: {
@@ -76,6 +77,7 @@ const TRANSLATIONS = {
     overlayNotOnChart: "Hors carte officielle",
     areaListTitle: "Zones aériennes",
     areaListHint: "↑ ↓ pour naviguer, cliquer pour sélectionner",
+    areaListHintTouch: "Touchez une zone pour la sélectionner",
     areaListEmpty: "Aucune zone aérienne ce jour-là.",
   },
   de: {
@@ -112,6 +114,7 @@ const TRANSLATIONS = {
     overlayNotOnChart: "Nicht auf der offiziellen Karte",
     areaListTitle: "Luftraumzonen",
     areaListHint: "↑ ↓ zum Navigieren, Klick zum Auswählen",
+    areaListHintTouch: "Gebiet antippen zum Auswählen",
     areaListEmpty: "Keine Luftraumzonen an diesem Tag.",
   },
   it: {
@@ -148,6 +151,7 @@ const TRANSLATIONS = {
     overlayNotOnChart: "Non sulla carta ufficiale",
     areaListTitle: "Zone aeree",
     areaListHint: "↑ ↓ per navigare, clicca per selezionare",
+    areaListHintTouch: "Tocca un'area per selezionarla",
     areaListEmpty: "Nessuna zona aerea per questo giorno.",
   },
 };

@@ -2,6 +2,7 @@
 // on an interactive, high-detail map instead of the low-res PDF chart.
 
 const DATA_DIR = "../data";
+const IS_TOUCH = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
 // keyboard:false avoids clashing with the area list's own Up/Down navigation,
 // which would otherwise fire alongside Leaflet's built-in keyboard panning.
@@ -176,7 +177,7 @@ function renderFeatures(fc) {
   features.forEach((feature, index) => {
     const baseStyle = styleFor(feature);
     const layer = L.geoJSON(feature, { style: baseStyle });
-    layer.bindPopup(popupHtml(feature.properties));
+    layer.bindPopup(popupHtml(feature.properties), { maxWidth: Math.min(300, window.innerWidth - 40) });
     layer.on("click", () => selectArea(index, { fly: false }));
     (feature.properties.on_chart ? onChartLayer : notOnChartLayer).addLayer(layer);
     bounds.push(layer.getBounds());
@@ -339,7 +340,7 @@ function applyStaticTranslations() {
   document.getElementById("disclaimer-tz-suffix").textContent = t("disclaimerTimezoneSuffix");
 
   areaListTitleEl.textContent = t("areaListTitle");
-  areaListHintEl.textContent = t("areaListHint");
+  areaListHintEl.textContent = t(IS_TOUCH ? "areaListHintTouch" : "areaListHint");
 
   applyTabLabels();
   rebuildLayersControl();
