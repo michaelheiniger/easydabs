@@ -129,7 +129,7 @@ function styleFor(feature) {
     color: onChart ? "#2563eb" : "#dc2626",
     weight: 2,
     fillColor: onChart ? "#2563eb" : "#dc2626",
-    fillOpacity: 0.18,
+    fillOpacity: 0.35,
     dashArray: isCircle ? "6 4" : null,
   };
 }
@@ -235,7 +235,11 @@ function selectArea(index, { fly }) {
   area.itemEl.classList.add("active");
   area.itemEl.scrollIntoView({ block: "nearest" });
   if (fly) {
-    map.flyToBounds(area.layer.getBounds(), { padding: [80, 80], maxZoom: 7, duration: 0.6 });
+    // flyToBounds's own maxZoom cap is unreliable (depends on the map's current
+    // zoom/animation state), so compute and cap the target zoom explicitly.
+    const bounds = area.layer.getBounds();
+    const targetZoom = Math.min(map.getBoundsZoom(bounds, false, [80, 80]), 7);
+    map.flyTo(bounds.getCenter(), targetZoom, { duration: 0.6 });
   }
   area.layer.openPopup();
   blinkLayer(area.layer, area.baseStyle);
@@ -243,7 +247,8 @@ function selectArea(index, { fly }) {
 
 function moveSelection(delta) {
   if (!currentAreas.length) return;
-  const next = selectedIndex < 0 ? 0 : Math.min(Math.max(selectedIndex + delta, 0), currentAreas.length - 1);
+  const n = currentAreas.length;
+  const next = selectedIndex < 0 ? 0 : (selectedIndex + delta + n) % n;
   selectArea(next, { fly: true });
 }
 
