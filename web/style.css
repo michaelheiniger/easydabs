@@ -149,7 +149,7 @@ body {
   display: flex;
   flex-direction: column;
   background: #0d1117;
-  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
   overflow: hidden;
 }
 
@@ -227,10 +227,14 @@ body {
   #main-content {
     flex-direction: column;
   }
+  #map {
+    order: 1;
+  }
   #area-list-panel {
+    order: 2;
     width: auto;
     max-height: 35vh;
-    border-left: none;
+    border-right: none;
     border-top: 1px solid var(--border);
   }
 }
