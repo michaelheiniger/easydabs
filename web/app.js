@@ -37,8 +37,7 @@ const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: "&copy; OpenStreetMap contributors",
 });
 
-const onChartLayer = L.layerGroup().addTo(map);
-const notOnChartLayer = L.layerGroup().addTo(map);
+const areasLayer = L.layerGroup().addTo(map);
 
 let layersControl = null;
 
@@ -47,7 +46,7 @@ function rebuildLayersControl() {
   layersControl = L.control
     .layers(
       { [t("baseSwisstopo")]: swisstopo, [t("baseOsm")]: osm },
-      { [t("overlayOnChart")]: onChartLayer, [t("overlayNotOnChart")]: notOnChartLayer }
+      { [t("overlayAreas")]: areasLayer }
     )
     .addTo(map);
 }
@@ -187,13 +186,18 @@ function popupHtml(props) {
     </div>`;
 }
 
+// All areas share one color on the map - on/not-on-chart is a DABS
+// publication detail, not a severity signal, and is called out in the
+// popup instead (see popupHtml's badge). Blue read as "safe to ignore"
+// here, which is the opposite of the intent.
+const AREA_COLOR = "#dc2626";
+
 function styleFor(feature) {
-  const onChart = feature.properties.on_chart;
   const isCircle = feature.properties.geometry_source !== "polygon";
   return {
-    color: onChart ? "#2563eb" : "#dc2626",
+    color: AREA_COLOR,
     weight: 2,
-    fillColor: onChart ? "#2563eb" : "#dc2626",
+    fillColor: AREA_COLOR,
     fillOpacity: 0.35,
     dashArray: isCircle ? "6 4" : null,
   };
@@ -222,8 +226,7 @@ let currentAreas = []; // [{ feature, layer, baseStyle, itemEl }]
 let selectedIndex = -1;
 
 function renderFeatures(fc) {
-  onChartLayer.clearLayers();
-  notOnChartLayer.clearLayers();
+  areasLayer.clearLayers();
   areaListEl.innerHTML = "";
   currentAreas = [];
   selectedIndex = -1;
@@ -243,7 +246,7 @@ function renderFeatures(fc) {
     const layer = L.geoJSON(feature, { style: baseStyle });
     layer.bindPopup(popupHtml(feature.properties), { maxWidth: Math.min(300, window.innerWidth - 40) });
     layer.on("click", () => selectArea(index, { fly: false }));
-    (feature.properties.on_chart ? onChartLayer : notOnChartLayer).addLayer(layer);
+    areasLayer.addLayer(layer);
     bounds.push(layer.getBounds());
     blinkLayer(layer, baseStyle);
 
@@ -279,8 +282,7 @@ function buildAreaListItem(feature, index) {
   li.className = "area-item";
 
   const swatch = document.createElement("span");
-  swatch.className = `swatch ${props.on_chart ? "chart" : "not-chart"}`;
-  swatch.title = props.on_chart ? t("popupOnChart") : t("popupNotOnChart");
+  swatch.className = "swatch area";
 
   const text = document.createElement("div");
   text.className = "area-item-text";
@@ -350,8 +352,7 @@ async function loadDate(date) {
   hideStatus();
   metaEl.textContent = "";
   currentFc = null;
-  onChartLayer.clearLayers();
-  notOnChartLayer.clearLayers();
+  areasLayer.clearLayers();
 
   const url = `${DATA_DIR}/dabs-${date}.geojson`;
   let res;
@@ -417,8 +418,6 @@ function selectTab(date, offset) {
 
 function applyStaticTranslations() {
   document.getElementById("legend-title").textContent = t("legendTitle");
-  document.getElementById("legend-on-chart").textContent = t("legendOnChart");
-  document.getElementById("legend-not-on-chart").textContent = t("legendNotOnChart");
   document.getElementById("legend-polygon").textContent = t("legendPolygon");
   document.getElementById("legend-circle").textContent = t("legendCircle");
 

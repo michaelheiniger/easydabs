@@ -429,8 +429,7 @@ body {
   display: inline-block;
 }
 
-.swatch.chart { background: var(--chart-color); }
-.swatch.not-chart { background: var(--not-chart-color); }
+.swatch.area { background: var(--not-chart-color); }
 .swatch.poly {
   border: 2px solid var(--text-dim);
   background: transparent;

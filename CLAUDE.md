@@ -185,6 +185,14 @@ not reliably reproduce it.
 
 ## Things that look like bugs but aren't
 
+- Every area is the same red on the map and in the area list, regardless of
+  `on_chart`/`not_on_chart` - this used to be color-coded (blue for on-chart), but blue
+  read as "safe to ignore" for what's meant to be an attention-grabbing marker, and
+  on/not-on-chart is a DABS publication detail, not a severity signal. The distinction is
+  now shown *only* in the popup badge (`popupHtml`'s `badgeClass`/`badgeText`, still
+  blue/red there deliberately - that's the one place it's supposed to be called out). The
+  Leaflet layer control also lost its separate on-chart/not-on-chart overlay toggles in
+  favor of one combined "Areas" toggle, for the same reason.
 - `notam` equals `id` when a feature's ID *is* a NOTAM number (no separate name was given
   in the PDF) - both fields get set to the same value in `dabs_parser.py`. Confirmed
   against real committed sample data, not a parsing error.

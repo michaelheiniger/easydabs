@@ -36,6 +36,24 @@ test.describe("initial render", () => {
     await page.waitForTimeout(500);
     expect(errors).toEqual([]);
   });
+
+  test("on-chart and not-on-chart areas use the same color on the map and in the list", async ({ page }) => {
+    // on/not-on-chart is a DABS publication detail, not a severity signal -
+    // it's called out in the popup badge only, not color-coded on the map or
+    // list (blue previously made on-chart areas read as "safe to ignore").
+    // The fixture has one of each (on_chart: true/false) specifically to
+    // cover this.
+    await page.goto("/web/index.html");
+    const paths = page.locator("path.leaflet-interactive");
+    await expect(paths).toHaveCount(FIXTURE_FC.features.length);
+    const fillColors = await paths.evaluateAll((els) => els.map((el) => el.getAttribute("fill")));
+    expect(new Set(fillColors).size).toBe(1);
+
+    const swatchColors = await page
+      .locator(".area-item .swatch")
+      .evaluateAll((els) => els.map((el) => getComputedStyle(el).backgroundColor));
+    expect(new Set(swatchColors).size).toBe(1);
+  });
 });
 
 test.describe("area selection", () => {
