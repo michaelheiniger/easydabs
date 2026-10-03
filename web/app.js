@@ -60,6 +60,14 @@ const officialLinkEl = document.getElementById("official-link");
 const areaListEl = document.getElementById("area-list");
 const areaListTitleEl = document.getElementById("area-list-title");
 const areaListHintEl = document.getElementById("area-list-hint");
+const areaListPanelEl = document.getElementById("area-list-panel");
+
+// Open by default on desktop (where it sits beside the map at no cost to
+// map space), collapsed by default on mobile (where the map is primary and
+// screen space is scarce). Same breakpoint the layout itself switches on.
+// Set once at load only - deliberately not re-applied on resize, so it
+// never fights a user's manual toggle.
+areaListPanelEl.open = !window.matchMedia("(max-width: 760px)").matches;
 
 function ymd(date) {
   const y = date.getFullYear();

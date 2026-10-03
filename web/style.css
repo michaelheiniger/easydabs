@@ -167,10 +167,23 @@ body {
   overflow: hidden;
 }
 
+/* Collapsed on desktop (row layout): shrink to the summary's own size
+   instead of reserving the full width/height and leaving an empty gap -
+   the map reclaims that space immediately. */
+#area-list-panel:not([open]) {
+  width: auto;
+  align-self: flex-start;
+}
+
 .area-list-header {
   flex: none;
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
+  cursor: pointer;
+}
+
+#area-list-panel:not([open]) .area-list-header {
+  border-bottom: none;
 }
 
 .area-list-header h2 {
