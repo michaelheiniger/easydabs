@@ -1,6 +1,12 @@
 const { test, expect } = require("@playwright/test");
 const { FIXTURE_FC, EMPTY_FC, mockDabsData } = require("./fixtures");
 
+// Keep in sync with the zoom passed to setView() in selectArea() (web/app.js).
+// Must be clearly above the overview zoom (renderFeatures' own fitBounds over
+// all of a day's areas, ~8-9 for this fixture) or selecting an area reads as
+// zooming OUT, not in - that was a real bug, not hypothetical.
+const AREA_SELECT_ZOOM = 10;
+
 test.beforeEach(async ({ page }) => {
   await mockDabsData(page);
 });
@@ -33,12 +39,18 @@ test.describe("initial render", () => {
 });
 
 test.describe("area selection", () => {
-  test("clicking a list item selects it and zooms the map to 7", async ({ page }) => {
+  test("clicking a list item selects it and zooms the map to the target level", async ({ page }) => {
+    // Regression test: selecting an area once zoomed OUT (to a lower zoom
+    // than the overview) instead of in, because the fixed target hadn't been
+    // rechecked against the overview's own zoom after earlier tuning (see
+    // AREA_SELECT_ZOOM's comment above). Checking the exact target here is
+    // enough; a separate "must exceed the overview" check would depend on
+    // this fixture's particular geometry rather than app.js's own logic.
     await page.goto("/web/index.html");
     await page.locator(".area-item").first().click();
     await expect(page.locator(".area-item.active")).toHaveCount(1);
     await expect(page.locator(".area-item").first()).toHaveClass(/active/);
-    await expect.poll(() => page.evaluate(() => map.getZoom())).toBe(7);
+    await expect.poll(() => page.evaluate(() => map.getZoom())).toBe(AREA_SELECT_ZOOM);
   });
 
   test("arrow-key navigation wraps past the last item back to the first", async ({ page }) => {
@@ -57,7 +69,7 @@ test.describe("area selection", () => {
     await expect(page.locator(".area-item.active .area-item-id")).toHaveText(firstId);
   });
 
-  test("rapid successive selections all reliably reach zoom 7", async ({ page }) => {
+  test("rapid successive selections all reliably reach the target zoom", async ({ page }) => {
     // Regression test: flyTo/animated setView both proved unreliable under
     // back-to-back calls (see commit "Fix unreliable area-select zoom").
     await page.goto("/web/index.html");
@@ -66,7 +78,7 @@ test.describe("area selection", () => {
     for (let i = 0; i < count; i++) {
       await items.nth(i).click();
     }
-    await expect.poll(() => page.evaluate(() => map.getZoom())).toBe(7);
+    await expect.poll(() => page.evaluate(() => map.getZoom())).toBe(AREA_SELECT_ZOOM);
   });
 });
 

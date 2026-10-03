@@ -318,7 +318,14 @@ function selectArea(index, { fly }) {
     // out much further on a narrow window, since the padding eats a bigger
     // share of the screen. All areas are small (1-4km radius) so a constant
     // zoom works for every one.
-    map.setView(area.layer.getBounds().getCenter(), 7, { animate: false });
+    //
+    // Must be clearly higher than the overview zoom (renderFeatures' own
+    // fitBounds over all of a day's areas, typically ~8 for Switzerland-wide
+    // spread) or selecting an area reads as zooming OUT, not in - this was
+    // the actual bug behind "zoom out instead of in" (confirmed: overview
+    // zoom 8 vs the old target of 7). Confirmed working at 12; 10 is the
+    // user-preferred value, still clearly above 8.
+    map.setView(area.layer.getBounds().getCenter(), 10, { animate: false });
   }
   area.layer.openPopup();
   blinkLayer(area.layer, area.baseStyle);

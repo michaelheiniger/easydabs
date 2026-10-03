@@ -70,6 +70,17 @@ while it thinks one is still in flight). This was the actual root cause behind a
 every `setView`/`fitBounds` call in `app.js` passes `animate: false`. If you add a new one,
 do the same - do not reach for `flyTo` for a "nicer" transition.
 
+**The area-select zoom target must exceed the overview zoom, or selecting an area zooms
+out instead of in.** `selectArea()`'s `setView` target is a fixed zoom level (see that
+function's comment for why it's fixed rather than fit-to-bounds). This number isn't free to
+retune without rechecking: `renderFeatures()`'s own overview `fitBounds` (over all of a
+day's areas) typically lands around zoom 8-9 for Switzerland-wide spread, and if the
+selection target is at or below that, clicking an area visibly zooms *out* - this exact bug
+shipped once, from an earlier round of tuning this value down to avoid swisstopo's
+Switzerland-only tile coverage (see below) without re-checking it against the overview
+afterward. Current value is 10. `tests-ui/app.spec.js`'s `AREA_SELECT_ZOOM` constant must
+be kept in sync with whatever this is changed to.
+
 **`ResizeObserver` on `#map` is required, not optional.** Leaflet caches the map
 container's pixel size at load and never re-measures it on its own. The legend,
 disclaimer, and area-list panel are all collapsible (`<details>`), and collapsing/
