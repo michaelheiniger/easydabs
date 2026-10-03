@@ -1,0 +1,49 @@
+name: Deploy Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Stamp the commit SHA onto the local asset URLs in a staged copy of the
+      # site so browsers always fetch fresh CSS/JS after a deploy instead of
+      # serving a stale cached version alongside a newer index.html.
+      - name: Stage site with cache-busted asset versions
+        run: |
+          mkdir -p _site
+          rsync -a --exclude='.git' --exclude='.github' --exclude='_site' ./ _site/
+          SHA=${GITHUB_SHA::7}
+          sed -i "s/style\.css\"/style.css?v=${SHA}\"/" _site/web/index.html
+          sed -i "s/app\.js\"/app.js?v=${SHA}\"/" _site/web/index.html
+          sed -i "s/i18n\.js\"/i18n.js?v=${SHA}\"/" _site/web/index.html
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
