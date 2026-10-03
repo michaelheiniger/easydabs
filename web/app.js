@@ -235,7 +235,7 @@ function selectArea(index, { fly }) {
   area.itemEl.classList.add("active");
   area.itemEl.scrollIntoView({ block: "nearest" });
   if (fly) {
-    map.flyToBounds(area.layer.getBounds(), { padding: [80, 80], maxZoom: 13, duration: 0.6 });
+    map.flyToBounds(area.layer.getBounds(), { padding: [80, 80], maxZoom: 7, duration: 0.6 });
   }
   area.layer.openPopup();
   blinkLayer(area.layer, area.baseStyle);
