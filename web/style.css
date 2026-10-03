@@ -205,6 +205,17 @@ body {
   border-bottom: none;
 }
 
+.area-list-arrow::before {
+  content: "\25B6";
+  display: inline-block;
+  font-size: 10px;
+  transition: transform 0.15s;
+}
+
+#area-list-panel[open] .area-list-arrow::before {
+  transform: rotate(90deg);
+}
+
 .area-list-header h2 {
   margin: 0;
   font-size: 13px;
@@ -218,8 +229,21 @@ body {
   color: var(--text-dim);
 }
 
+/* <details> hides its non-summary content natively; this panel is a plain
+   div (see app.js for why), so the list's visibility has to be driven by
+   [open] explicitly. */
+#area-list-panel:not([open]) #area-list {
+  display: none;
+}
+
 #area-list {
   flex: 1;
+  /* Without this, the list renders at its full natural content height
+     instead of shrinking to the space #area-list-panel's max-height
+     actually leaves it, so overflow-y:auto never gets a chance to kick in
+     and content past that height is just clipped by the panel's own
+     overflow:hidden with no way to reach it. */
+  min-height: 0;
   overflow-y: auto;
   margin: 0;
   padding: 4px;

@@ -133,13 +133,28 @@ and deliberately not re-applied on resize, so it never fights a user's manual to
 
 ## Collapsible panels (legend, disclaimer, area list)
 
-All three use native `<details>/<summary>` - no JS needed for the expand/collapse
-mechanic itself, which is why there's no corresponding `onclick` handler to find. When
-collapsed, make sure CSS doesn't leave an element forced to its *open* size: the area-list
-panel specifically needs `width: auto; align-self: flex-start` when closed, or it reserves
-its full column width/height and leaves an empty void instead of giving the space to the
-map (this was a real bug, not hypothetical - check before adding another collapsible flex
-child).
+Legend and disclaimer use native `<details>/<summary>` - no JS needed for the expand/
+collapse mechanic itself. When collapsed, make sure CSS doesn't leave an element forced to
+its *open* size: `width: auto; align-self: flex-start` is needed on a collapsed flex child
+or it reserves its full column width/height and leaves an empty void instead of giving the
+space to the map (this was a real bug, not hypothetical).
+
+**The area list panel is deliberately *not* `<details>`** - it's a plain `<div>`
+(`#area-list-panel`) toggled by hand in `app.js` (`setAreaListPanelOpen()`), still using a
+manually-managed `open` attribute so the CSS written for `<details>[open]` needed no
+changes. This was forced by a genuine browser limitation, confirmed experimentally, not a
+style preference: a native `<details>`'s hidden/shown content does not let its descendants
+shrink below their natural content height, no matter what CSS is applied - not with
+flexbox, not with grid, not with `min-height: 0` on the overflowing child. The *exact same*
+CSS (`display:flex`/`grid`, `max-height`, `overflow-y:auto`, `min-height:0` on the
+scrolling child) worked correctly the moment the container was a plain `div` instead of
+`details`. Concretely, this broke the area list's scrolling: on a busy DABS day with many
+areas, the list would silently clip past the panel's mobile `max-height` with no way to
+reach the rest, because the `<ul>` never shrank to the space actually available - it just
+kept its full natural height and the surrounding `overflow: hidden` clipped it. If you ever
+need a collapsible element whose open content must be height-constrained + scrollable,
+don't reach for `<details>` - use this panel's pattern (plain element, `open` attribute
+toggled via `toggleAttribute`, click/keydown listener on the header) instead.
 
 ## UI tests (`tests-ui/`)
 
@@ -165,3 +180,9 @@ not reliably reproduce it.
 - `utc_iso(date, hhmm, end=False)` in `dabs_parser.py` has an unused `end` parameter.
   Harmless dead code, not worth a drive-by removal unless you're already editing that
   function for another reason.
+- `formatTimeRange()` in `app.js` special-cases a `valid_to_utc` of exactly 23:59 UTC and
+  displays it as 23:59 Swiss local time, *not* the timezone-converted value. This is
+  deliberate: 23:59 UTC is DABS's own "end of this day" sentinel, not a real instant, and
+  converting it faithfully would roll it into 00:59/01:59 the *next* calendar day - correct
+  math, wrong meaning (reads as "valid into tomorrow" when the source means "until end of
+  today"). Every other time in the popup/list still gets the real UTC→CH conversion.

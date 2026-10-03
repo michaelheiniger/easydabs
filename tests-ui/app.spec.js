@@ -70,6 +70,40 @@ test.describe("area selection", () => {
   });
 });
 
+test.describe("validity time formatting", () => {
+  test('a 23:59 UTC end time shows as 23:59 local, not rolled into the next day', async ({ page }) => {
+    // Regression test: 23:59 UTC is DABS's "end of this day" sentinel, not a
+    // real instant. Converting it faithfully to Swiss local time rolls it
+    // into 01:59/00:59 the *next* calendar day, which reads as "valid into
+    // tomorrow" even though the source means "until end of today".
+    const fc = {
+      type: "FeatureCollection",
+      properties: { dabs_date: "2026-01-01", version: 1, generated_utc: "2026-01-01T10:00:00+00:00" },
+      features: [
+        {
+          type: "Feature",
+          geometry: { type: "Polygon", coordinates: [[[7.0, 47.0], [7.01, 47.0], [7.01, 47.01], [7.0, 47.01], [7.0, 47.0]]] },
+          properties: {
+            id: "ENDOFDAY", notam: "ENDOFDAY", on_chart: true,
+            valid_from_utc: "2026-01-01T05:00:00+00:00",
+            valid_to_utc: "2026-01-01T23:59:00+00:00",
+            lower: { raw: "GND", meters: 0, feet: 0, flight_level: null, gnd: true },
+            upper: { raw: "1000m / 3281ft", meters: 1000, feet: 3281, flight_level: null, gnd: false },
+            center: { lat: 47.005, lon: 7.005 }, radius_m: 500,
+            radius_candidates_m: { table_km: 500 }, geometry_source: "circle",
+            text: "TEST END OF DAY.",
+          },
+        },
+      ],
+    };
+    await mockDabsData(page, fc);
+    await page.goto("/web/index.html");
+    const timeText = await page.locator(".area-item-time").first().textContent();
+    expect(timeText).toContain("23:59");
+    expect(timeText).not.toMatch(/0[01]:59/);
+  });
+});
+
 test.describe("date tabs", () => {
   test("switching tabs reloads the area list", async ({ page }) => {
     await page.goto("/web/index.html");
@@ -137,15 +171,39 @@ test.describe("collapsible panels", () => {
   });
 
   test("area list panel defaults open on a desktop-width viewport", async ({ page }) => {
+    // Not a native <details> (see CLAUDE.md for why), so "open" is a plain
+    // attribute set by hand in app.js, not a JS boolean property.
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/web/index.html");
-    await expect(page.locator("#area-list-panel")).toHaveJSProperty("open", true);
+    await expect(page.locator("#area-list-panel")).toHaveAttribute("open", "");
   });
 
   test("area list panel defaults collapsed on a mobile-width viewport", async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/web/index.html");
-    await expect(page.locator("#area-list-panel")).toHaveJSProperty("open", false);
+    await expect(page.locator("#area-list-panel")).not.toHaveAttribute("open");
+  });
+
+  test("area list panel is scrollable when its content overflows the collapsed height", async ({ page }) => {
+    // Regression test: native <details> silently refused to let its content
+    // shrink to a flex/grid max-height no matter the CSS, so overflow
+    // content was clipped by the panel's own overflow:hidden with no way to
+    // scroll to it - switched to a plain div for this reason (see
+    // CLAUDE.md). Uses the real fixture's items stretched tall via inline
+    // style, rather than depending on there being enough real features to
+    // overflow on any given day.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/web/index.html");
+    await page.locator("#area-list-toggle").click();
+    await page.evaluate(() => {
+      for (const li of document.querySelectorAll(".area-item")) li.style.height = "200px";
+    });
+    const list = page.locator("#area-list");
+    const clientHeight = await list.evaluate((el) => el.clientHeight);
+    const scrollHeight = await list.evaluate((el) => el.scrollHeight);
+    expect(clientHeight).toBeLessThan(scrollHeight);
+    await list.evaluate((el) => { el.scrollTop = 50; });
+    await expect.poll(() => list.evaluate((el) => el.scrollTop)).toBeGreaterThan(0);
   });
 
   test("collapsing the area list panel on desktop gives its space back to the map", async ({ page }) => {
@@ -159,7 +217,7 @@ test.describe("collapsible panels", () => {
     await page.goto("/web/index.html");
     const panel = page.locator("#area-list-panel");
     const openBox = await panel.boundingBox();
-    await panel.locator("summary").click();
+    await page.locator("#area-list-toggle").click();
     const closedBox = await panel.boundingBox();
     expect(closedBox.width).toBeLessThanOrEqual(openBox.width);
     expect(closedBox.height).toBeLessThan(openBox.height);

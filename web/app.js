@@ -62,13 +62,37 @@ const areaListEl = document.getElementById("area-list");
 const areaListTitleEl = document.getElementById("area-list-title");
 const areaListHintEl = document.getElementById("area-list-hint");
 const areaListPanelEl = document.getElementById("area-list-panel");
+const areaListToggleEl = document.getElementById("area-list-toggle");
+
+// Not a native <details>: its content (the scrollable area list) needs a
+// flex/grid layout that shrinks to a max-height with an inner
+// overflow-y:auto - and <details> does not let its hidden/shown content
+// participate in that at all (verified directly: identical CSS on a plain
+// div shrinks correctly, the exact same CSS inside <details> content always
+// renders at full natural height, silently clipped by the panel's own
+// overflow:hidden with no way to scroll to it). The [open] attribute is
+// still used by hand so the rest of the CSS (written for <details>[open])
+// needed no changes.
+function setAreaListPanelOpen(open) {
+  areaListPanelEl.toggleAttribute("open", open);
+  areaListToggleEl.setAttribute("aria-expanded", String(open));
+}
+
+areaListToggleEl.addEventListener("click", () => {
+  setAreaListPanelOpen(!areaListPanelEl.hasAttribute("open"));
+});
+areaListToggleEl.addEventListener("keydown", (e) => {
+  if (e.key !== "Enter" && e.key !== " ") return;
+  e.preventDefault();
+  setAreaListPanelOpen(!areaListPanelEl.hasAttribute("open"));
+});
 
 // Open by default on desktop (where it sits beside the map at no cost to
 // map space), collapsed by default on mobile (where the map is primary and
 // screen space is scarce). Same breakpoint the layout itself switches on.
 // Set once at load only - deliberately not re-applied on resize, so it
 // never fights a user's manual toggle.
-areaListPanelEl.open = !window.matchMedia("(max-width: 760px)").matches;
+setAreaListPanelOpen(!window.matchMedia("(max-width: 760px)").matches);
 
 function ymd(date) {
   const y = date.getFullYear();
@@ -120,7 +144,14 @@ function chZoneLabel(date) {
 function formatTimeRange(fromIso, toIso) {
   const from = new Date(fromIso);
   const to = new Date(toIso);
-  return `${CH_HM_FMT.format(from)}–${CH_HM_FMT.format(to)} ${chZoneLabel(from)} (${t("swissLocalTime")})`;
+  // 23:59 UTC is DABS's own "end of this day" sentinel, not a real
+  // instant - converting it faithfully to Swiss local time would roll it
+  // into 01:59/00:59 the *next* calendar day, which reads as "valid into
+  // tomorrow" even though the source literally means "until end of today".
+  // Show it as 23:59 local instead of doing the timezone conversion.
+  const isEndOfDay = to.getUTCHours() === 23 && to.getUTCMinutes() === 59;
+  const toDisplay = isEndOfDay ? "23:59" : CH_HM_FMT.format(to);
+  return `${CH_HM_FMT.format(from)}–${toDisplay} ${chZoneLabel(from)} (${t("swissLocalTime")})`;
 }
 
 function formatSwissDateTime(iso) {
