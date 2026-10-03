@@ -180,9 +180,10 @@ not reliably reproduce it.
 - `utc_iso(date, hhmm, end=False)` in `dabs_parser.py` has an unused `end` parameter.
   Harmless dead code, not worth a drive-by removal unless you're already editing that
   function for another reason.
-- `formatTimeRange()` in `app.js` special-cases a `valid_to_utc` of exactly 23:59 UTC and
-  displays it as 23:59 Swiss local time, *not* the timezone-converted value. This is
-  deliberate: 23:59 UTC is DABS's own "end of this day" sentinel, not a real instant, and
-  converting it faithfully would roll it into 00:59/01:59 the *next* calendar day - correct
-  math, wrong meaning (reads as "valid into tomorrow" when the source means "until end of
-  today"). Every other time in the popup/list still gets the real UTC→CH conversion.
+- `formatTimeRange()` in `app.js` special-cases `valid_from_utc`/`valid_to_utc` of exactly
+  00:00/23:59 UTC and displays them as 00:00/23:59 Swiss local time, *not* the
+  timezone-converted value. This is deliberate: those are DABS's own "start/end of this
+  day" sentinels, not real instants, and converting them faithfully would shift them by the
+  UTC offset - most visibly for 23:59, which rolls into 00:59/01:59 the *next* calendar day
+  (correct math, wrong meaning: reads as "valid into tomorrow" when the source means "until
+  end of today"). Every other time in the popup/list still gets the real UTC→CH conversion.

@@ -102,6 +102,39 @@ test.describe("validity time formatting", () => {
     expect(timeText).toContain("23:59");
     expect(timeText).not.toMatch(/0[01]:59/);
   });
+
+  test('a 00:00 UTC start time shows as 00:00 local, not shifted into the prior evening', async ({ page }) => {
+    // Regression test: 00:00 UTC is DABS's "start of this day" sentinel,
+    // not a real instant. Converting it faithfully to Swiss local time
+    // shifts it to 01:00/02:00 the *same* day, which is a smaller, less
+    // obviously-wrong error than the 23:59 case, but still means "start of
+    // day" (00:00) and "start of day plus the CH/UTC offset" display
+    // differently.
+    const fc = {
+      type: "FeatureCollection",
+      properties: { dabs_date: "2026-01-01", version: 1, generated_utc: "2026-01-01T10:00:00+00:00" },
+      features: [
+        {
+          type: "Feature",
+          geometry: { type: "Polygon", coordinates: [[[7.0, 47.0], [7.01, 47.0], [7.01, 47.01], [7.0, 47.01], [7.0, 47.0]]] },
+          properties: {
+            id: "STARTOFDAY", notam: "STARTOFDAY", on_chart: true,
+            valid_from_utc: "2026-01-01T00:00:00+00:00",
+            valid_to_utc: "2026-01-01T10:00:00+00:00",
+            lower: { raw: "GND", meters: 0, feet: 0, flight_level: null, gnd: true },
+            upper: { raw: "1000m / 3281ft", meters: 1000, feet: 3281, flight_level: null, gnd: false },
+            center: { lat: 47.005, lon: 7.005 }, radius_m: 500,
+            radius_candidates_m: { table_km: 500 }, geometry_source: "circle",
+            text: "TEST START OF DAY.",
+          },
+        },
+      ],
+    };
+    await mockDabsData(page, fc);
+    await page.goto("/web/index.html");
+    const timeText = await page.locator(".area-item-time").first().textContent();
+    expect(timeText).toMatch(/^00:00/);
+  });
 });
 
 test.describe("date tabs", () => {

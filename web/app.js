@@ -144,14 +144,18 @@ function chZoneLabel(date) {
 function formatTimeRange(fromIso, toIso) {
   const from = new Date(fromIso);
   const to = new Date(toIso);
-  // 23:59 UTC is DABS's own "end of this day" sentinel, not a real
-  // instant - converting it faithfully to Swiss local time would roll it
-  // into 01:59/00:59 the *next* calendar day, which reads as "valid into
-  // tomorrow" even though the source literally means "until end of today".
-  // Show it as 23:59 local instead of doing the timezone conversion.
+  // 00:00 and 23:59 UTC are DABS's own "start/end of this day" sentinels,
+  // not real instants - converting them faithfully to Swiss local time
+  // would shift them by the UTC offset (e.g. 23:59 UTC rolling into
+  // 01:59/00:59 the *next* calendar day), which misreads as "valid into
+  // tomorrow"/"valid since yesterday" even though the source means "all
+  // day, today". Show both as local 00:00/23:59 directly instead of doing
+  // the timezone conversion.
+  const isStartOfDay = from.getUTCHours() === 0 && from.getUTCMinutes() === 0;
   const isEndOfDay = to.getUTCHours() === 23 && to.getUTCMinutes() === 59;
+  const fromDisplay = isStartOfDay ? "00:00" : CH_HM_FMT.format(from);
   const toDisplay = isEndOfDay ? "23:59" : CH_HM_FMT.format(to);
-  return `${CH_HM_FMT.format(from)}–${toDisplay} ${chZoneLabel(from)} (${t("swissLocalTime")})`;
+  return `${fromDisplay}–${toDisplay} ${chZoneLabel(from)} (${t("swissLocalTime")})`;
 }
 
 function formatSwissDateTime(iso) {
