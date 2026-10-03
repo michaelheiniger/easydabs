@@ -38,6 +38,9 @@ const TRANSLATIONS = {
     baseOsm: "OpenStreetMap",
     overlayOnChart: "On official chart",
     overlayNotOnChart: "Not on official chart",
+    areaListTitle: "Restricted areas",
+    areaListHint: "↑ ↓ to navigate, click to select",
+    areaListEmpty: "No restricted areas for this day.",
   },
   fr: {
     legendTitle: "Légende",
@@ -71,6 +74,9 @@ const TRANSLATIONS = {
     baseOsm: "OpenStreetMap",
     overlayOnChart: "Sur la carte officielle",
     overlayNotOnChart: "Hors carte officielle",
+    areaListTitle: "Zones restreintes",
+    areaListHint: "↑ ↓ pour naviguer, cliquer pour sélectionner",
+    areaListEmpty: "Aucune zone restreinte ce jour-là.",
   },
   de: {
     legendTitle: "Legende",
@@ -104,6 +110,9 @@ const TRANSLATIONS = {
     baseOsm: "OpenStreetMap",
     overlayOnChart: "Auf der offiziellen Karte",
     overlayNotOnChart: "Nicht auf der offiziellen Karte",
+    areaListTitle: "Sperrgebiete",
+    areaListHint: "↑ ↓ zum Navigieren, Klick zum Auswählen",
+    areaListEmpty: "Keine Sperrgebiete an diesem Tag.",
   },
   it: {
     legendTitle: "Legenda",
@@ -137,6 +146,9 @@ const TRANSLATIONS = {
     baseOsm: "OpenStreetMap",
     overlayOnChart: "Sulla carta ufficiale",
     overlayNotOnChart: "Non sulla carta ufficiale",
+    areaListTitle: "Aree riservate",
+    areaListHint: "↑ ↓ per navigare, clicca per selezionare",
+    areaListEmpty: "Nessuna area riservata per questo giorno.",
   },
 };
 

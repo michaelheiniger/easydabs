@@ -3,7 +3,9 @@
 
 const DATA_DIR = "../data";
 
-const map = L.map("map", { minZoom: 6, maxZoom: 18 }).setView([46.82, 8.22], 8);
+// keyboard:false avoids clashing with the area list's own Up/Down navigation,
+// which would otherwise fire alongside Leaflet's built-in keyboard panning.
+const map = L.map("map", { minZoom: 6, maxZoom: 18, keyboard: false }).setView([46.82, 8.22], 8);
 
 const swisstopo = L.tileLayer(
   "https://wmts10.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
@@ -38,6 +40,9 @@ const metaEl = document.getElementById("dabs-meta");
 const tabsEl = document.getElementById("date-tabs");
 const langSwitchEl = document.getElementById("lang-switch");
 const officialLinkEl = document.getElementById("official-link");
+const areaListEl = document.getElementById("area-list");
+const areaListTitleEl = document.getElementById("area-list-title");
+const areaListHintEl = document.getElementById("area-list-hint");
 
 function ymd(date) {
   const y = date.getFullYear();
@@ -148,24 +153,45 @@ function blinkLayer(layer, baseStyle) {
 }
 
 let currentFc = null;
+let currentAreas = []; // [{ feature, layer, baseStyle, itemEl }]
+let selectedIndex = -1;
 
 function renderFeatures(fc) {
   onChartLayer.clearLayers();
   notOnChartLayer.clearLayers();
+  areaListEl.innerHTML = "";
+  currentAreas = [];
+  selectedIndex = -1;
 
   const p = fc.properties || {};
   metaEl.textContent = p.dabs_date
     ? `DABS ${p.dabs_date} · v${p.version} · ${t("generated")} ${formatSwissDateTime(p.generated_utc)}`
     : "";
 
+  const features = [...fc.features].sort((a, b) =>
+    a.properties.valid_from_utc.localeCompare(b.properties.valid_from_utc)
+  );
+
   const bounds = [];
-  for (const feature of fc.features) {
+  features.forEach((feature, index) => {
     const baseStyle = styleFor(feature);
     const layer = L.geoJSON(feature, { style: baseStyle });
     layer.bindPopup(popupHtml(feature.properties));
+    layer.on("click", () => selectArea(index, { fly: false }));
     (feature.properties.on_chart ? onChartLayer : notOnChartLayer).addLayer(layer);
     bounds.push(layer.getBounds());
     blinkLayer(layer, baseStyle);
+
+    const itemEl = buildAreaListItem(feature, index);
+    areaListEl.appendChild(itemEl);
+    currentAreas.push({ feature, layer, baseStyle, itemEl });
+  });
+
+  if (!features.length) {
+    const empty = document.createElement("li");
+    empty.className = "area-list-empty";
+    empty.textContent = t("areaListEmpty");
+    areaListEl.appendChild(empty);
   }
 
   if (bounds.length) {
@@ -174,6 +200,60 @@ function renderFeatures(fc) {
     map.fitBounds(combined, { padding: [40, 40] });
   }
 }
+
+function buildAreaListItem(feature, index) {
+  const props = feature.properties;
+  const li = document.createElement("li");
+  li.className = "area-item";
+
+  const swatch = document.createElement("span");
+  swatch.className = `swatch ${props.on_chart ? "chart" : "not-chart"}`;
+  swatch.title = props.on_chart ? t("popupOnChart") : t("popupNotOnChart");
+
+  const text = document.createElement("div");
+  text.className = "area-item-text";
+  const idEl = document.createElement("div");
+  idEl.className = "area-item-id";
+  idEl.textContent = props.id;
+  const timeEl = document.createElement("div");
+  timeEl.className = "area-item-time";
+  timeEl.textContent = formatTimeRange(props.valid_from_utc, props.valid_to_utc);
+  text.append(idEl, timeEl);
+
+  li.append(swatch, text);
+  li.addEventListener("click", () => selectArea(index, { fly: true }));
+  return li;
+}
+
+function selectArea(index, { fly }) {
+  if (index < 0 || index >= currentAreas.length) return;
+  if (selectedIndex >= 0 && currentAreas[selectedIndex]) {
+    currentAreas[selectedIndex].itemEl.classList.remove("active");
+  }
+  selectedIndex = index;
+  const area = currentAreas[index];
+  area.itemEl.classList.add("active");
+  area.itemEl.scrollIntoView({ block: "nearest" });
+  if (fly) {
+    map.flyToBounds(area.layer.getBounds(), { padding: [80, 80], maxZoom: 13, duration: 0.6 });
+  }
+  area.layer.openPopup();
+  blinkLayer(area.layer, area.baseStyle);
+}
+
+function moveSelection(delta) {
+  if (!currentAreas.length) return;
+  const next = selectedIndex < 0 ? 0 : Math.min(Math.max(selectedIndex + delta, 0), currentAreas.length - 1);
+  selectArea(next, { fly: true });
+}
+
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+  const tag = document.activeElement?.tagName;
+  if (tag === "INPUT" || tag === "TEXTAREA") return;
+  e.preventDefault();
+  moveSelection(e.key === "ArrowDown" ? 1 : -1);
+});
 
 async function loadDate(date) {
   hideStatus();
@@ -252,6 +332,9 @@ function applyStaticTranslations() {
   document.getElementById("disclaimer-tz-prefix").textContent = t("disclaimerTimezonePrefix");
   document.getElementById("disclaimer-tz-bold").textContent = t("swissLocalTime");
   document.getElementById("disclaimer-tz-suffix").textContent = t("disclaimerTimezoneSuffix");
+
+  areaListTitleEl.textContent = t("areaListTitle");
+  areaListHintEl.textContent = t("areaListHint");
 
   applyTabLabels();
   rebuildLayersControl();
