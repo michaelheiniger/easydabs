@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EasyDABS — Swiss Airspace Briefing</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<header id="app-header">
+  <h1>EasyDABS</h1>
+  <span id="dabs-meta" class="meta"></span>
+  <div id="date-tabs" class="date-tabs"></div>
+</header>
+
+<div id="map"></div>
+
+<div id="status" class="status hidden"></div>
+
+<div id="legend" class="legend">
+  <div class="legend-title">Legend</div>
+  <div class="legend-row"><span class="swatch chart"></span>On chart (shown on official DABS map)</div>
+  <div class="legend-row"><span class="swatch not-chart"></span>Not on chart (extra detail, hidden on the PDF map)</div>
+  <div class="legend-row"><span class="swatch poly"></span>Exact polygon (from NOTAM text)</div>
+  <div class="legend-row"><span class="swatch circ"></span>Approximate circle (radius only)</div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
