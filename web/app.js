@@ -4,9 +4,19 @@
 const DATA_DIR = "../data";
 const IS_TOUCH = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
+// app.js is deployed as "app.js?v=<short-sha>" (see .github/workflows/deploy-pages.yml);
+// reuse that same version stamp to show which commit is live, instead of
+// maintaining a separate version string.
+const APP_VERSION = (() => {
+  const src = document.currentScript && document.currentScript.src;
+  const match = src && src.match(/[?&]v=([^&]+)/);
+  return match ? match[1] : "dev";
+})();
+
 // keyboard:false avoids clashing with the area list's own Up/Down navigation,
 // which would otherwise fire alongside Leaflet's built-in keyboard panning.
 const map = L.map("map", { minZoom: 6, maxZoom: 18, keyboard: false }).setView([46.82, 8.22], 8);
+map.attributionControl.setPrefix(`EasyDABS ${APP_VERSION}`);
 
 const swisstopo = L.tileLayer(
   "https://wmts10.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",

@@ -39,12 +39,26 @@ body {
 #disclaimer {
   flex: none;
   z-index: 1000;
-  padding: 6px 16px;
+  padding: 4px 16px;
   background: #3b2608;
   border-bottom: 1px solid #5a3b0f;
   color: #ffd9a0;
   font-size: 12px;
   line-height: 1.5;
+}
+
+#disclaimer summary {
+  cursor: pointer;
+  font-weight: 700;
+  padding: 2px 0;
+}
+
+#disclaimer[open] summary {
+  margin-bottom: 2px;
+}
+
+.disclaimer-body {
+  padding-bottom: 2px;
 }
 
 #disclaimer a {
