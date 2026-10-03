@@ -78,6 +78,11 @@ test.describe("date tabs", () => {
     await expect(page.locator(".date-tab").nth(1)).toHaveClass(/active/);
     await expect(page.locator(".area-item")).toHaveCount(FIXTURE_FC.features.length);
   });
+
+  test("tab dates are shown as DD.MM.YYYY", async ({ page }) => {
+    await page.goto("/web/index.html");
+    await expect(page.locator(".date-tab .ymd").first()).toHaveText(/^\d{2}\.\d{2}\.\d{4}$/);
+  });
 });
 
 test.describe("language switching", () => {
@@ -87,6 +92,30 @@ test.describe("language switching", () => {
     await expect(page.locator("#area-list-title")).toHaveText("Luftraumzonen");
     await page.locator('.lang-btn[data-lang="fr"]').click();
     await expect(page.locator("#area-list-title")).toHaveText("Zones aériennes");
+  });
+
+  test("the language dropdown stays in sync with the button switcher", async ({ page }) => {
+    // #lang-select is only visible (and so only interactable) on mobile
+    // widths - see the <=480px media query.
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/web/index.html");
+    await expect(page.locator("#lang-select")).toHaveValue("en");
+    await page.locator("#lang-select").selectOption("de");
+    await expect(page.locator("#area-list-title")).toHaveText("Luftraumzonen");
+  });
+
+  test("mobile viewport shows the language dropdown instead of the buttons", async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/web/index.html");
+    await expect(page.locator("#lang-select")).toBeVisible();
+    await expect(page.locator(".lang-switch")).toBeHidden();
+  });
+
+  test("desktop viewport shows the language buttons instead of the dropdown", async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto("/web/index.html");
+    await expect(page.locator(".lang-switch")).toBeVisible();
+    await expect(page.locator("#lang-select")).toBeHidden();
   });
 });
 
@@ -122,13 +151,17 @@ test.describe("collapsible panels", () => {
   test("collapsing the area list panel on desktop gives its space back to the map", async ({ page }) => {
     // Regression test: the panel used to keep its full width/height even
     // collapsed, leaving a large empty void instead of growing the map.
+    // Width is capped to never exceed the open width (the summary's
+    // title+hint can legitimately need the full available width, so it's
+    // bounded rather than strictly shrinking), height always shrinks since
+    // the list itself disappears.
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/web/index.html");
     const panel = page.locator("#area-list-panel");
     const openBox = await panel.boundingBox();
     await panel.locator("summary").click();
     const closedBox = await panel.boundingBox();
-    expect(closedBox.width).toBeLessThan(openBox.width);
+    expect(closedBox.width).toBeLessThanOrEqual(openBox.width);
     expect(closedBox.height).toBeLessThan(openBox.height);
   });
 });

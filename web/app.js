@@ -56,6 +56,7 @@ const statusEl = document.getElementById("status");
 const metaEl = document.getElementById("dabs-meta");
 const tabsEl = document.getElementById("date-tabs");
 const langSwitchEl = document.getElementById("lang-switch");
+const langSelectEl = document.getElementById("lang-select");
 const officialLinkEl = document.getElementById("official-link");
 const areaListEl = document.getElementById("area-list");
 const areaListTitleEl = document.getElementById("area-list-title");
@@ -332,6 +333,11 @@ async function loadDate(date) {
   }
 }
 
+function formatTabDate(isoDate) {
+  const [y, m, d] = isoDate.split("-");
+  return `${d}.${m}.${y}`;
+}
+
 function buildTabs() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -345,7 +351,7 @@ function buildTabs() {
     tab.className = "date-tab";
     tab.dataset.date = date;
     tab.dataset.offset = offset;
-    tab.innerHTML = `<span class="day"></span><span class="ymd">${date}</span>`;
+    tab.innerHTML = `<span class="day"></span><span class="ymd">${formatTabDate(date)}</span>`;
     tab.addEventListener("click", () => selectTab(date, offset));
     tabsEl.appendChild(tab);
   }
@@ -399,7 +405,16 @@ function buildLangSwitch() {
       refreshUi();
     });
     langSwitchEl.appendChild(btn);
+
+    const option = document.createElement("option");
+    option.value = lang;
+    option.textContent = LANG_NAMES[lang];
+    langSelectEl.appendChild(option);
   }
+  langSelectEl.addEventListener("change", () => {
+    setLang(langSelectEl.value);
+    refreshUi();
+  });
   updateLangSwitchActive();
 }
 
@@ -407,6 +422,7 @@ function updateLangSwitchActive() {
   for (const btn of langSwitchEl.querySelectorAll(".lang-btn")) {
     btn.classList.toggle("active", btn.dataset.lang === currentLang);
   }
+  langSelectEl.value = currentLang;
 }
 
 function refreshUi() {

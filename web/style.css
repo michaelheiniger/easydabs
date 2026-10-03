@@ -145,6 +145,20 @@ body {
   color: #fff;
 }
 
+/* Compact dropdown alternative to .lang-switch, shown only on narrow
+   screens (see the <=480px media query) where four buttons don't fit next
+   to the title without wrapping onto their own row. */
+.lang-select {
+  display: none;
+  background: #161b22;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
 #main-content {
   flex: 1;
   display: flex;
@@ -172,11 +186,16 @@ body {
    the map reclaims that space immediately. */
 #area-list-panel:not([open]) {
   width: auto;
+  max-width: 300px;
   align-self: flex-start;
 }
 
 .area-list-header {
   flex: none;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 10px;
   padding: 10px 14px;
   border-bottom: 1px solid var(--border);
   cursor: pointer;
@@ -195,7 +214,6 @@ body {
 }
 
 .area-list-hint {
-  margin-top: 2px;
   font-size: 12px;
   color: var(--text-dim);
 }
@@ -284,21 +302,25 @@ body {
 
   .date-tabs {
     order: 2;
+    flex-basis: 100%;
+    margin-left: 0;
   }
 
+  /* Dropdown instead of four buttons, next to the title on the first row
+     (margin-left:auto pushes it to the right edge) instead of wrapping
+     onto its own row below the date tabs. */
   .lang-switch {
-    order: 3;
-    margin-left: 0;
-    padding-left: 0;
-    border-left: none;
+    display: none;
+  }
+
+  .lang-select {
+    display: block;
+    order: 0;
+    margin-left: auto;
   }
 
   .date-tab {
     padding: 9px 12px;
-  }
-
-  .lang-btn {
-    padding: 9px 11px;
   }
 
   #disclaimer {
@@ -309,6 +331,10 @@ body {
 
   #area-list-panel {
     max-height: 32vh;
+  }
+
+  .area-list-header {
+    padding: 8px 12px;
   }
 
   .area-item {
