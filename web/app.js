@@ -18,6 +18,12 @@ const APP_VERSION = (() => {
 const map = L.map("map", { minZoom: 6, maxZoom: 18, keyboard: false }).setView([46.82, 8.22], 8);
 map.attributionControl.setPrefix(`EasyDABS ${APP_VERSION}`);
 
+// Leaflet caches the map container's pixel size and never re-measures it on
+// its own, so any layout change that resizes #map (the collapsible legend
+// and disclaimer, a window resize, an orientation change) leaves Leaflet
+// panning/zooming against stale dimensions unless told to re-check.
+new ResizeObserver(() => map.invalidateSize()).observe(document.getElementById("map"));
+
 const swisstopo = L.tileLayer(
   "https://wmts10.geo.admin.ch/1.0.0/ch.swisstopo.pixelkarte-farbe/default/current/3857/{z}/{x}/{y}.jpeg",
   {
@@ -246,11 +252,18 @@ function selectArea(index, { fly }) {
   area.itemEl.classList.add("active");
   area.itemEl.scrollIntoView({ block: "nearest" });
   if (fly) {
-    // A fixed zoom (rather than fitting area.layer's bounds) keeps this viewport-
-    // independent: fitting bounds with fixed pixel padding zooms out much further
-    // on a narrow window, since the padding eats a bigger share of the screen.
-    // All areas are small (1-4km radius) so a constant zoom works for every one.
-    map.flyTo(area.layer.getBounds().getCenter(), 7, { duration: 0.6 });
+    // Not animated: both flyTo and setView's animated zoom proved unreliable
+    // here - their animation can take far longer than requested to settle,
+    // or never visibly complete, especially when a new call interrupts one
+    // still in flight (exactly what happens clicking through the list
+    // quickly). An instant jump is less polished but always correct.
+    //
+    // A fixed zoom (rather than fitting area.layer's bounds) keeps this
+    // viewport-independent: fitting bounds with fixed pixel padding zooms
+    // out much further on a narrow window, since the padding eats a bigger
+    // share of the screen. All areas are small (1-4km radius) so a constant
+    // zoom works for every one.
+    map.setView(area.layer.getBounds().getCenter(), 7, { animate: false });
   }
   area.layer.openPopup();
   blinkLayer(area.layer, area.baseStyle);
