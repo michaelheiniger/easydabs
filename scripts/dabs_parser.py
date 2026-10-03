@@ -107,6 +107,10 @@ def utc_iso(date: str, hhmm: str, end=False):
 def parse(pdf_path: str):
     text = subprocess.run(["pdftotext", "-layout", pdf_path, "-"],
                           capture_output=True, text=True, check=True).stdout
+    return parse_text(text)
+
+
+def parse_text(text: str):
     date, version, generated = parse_header(text)
 
     rows, section = [], None
