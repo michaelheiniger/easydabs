@@ -235,11 +235,11 @@ function selectArea(index, { fly }) {
   area.itemEl.classList.add("active");
   area.itemEl.scrollIntoView({ block: "nearest" });
   if (fly) {
-    // flyToBounds's own maxZoom cap is unreliable (depends on the map's current
-    // zoom/animation state), so compute and cap the target zoom explicitly.
-    const bounds = area.layer.getBounds();
-    const targetZoom = Math.min(map.getBoundsZoom(bounds, false, [80, 80]), 7);
-    map.flyTo(bounds.getCenter(), targetZoom, { duration: 0.6 });
+    // A fixed zoom (rather than fitting area.layer's bounds) keeps this viewport-
+    // independent: fitting bounds with fixed pixel padding zooms out much further
+    // on a narrow window, since the padding eats a bigger share of the screen.
+    // All areas are small (1-4km radius) so a constant zoom works for every one.
+    map.flyTo(area.layer.getBounds().getCenter(), 7, { duration: 0.6 });
   }
   area.layer.openPopup();
   blinkLayer(area.layer, area.baseStyle);
