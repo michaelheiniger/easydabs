@@ -222,7 +222,14 @@ function renderFeatures(fc) {
   if (bounds.length) {
     let combined = bounds[0];
     for (const b of bounds.slice(1)) combined = combined.extend(b);
-    map.fitBounds(combined, { padding: [40, 40] });
+    // animate:false for the same reason as selectArea's setView below: an
+    // animated zoom here can leave Leaflet's internal _animatingZoom flag
+    // stuck true forever if its CSS transitionend never fires (observed in
+    // headless/backgrounded-tab conditions), silently blocking every zoom
+    // change for the rest of the page's life - including the deliberately
+    // non-animated calls elsewhere, since Leaflet won't start a new view
+    // change while it still thinks one is in flight.
+    map.fitBounds(combined, { padding: [40, 40], animate: false });
   }
 }
 
