@@ -12,13 +12,14 @@
   <h1>EasyDABS</h1>
   <span id="dabs-meta" class="meta"></span>
   <div id="date-tabs" class="date-tabs"></div>
+  <div id="lang-switch" class="lang-switch"></div>
 </header>
 
 <div id="disclaimer">
-  <strong>Disclaimer:</strong> provided for situational awareness only, without any guarantee of
-  accuracy or completeness. The official Skybriefing DABS publication remains the sole source of
-  truth &mdash; <a id="official-link" href="https://www.skybriefing.com/o/dabs?today" target="_blank" rel="noopener">view official source</a>.
-  All dates/times shown are <strong>Swiss local time</strong>, not UTC.
+  <strong id="disclaimer-label">Disclaimer:</strong>
+  <span id="disclaimer-text"></span>
+  <a id="official-link" href="https://www.skybriefing.com/o/dabs?today" target="_blank" rel="noopener"></a>.
+  <span id="disclaimer-tz-prefix"></span> <strong id="disclaimer-tz-bold"></strong><span id="disclaimer-tz-suffix"></span>
 </div>
 
 <div id="map">
@@ -26,14 +27,15 @@
 </div>
 
 <div id="legend" class="legend">
-  <div class="legend-title">Legend</div>
-  <div class="legend-row"><span class="swatch chart"></span>On chart (shown on official DABS map)</div>
-  <div class="legend-row"><span class="swatch not-chart"></span>Not on chart (extra detail, hidden on the PDF map)</div>
-  <div class="legend-row"><span class="swatch poly"></span>Exact polygon (from NOTAM text)</div>
-  <div class="legend-row"><span class="swatch circ"></span>Approximate circle (radius only)</div>
+  <div class="legend-title" id="legend-title"></div>
+  <div class="legend-row"><span class="swatch chart"></span><span id="legend-on-chart"></span></div>
+  <div class="legend-row"><span class="swatch not-chart"></span><span id="legend-not-on-chart"></span></div>
+  <div class="legend-row"><span class="swatch poly"></span><span id="legend-polygon"></span></div>
+  <div class="legend-row"><span class="swatch circ"></span><span id="legend-circle"></span></div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="i18n.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -106,6 +106,31 @@ body {
   cursor: not-allowed;
 }
 
+.lang-switch {
+  display: flex;
+  gap: 4px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+}
+
+.lang-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #161b22;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.lang-btn.active {
+  background: var(--chart-color);
+  border-color: var(--chart-color);
+  color: #fff;
+}
+
 #map {
   position: relative;
   flex: 1;
@@ -215,10 +240,18 @@ body {
   margin: 0;
 }
 
-.area-popup .notam-text {
+.area-popup .notam-text-label {
   margin-top: 8px;
   padding-top: 6px;
   border-top: 1px solid #ddd;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #888;
+}
+
+.area-popup .notam-text {
+  margin-top: 2px;
   font-size: 12px;
   color: #333;
   white-space: pre-wrap;

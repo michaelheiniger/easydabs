@@ -21,16 +21,23 @@ const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 const onChartLayer = L.layerGroup().addTo(map);
 const notOnChartLayer = L.layerGroup().addTo(map);
 
-L.control
-  .layers(
-    { "Swisstopo (detailed)": swisstopo, "OpenStreetMap": osm },
-    { "On official chart": onChartLayer, "Not on official chart": notOnChartLayer }
-  )
-  .addTo(map);
+let layersControl = null;
+
+function rebuildLayersControl() {
+  if (layersControl) map.removeControl(layersControl);
+  layersControl = L.control
+    .layers(
+      { [t("baseSwisstopo")]: swisstopo, [t("baseOsm")]: osm },
+      { [t("overlayOnChart")]: onChartLayer, [t("overlayNotOnChart")]: notOnChartLayer }
+    )
+    .addTo(map);
+}
 
 const statusEl = document.getElementById("status");
 const metaEl = document.getElementById("dabs-meta");
 const tabsEl = document.getElementById("date-tabs");
+const langSwitchEl = document.getElementById("lang-switch");
+const officialLinkEl = document.getElementById("official-link");
 
 function ymd(date) {
   const y = date.getFullYear();
@@ -39,18 +46,16 @@ function ymd(date) {
   return `${y}-${m}-${d}`;
 }
 
-function dayLabel(date, offset) {
-  if (offset === 0) return "Today";
-  if (offset === 1) return "Tomorrow";
-  return date.toLocaleDateString(undefined, { weekday: "short" });
-}
+let currentStatus = null; // { key, vars } | null
 
-function showStatus(msg) {
-  statusEl.textContent = msg;
+function showStatus(key, vars) {
+  currentStatus = { key, vars };
+  statusEl.textContent = t(key, vars);
   statusEl.classList.remove("hidden");
 }
 
 function hideStatus() {
+  currentStatus = null;
   statusEl.classList.add("hidden");
 }
 
@@ -84,7 +89,7 @@ function chZoneLabel(date) {
 function formatTimeRange(fromIso, toIso) {
   const from = new Date(fromIso);
   const to = new Date(toIso);
-  return `${CH_HM_FMT.format(from)}–${CH_HM_FMT.format(to)} ${chZoneLabel(from)} (Swiss local time)`;
+  return `${CH_HM_FMT.format(from)}–${CH_HM_FMT.format(to)} ${chZoneLabel(from)} (${t("swissLocalTime")})`;
 }
 
 function formatSwissDateTime(iso) {
@@ -93,21 +98,21 @@ function formatSwissDateTime(iso) {
 
 function popupHtml(props) {
   const badgeClass = props.on_chart ? "chart" : "not-chart";
-  const badgeText = props.on_chart ? "on chart" : "not on chart";
-  const notam = props.notam ? ` &middot; ${props.notam}` : "";
+  const badgeText = props.on_chart ? t("popupOnChart") : t("popupNotOnChart");
   const geomNote =
     props.geometry_source === "polygon"
-      ? "Exact polygon from NOTAM text"
-      : `Approximate circle, radius ${(props.radius_m / 1000).toFixed(2)} km`;
+      ? t("shapePolygon")
+      : t("shapeCircle", { km: (props.radius_m / 1000).toFixed(2) });
   return `
     <div class="area-popup">
       <h3>${props.id}<span class="badge ${badgeClass}">${badgeText}</span></h3>
       <dl>
-        <dt>Validity</dt><dd>${formatTimeRange(props.valid_from_utc, props.valid_to_utc)}</dd>
-        <dt>Vertical</dt><dd>${formatAlt(props.lower)} &ndash; ${formatAlt(props.upper)}</dd>
-        <dt>Shape</dt><dd>${geomNote}</dd>
-        <dt>NOTAM</dt><dd>${props.notam || "&ndash;"}${notam ? "" : ""}</dd>
+        <dt>${t("popupValidity")}</dt><dd>${formatTimeRange(props.valid_from_utc, props.valid_to_utc)}</dd>
+        <dt>${t("popupVertical")}</dt><dd>${formatAlt(props.lower)} &ndash; ${formatAlt(props.upper)}</dd>
+        <dt>${t("popupShape")}</dt><dd>${geomNote}</dd>
+        <dt>${t("popupNotam")}</dt><dd>${props.notam || "&ndash;"}</dd>
       </dl>
+      <div class="notam-text-label">${t("notamOriginalNote")}</div>
       <div class="notam-text">${props.text}</div>
     </div>`;
 }
@@ -124,31 +129,15 @@ function styleFor(feature) {
   };
 }
 
-let currentLayer = null;
+let currentFc = null;
 
-async function loadDate(date) {
+function renderFeatures(fc) {
   onChartLayer.clearLayers();
   notOnChartLayer.clearLayers();
-  hideStatus();
-  metaEl.textContent = "";
 
-  const url = `${DATA_DIR}/dabs-${date}.geojson`;
-  let res;
-  try {
-    res = await fetch(url);
-  } catch (e) {
-    showStatus(`Could not reach ${url}`);
-    return;
-  }
-  if (!res.ok) {
-    showStatus(`No DABS data published yet for ${date}`);
-    return;
-  }
-
-  const fc = await res.json();
   const p = fc.properties || {};
   metaEl.textContent = p.dabs_date
-    ? `DABS ${p.dabs_date} · v${p.version} · generated ${formatSwissDateTime(p.generated_utc)}`
+    ? `DABS ${p.dabs_date} · v${p.version} · ${t("generated")} ${formatSwissDateTime(p.generated_utc)}`
     : "";
 
   const bounds = [];
@@ -164,9 +153,34 @@ async function loadDate(date) {
     for (const b of bounds.slice(1)) combined = combined.extend(b);
     map.fitBounds(combined, { padding: [40, 40] });
   }
+}
+
+async function loadDate(date) {
+  hideStatus();
+  metaEl.textContent = "";
+  currentFc = null;
+  onChartLayer.clearLayers();
+  notOnChartLayer.clearLayers();
+
+  const url = `${DATA_DIR}/dabs-${date}.geojson`;
+  let res;
+  try {
+    res = await fetch(url);
+  } catch (e) {
+    showStatus("statusNoFetch", { date });
+    return;
+  }
+  if (!res.ok) {
+    showStatus("statusNoData", { date });
+    return;
+  }
+
+  const fc = await res.json();
+  currentFc = fc;
+  renderFeatures(fc);
 
   if (!fc.features.length) {
-    showStatus(`DABS ${date} published but contains no restricted areas`);
+    showStatus("statusEmpty", { date });
   }
 }
 
@@ -183,13 +197,19 @@ function buildTabs() {
     tab.className = "date-tab";
     tab.dataset.date = date;
     tab.dataset.offset = offset;
-    tab.innerHTML = `<span class="day">${dayLabel(d, offset)}</span><span class="ymd">${date}</span>`;
+    tab.innerHTML = `<span class="day"></span><span class="ymd">${date}</span>`;
     tab.addEventListener("click", () => selectTab(date, offset));
     tabsEl.appendChild(tab);
   }
+  applyTabLabels();
 }
 
-const officialLinkEl = document.getElementById("official-link");
+function applyTabLabels() {
+  for (const tab of tabsEl.querySelectorAll(".date-tab")) {
+    const offset = Number(tab.dataset.offset);
+    tab.querySelector(".day").textContent = offset === 0 ? t("today") : t("tomorrow");
+  }
+}
 
 function selectTab(date, offset) {
   for (const tab of tabsEl.querySelectorAll(".date-tab")) {
@@ -199,6 +219,59 @@ function selectTab(date, offset) {
   loadDate(date);
 }
 
+function applyStaticTranslations() {
+  document.getElementById("legend-title").textContent = t("legendTitle");
+  document.getElementById("legend-on-chart").textContent = t("legendOnChart");
+  document.getElementById("legend-not-on-chart").textContent = t("legendNotOnChart");
+  document.getElementById("legend-polygon").textContent = t("legendPolygon");
+  document.getElementById("legend-circle").textContent = t("legendCircle");
+
+  document.getElementById("disclaimer-label").textContent = t("disclaimerLabel");
+  document.getElementById("disclaimer-text").textContent = t("disclaimerText");
+  officialLinkEl.textContent = t("officialSourceLink");
+  document.getElementById("disclaimer-tz-prefix").textContent = t("disclaimerTimezonePrefix");
+  document.getElementById("disclaimer-tz-bold").textContent = t("swissLocalTime");
+  document.getElementById("disclaimer-tz-suffix").textContent = t("disclaimerTimezoneSuffix");
+
+  applyTabLabels();
+  rebuildLayersControl();
+}
+
+function buildLangSwitch() {
+  for (const lang of SUPPORTED_LANGS) {
+    const btn = document.createElement("button");
+    btn.className = "lang-btn";
+    btn.textContent = LANG_NAMES[lang];
+    btn.dataset.lang = lang;
+    btn.addEventListener("click", () => {
+      setLang(lang);
+      refreshUi();
+    });
+    langSwitchEl.appendChild(btn);
+  }
+  updateLangSwitchActive();
+}
+
+function updateLangSwitchActive() {
+  for (const btn of langSwitchEl.querySelectorAll(".lang-btn")) {
+    btn.classList.toggle("active", btn.dataset.lang === currentLang);
+  }
+}
+
+function refreshUi() {
+  updateLangSwitchActive();
+  applyStaticTranslations();
+  if (currentFc) {
+    renderFeatures(currentFc);
+    if (!currentFc.features.length) showStatus("statusEmpty", currentStatus?.vars);
+  } else if (currentStatus) {
+    showStatus(currentStatus.key, currentStatus.vars);
+  }
+}
+
+document.documentElement.lang = currentLang;
+buildLangSwitch();
 buildTabs();
+applyStaticTranslations();
 const firstTab = tabsEl.querySelector(".date-tab");
 selectTab(firstTab.dataset.date, Number(firstTab.dataset.offset));
