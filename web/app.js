@@ -133,17 +133,21 @@ function popupHtml(props) {
     props.geometry_source === "polygon"
       ? t("shapePolygon")
       : t("shapeCircle", { km: (props.radius_m / 1000).toFixed(2) });
+  // Only show the NOTAM number separately when it differs from the id -
+  // for most areas the id already IS the NOTAM number (no separate name).
+  const notamSuffix = props.notam && props.notam !== props.id ? ` (${props.notam})` : "";
   return `
     <div class="area-popup">
-      <h3>${props.id}<span class="badge ${badgeClass}">${badgeText}</span></h3>
+      <h3>${props.id}${notamSuffix}<span class="badge ${badgeClass}">${badgeText}</span></h3>
       <dl>
         <dt>${t("popupValidity")}</dt><dd>${formatTimeRange(props.valid_from_utc, props.valid_to_utc)}</dd>
         <dt>${t("popupVertical")}</dt><dd>${formatAlt(props.lower)} &ndash; ${formatAlt(props.upper)}</dd>
         <dt>${t("popupShape")}</dt><dd>${geomNote}</dd>
-        <dt>${t("popupNotam")}</dt><dd>${props.notam || "&ndash;"}</dd>
       </dl>
-      <div class="notam-text-label">${t("notamOriginalNote")}</div>
-      <div class="notam-text">${props.text}</div>
+      <details class="notam-text-details">
+        <summary>${t("notamOriginalNote")}</summary>
+        <div class="notam-text">${props.text}</div>
+      </details>
     </div>`;
 }
 
