@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-04",
-    "version": 1,
-    "generated_utc": "2026-10-03T13:25:00+00:00"
+    "version": 4,
+    "generated_utc": "2026-10-04T13:45:00+00:00"
   },
   "features": [
     {
@@ -277,9 +277,9 @@
       },
       "properties": {
         "id": "LSR18",
-        "notam": "W2610/26",
+        "notam": "W2612/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-04T00:00:00+00:00",
+        "valid_from_utc": "2026-10-04T05:30:00+00:00",
         "valid_to_utc": "2026-10-04T23:59:00+00:00",
         "lower": {
           "raw": "GND",
@@ -305,76 +305,6 @@
         },
         "geometry_source": "circle",
         "text": "R-AREA LSR18 BURE ACT DUE TO MIL UAV ACT."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              7.684722,
-              47.466944
-            ],
-            [
-              7.704444,
-              47.473333
-            ],
-            [
-              7.709167,
-              47.47
-            ],
-            [
-              7.699722,
-              47.461111
-            ],
-            [
-              7.697778,
-              47.455556
-            ],
-            [
-              7.684444,
-              47.463889
-            ],
-            [
-              7.684722,
-              47.466944
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "W2536/26",
-        "notam": "W2536/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-10-04T04:00:00+00:00",
-        "valid_to_utc": "2026-10-04T07:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "600m / 2000ft",
-          "meters": 600,
-          "feet": 2000,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 47.465,
-          "lon": 7.698333
-        },
-        "radius_m": 1111,
-        "radius_candidates_m": {
-          "table_km": 1100,
-          "text_0_nm": 1111
-        },
-        "geometry_source": "polygon",
-        "text": "TEMPO R-AREA LIESTAL ESTABLISHED WI AREA: 472801N0074105E 472824N0074216E 472812N0074233E 472740N0074159E 472720N0074152E 472750N0074104E 472801N0074105E (472754N0074154E RADIUS 0.6NM). DUE TO MIL EXER. ENTRY PROHIBITED WHEN ACT EXCL HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS COOR CTC +41 77 405 50 64."
       }
     },
     {
