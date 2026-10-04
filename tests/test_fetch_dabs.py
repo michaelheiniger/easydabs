@@ -2,6 +2,7 @@ import json
 import sys
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
 from unittest.mock import patch
 
@@ -48,6 +49,29 @@ class MainTests(unittest.TestCase):
     def test_exits_nonzero_when_fetch_fails(self):
         with tempfile.TemporaryDirectory() as tmp:
             with patch.object(fetch_dabs, "fetch", side_effect=OSError("network down")):
+                sys.argv = ["fetch_dabs.py", tmp]
+                with self.assertRaises(SystemExit) as ctx:
+                    fetch_dabs.main()
+                self.assertEqual(ctx.exception.code, 1)
+
+    def test_404_stops_cleanly_keeping_earlier_sources(self):
+        not_found = urllib.error.HTTPError("https://example.test", 404, "Not Found", {}, None)
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch", side_effect=[None, not_found]), \
+                 patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY]), \
+                 patch("builtins.print") as mock_print:
+                sys.argv = ["fetch_dabs.py", tmp]
+                with self.assertRaises(SystemExit) as ctx:
+                    fetch_dabs.main()
+                self.assertEqual(ctx.exception.code, 0)
+            mock_print.assert_any_call("No document for tomorrow available")
+            self.assertTrue((Path(tmp) / "dabs-2026-10-03.geojson").exists())
+            self.assertFalse((Path(tmp) / "dabs-2026-10-04.geojson").exists())
+
+    def test_exits_nonzero_on_non_404_http_error(self):
+        server_error = urllib.error.HTTPError("https://example.test", 500, "Server Error", {}, None)
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch", side_effect=server_error):
                 sys.argv = ["fetch_dabs.py", tmp]
                 with self.assertRaises(SystemExit) as ctx:
                     fetch_dabs.main()

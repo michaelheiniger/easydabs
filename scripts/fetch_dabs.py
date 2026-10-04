@@ -5,11 +5,14 @@ Usage: python fetch_dabs.py [data_dir]
 
 Requires: poppler-utils (pdftotext), same as dabs_parser.py. No Python dependencies.
 Fails loudly (exit code 1) if a fetch or parse fails, so a scheduled job never
-silently leaves stale data published.
+silently leaves stale data published. The one exception is a 404, which just means
+that day's DABS isn't published yet: that stops the script cleanly (exit code 0),
+keeping whatever was already written for earlier sources.
 """
 import json
 import sys
 import tempfile
+import urllib.error
 import urllib.request
 from pathlib import Path
 
@@ -37,6 +40,12 @@ def main():
             pdf_path = Path(tmp) / f"{label}.pdf"
             try:
                 fetch(url, pdf_path)
+            except urllib.error.HTTPError as e:
+                if e.code == 404:
+                    print(f"No document for {label} available")
+                    sys.exit(0)
+                print(f"FETCH ERROR ({label}): {e}", file=sys.stderr)
+                sys.exit(1)
             except Exception as e:
                 print(f"FETCH ERROR ({label}): {e}", file=sys.stderr)
                 sys.exit(1)
