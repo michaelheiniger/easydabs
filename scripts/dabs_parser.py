@@ -104,6 +104,13 @@ def utc_iso(date: str, hhmm: str, end=False):
     return dt.isoformat()
 
 
+NOT_AVAILABLE_MSG = "DABS for the requested date is not available yet"
+
+
+class NotAvailableError(Exception):
+    """The "PDF" is just a placeholder saying that day's DABS isn't published yet."""
+
+
 def parse(pdf_path: str):
     text = subprocess.run(["pdftotext", "-layout", pdf_path, "-"],
                           capture_output=True, text=True, check=True).stdout
@@ -111,6 +118,8 @@ def parse(pdf_path: str):
 
 
 def parse_text(text: str):
+    if NOT_AVAILABLE_MSG in text:
+        raise NotAvailableError(NOT_AVAILABLE_MSG)
     date, version, generated = parse_header(text)
 
     rows, section = [], None

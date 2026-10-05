@@ -68,6 +68,19 @@ class MainTests(unittest.TestCase):
             self.assertTrue((Path(tmp) / "dabs-2026-10-03.geojson").exists())
             self.assertFalse((Path(tmp) / "dabs-2026-10-04.geojson").exists())
 
+    def test_not_available_placeholder_stops_cleanly_keeping_earlier_sources(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch"), \
+                 patch.object(fetch_dabs, "parse",
+                              side_effect=[FC_TODAY, fetch_dabs.NotAvailableError("x")]), \
+                 patch("builtins.print"):
+                sys.argv = ["fetch_dabs.py", tmp]
+                with self.assertRaises(SystemExit) as ctx:
+                    fetch_dabs.main()
+                self.assertEqual(ctx.exception.code, 0)
+            self.assertTrue((Path(tmp) / "dabs-2026-10-03.geojson").exists())
+            self.assertFalse((Path(tmp) / "dabs-2026-10-04.geojson").exists())
+
     def test_exits_nonzero_on_non_404_http_error(self):
         server_error = urllib.error.HTTPError("https://example.test", 500, "Server Error", {}, None)
         with tempfile.TemporaryDirectory() as tmp:

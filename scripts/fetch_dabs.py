@@ -7,7 +7,8 @@ Requires: poppler-utils (pdftotext), same as dabs_parser.py. No Python dependenc
 Fails loudly (exit code 1) if a fetch or parse fails, so a scheduled job never
 silently leaves stale data published. The one exception is a 404, which just means
 that day's DABS isn't published yet: that stops the script cleanly (exit code 0),
-keeping whatever was already written for earlier sources.
+keeping whatever was already written for earlier sources. The same applies when the
+downloaded PDF just says the DABS "is not available yet".
 """
 import json
 import sys
@@ -17,7 +18,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from dabs_parser import parse
+from dabs_parser import NotAvailableError, parse
 
 SOURCES = {
     "today": "https://www.skybriefing.com/o/dabs?today",
@@ -51,6 +52,9 @@ def main():
                 sys.exit(1)
             try:
                 fc = parse(str(pdf_path))
+            except NotAvailableError:
+                print(f"No document for {label} available (not published yet)")
+                sys.exit(0)
             except Exception as e:
                 print(f"PARSE ERROR ({label}): {e}", file=sys.stderr)
                 sys.exit(1)
