@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-08",
-    "version": 2,
-    "generated_utc": "2026-10-08T06:45:00+00:00"
+    "version": 4,
+    "generated_utc": "2026-10-08T13:45:00+00:00"
   },
   "features": [
     {
@@ -578,10 +578,10 @@
       },
       "properties": {
         "id": "LSD12",
-        "notam": null,
+        "notam": "W0316/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-08T06:00:00+00:00",
-        "valid_to_utc": "2026-10-08T10:00:00+00:00",
+        "valid_from_utc": "2026-10-08T11:00:00+00:00",
+        "valid_to_utc": "2026-10-08T21:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -1782,10 +1782,10 @@
       },
       "properties": {
         "id": "LSR57",
-        "notam": null,
+        "notam": "W2662/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-08T06:00:00+00:00",
-        "valid_to_utc": "2026-10-08T10:00:00+00:00",
+        "valid_from_utc": "2026-10-08T11:00:00+00:00",
+        "valid_to_utc": "2026-10-08T20:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
