@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   update:
@@ -21,6 +22,8 @@ jobs:
         run: python3 scripts/fetch_dabs.py
 
       - name: Commit and push if changed
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -30,4 +33,7 @@ jobs:
           else
             git commit -m "Update DABS data"
             git push
+            # Pushes made with GITHUB_TOKEN don't trigger other workflows' `push`
+            # events, so deploy-pages must be dispatched explicitly.
+            gh workflow run deploy-pages.yml --ref "${GITHUB_REF_NAME}"
           fi
