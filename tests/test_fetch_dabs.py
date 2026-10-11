@@ -23,6 +23,12 @@ FC_TOMORROW = {
 
 
 class MainTests(unittest.TestCase):
+    def setUp(self):
+        # Never hit the real SHV API from unit tests.
+        patcher = patch.object(fetch_dabs, "fetch_airspaces", return_value=None)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
     def test_writes_one_geojson_file_per_source(self):
         with tempfile.TemporaryDirectory() as tmp:
             with patch.object(fetch_dabs, "fetch"), \

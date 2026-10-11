@@ -180,6 +180,14 @@ test.describe("date tabs", () => {
     await page.goto("/web/index.html");
     await expect(page.locator(".date-tab .ymd").first()).toHaveText(/^\d{2}\.\d{2}\.\d{4}$/);
   });
+
+  test("source PDF link follows the selected tab", async ({ page }) => {
+    await page.goto("/web/index.html");
+    const link = page.locator("#pdf-link");
+    await expect(link).toHaveAttribute("href", /dabs\?today$/);
+    await page.locator(".date-tab").nth(1).click();
+    await expect(link).toHaveAttribute("href", /dabs\?tomorrow$/);
+  });
 });
 
 test.describe("language switching", () => {

@@ -7,7 +7,8 @@ Requires: poppler-utils (pdftotext), same as dabs_parser.py. No Python dependenc
 Fails loudly (exit code 1) if a fetch or parse fails, so a scheduled job never
 silently leaves stale data published. The one exception is a 404, which just means
 that day's DABS isn't published yet: that stops the script cleanly (exit code 0),
-keeping whatever was already written for earlier sources. The same applies when the
+keeping whatever was already written for earlier sources. Exact area outlines from
+shv_airspaces are best-effort: if that API fails, circles are kept and a warning is printed. The same applies when the
 downloaded PDF just says the DABS "is not available yet".
 """
 import json
@@ -19,6 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from dabs_parser import NotAvailableError, parse
+from shv_airspaces import apply_airspace_polygons, fetch_airspaces
 
 SOURCES = {
     "today": "https://www.skybriefing.com/o/dabs?today",
@@ -35,6 +37,14 @@ def fetch(url: str, dest: Path):
 def main():
     data_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).parent.parent / "data"
     data_dir.mkdir(parents=True, exist_ok=True)
+
+    # Exact outlines are an enhancement: if this BETA API is down, fall back to the
+    # covering circles rather than failing the whole run.
+    try:
+        airspaces = fetch_airspaces()
+    except Exception as e:
+        print(f"WARNING: airspace outlines unavailable, using circles: {e}", file=sys.stderr)
+        airspaces = None
 
     with tempfile.TemporaryDirectory() as tmp:
         for label, url in SOURCES.items():
@@ -58,6 +68,8 @@ def main():
             except Exception as e:
                 print(f"PARSE ERROR ({label}): {e}", file=sys.stderr)
                 sys.exit(1)
+            if airspaces:
+                apply_airspace_polygons(fc, airspaces)
             out_path = data_dir / f"dabs-{fc['properties']['dabs_date']}.geojson"
             out_path.write_text(json.dumps(fc, indent=2, ensure_ascii=False))
             print(

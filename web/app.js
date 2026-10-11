@@ -57,6 +57,7 @@ const tabsEl = document.getElementById("date-tabs");
 const langSwitchEl = document.getElementById("lang-switch");
 const langSelectEl = document.getElementById("lang-select");
 const officialLinkEl = document.getElementById("official-link");
+const pdfLinkEl = document.getElementById("pdf-link");
 const areaListEl = document.getElementById("area-list");
 const areaListTitleEl = document.getElementById("area-list-title");
 const areaListHintEl = document.getElementById("area-list-hint");
@@ -167,7 +168,9 @@ function popupHtml(props) {
   const geomNote =
     props.geometry_source === "polygon"
       ? t("shapePolygon")
-      : t("shapeCircle", { km: (props.radius_m / 1000).toFixed(2) });
+      : props.geometry_source === "airspace"
+        ? t("shapeAirspace")
+        : t("shapeCircle", { km: (props.radius_m / 1000).toFixed(2) });
   // Only show the NOTAM number separately when it differs from the id -
   // for most areas the id already IS the NOTAM number (no separate name).
   const notamSuffix = props.notam && props.notam !== props.id ? ` (${props.notam})` : "";
@@ -193,7 +196,7 @@ function popupHtml(props) {
 const AREA_COLOR = "#dc2626";
 
 function styleFor(feature) {
-  const isCircle = feature.properties.geometry_source !== "polygon";
+  const isCircle = feature.properties.geometry_source === "circle";
   return {
     color: AREA_COLOR,
     weight: 2,
@@ -396,7 +399,7 @@ function buildTabs() {
     tab.dataset.offset = offset;
     tab.innerHTML = `<span class="day"></span><span class="ymd">${formatTabDate(date)}</span>`;
     tab.addEventListener("click", () => selectTab(date, offset));
-    tabsEl.appendChild(tab);
+    tabsEl.insertBefore(tab, pdfLinkEl);
   }
   applyTabLabels();
 }
@@ -412,7 +415,9 @@ function selectTab(date, offset) {
   for (const tab of tabsEl.querySelectorAll(".date-tab")) {
     tab.classList.toggle("active", tab.dataset.date === date);
   }
-  officialLinkEl.href = `https://www.skybriefing.com/o/dabs?${offset === 0 ? "today" : "tomorrow"}`;
+  const sourceUrl = `https://www.skybriefing.com/o/dabs?${offset === 0 ? "today" : "tomorrow"}`;
+  officialLinkEl.href = sourceUrl;
+  pdfLinkEl.href = sourceUrl;
   loadDate(date);
 }
 
@@ -424,6 +429,8 @@ function applyStaticTranslations() {
   document.getElementById("disclaimer-label").textContent = t("disclaimerLabel");
   document.getElementById("disclaimer-text").textContent = t("disclaimerText");
   officialLinkEl.textContent = t("officialSourceLink");
+  pdfLinkEl.textContent = t("pdfLink");
+  pdfLinkEl.title = t("pdfLinkTitle");
   document.getElementById("disclaimer-tz-prefix").textContent = t("disclaimerTimezonePrefix");
   document.getElementById("disclaimer-tz-bold").textContent = t("swissLocalTime");
   document.getElementById("disclaimer-tz-suffix").textContent = t("disclaimerTimezoneSuffix");
