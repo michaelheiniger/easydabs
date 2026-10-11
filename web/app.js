@@ -57,7 +57,8 @@ const tabsEl = document.getElementById("date-tabs");
 const langSwitchEl = document.getElementById("lang-switch");
 const langSelectEl = document.getElementById("lang-select");
 const officialLinkEl = document.getElementById("official-link");
-const pdfLinkEl = document.getElementById("pdf-link");
+const pdfTodayEl = document.getElementById("pdf-today");
+const pdfTomorrowEl = document.getElementById("pdf-tomorrow");
 const areaListEl = document.getElementById("area-list");
 const areaListTitleEl = document.getElementById("area-list-title");
 const areaListHintEl = document.getElementById("area-list-hint");
@@ -399,7 +400,7 @@ function buildTabs() {
     tab.dataset.offset = offset;
     tab.innerHTML = `<span class="day"></span><span class="ymd">${formatTabDate(date)}</span>`;
     tab.addEventListener("click", () => selectTab(date, offset));
-    tabsEl.insertBefore(tab, pdfLinkEl);
+    tabsEl.insertBefore(tab, pdfTodayEl);
   }
   applyTabLabels();
 }
@@ -417,7 +418,6 @@ function selectTab(date, offset) {
   }
   const sourceUrl = `https://www.skybriefing.com/o/dabs?${offset === 0 ? "today" : "tomorrow"}`;
   officialLinkEl.href = sourceUrl;
-  pdfLinkEl.href = sourceUrl;
   loadDate(date);
 }
 
@@ -429,8 +429,8 @@ function applyStaticTranslations() {
   document.getElementById("disclaimer-label").textContent = t("disclaimerLabel");
   document.getElementById("disclaimer-text").textContent = t("disclaimerText");
   officialLinkEl.textContent = t("officialSourceLink");
-  pdfLinkEl.textContent = t("pdfLink");
-  pdfLinkEl.title = t("pdfLinkTitle");
+  pdfTodayEl.textContent = t("pdfToday");
+  pdfTomorrowEl.textContent = t("pdfTomorrow");
   document.getElementById("disclaimer-tz-prefix").textContent = t("disclaimerTimezonePrefix");
   document.getElementById("disclaimer-tz-bold").textContent = t("swissLocalTime");
   document.getElementById("disclaimer-tz-suffix").textContent = t("disclaimerTimezoneSuffix");

@@ -181,12 +181,15 @@ test.describe("date tabs", () => {
     await expect(page.locator(".date-tab .ymd").first()).toHaveText(/^\d{2}\.\d{2}\.\d{4}$/);
   });
 
-  test("source PDF link follows the selected tab", async ({ page }) => {
+  test("source PDF links are fixed per day and independent of the selected tab", async ({ page }) => {
     await page.goto("/web/index.html");
-    const link = page.locator("#pdf-link");
-    await expect(link).toHaveAttribute("href", /dabs\?today$/);
+    const today = page.locator("#pdf-today");
+    const tomorrow = page.locator("#pdf-tomorrow");
+    await expect(today).toHaveAttribute("href", /dabs\?today$/);
+    await expect(tomorrow).toHaveAttribute("href", /dabs\?tomorrow$/);
     await page.locator(".date-tab").nth(1).click();
-    await expect(link).toHaveAttribute("href", /dabs\?tomorrow$/);
+    await expect(today).toHaveAttribute("href", /dabs\?today$/);
+    await expect(tomorrow).toHaveAttribute("href", /dabs\?tomorrow$/);
   });
 });
 

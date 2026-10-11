@@ -7,8 +7,8 @@ const LANG_NAMES = { en: "EN", fr: "FR", de: "DE", it: "IT" };
 
 const TRANSLATIONS = {
   en: {
-    pdfLink: "Source PDF",
-    pdfLinkTitle: "Open the official DABS PDF for the selected day",
+    pdfToday: "PDF: Today",
+    pdfTomorrow: "PDF: Tomorrow",
     legendTitle: "Legend",
     legendPolygon: "Exact outline (NOTAM text or airspace data)",
     legendCircle: "Approximate circle (radius only)",
@@ -43,8 +43,8 @@ const TRANSLATIONS = {
     areaListEmpty: "No airspace areas for this day.",
   },
   fr: {
-    pdfLink: "PDF source",
-    pdfLinkTitle: "Ouvrir le PDF DABS officiel du jour sélectionné",
+    pdfToday: "PDF : aujourd'hui",
+    pdfTomorrow: "PDF : demain",
     legendTitle: "Légende",
     legendPolygon: "Contour exact (texte du NOTAM ou données d'espace aérien)",
     legendCircle: "Cercle approximatif (rayon uniquement)",
@@ -79,8 +79,8 @@ const TRANSLATIONS = {
     areaListEmpty: "Aucune zone aérienne ce jour-là.",
   },
   de: {
-    pdfLink: "Quell-PDF",
-    pdfLinkTitle: "Offizielles DABS-PDF des gewählten Tages öffnen",
+    pdfToday: "PDF: Heute",
+    pdfTomorrow: "PDF: Morgen",
     legendTitle: "Legende",
     legendPolygon: "Exakte Umrisse (NOTAM-Text oder Luftraumdaten)",
     legendCircle: "Angenäherter Kreis (nur Radius)",
@@ -115,8 +115,8 @@ const TRANSLATIONS = {
     areaListEmpty: "Keine Luftraumzonen an diesem Tag.",
   },
   it: {
-    pdfLink: "PDF originale",
-    pdfLinkTitle: "Apri il PDF DABS ufficiale del giorno selezionato",
+    pdfToday: "PDF: oggi",
+    pdfTomorrow: "PDF: domani",
     legendTitle: "Legenda",
     legendPolygon: "Contorno esatto (testo NOTAM o dati dello spazio aereo)",
     legendCircle: "Cerchio approssimativo (solo raggio)",
