@@ -109,16 +109,27 @@ body {
 
 .pdf-link {
   align-self: center;
-  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
   border-radius: 6px;
   border: 1px solid var(--border);
-  color: var(--text-dim);
+  /* The logo's dark-blue lettering needs a light background. */
+  background: #f3f6fa;
+  color: #1f2937;
   font-size: 12px;
+  font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
 }
 
-.pdf-link:hover { color: var(--text); }
+.pdf-link:hover { background: #fff; }
+
+.pdf-logo {
+  height: 16px;
+  width: auto;
+}
 
 .date-tab.active {
   background: var(--chart-color);
@@ -341,6 +352,7 @@ body {
     order: 2;
     flex-basis: 100%;
     margin-left: 0;
+    flex-wrap: wrap;
   }
 
   /* Dropdown instead of four buttons, next to the title on the first row

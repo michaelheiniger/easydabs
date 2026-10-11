@@ -433,8 +433,8 @@ function applyStaticTranslations() {
   document.getElementById("disclaimer-label").textContent = t("disclaimerLabel");
   document.getElementById("disclaimer-text").textContent = t("disclaimerText");
   officialLinkEl.textContent = t("officialSourceLink");
-  pdfTodayEl.textContent = t("pdfToday");
-  pdfTomorrowEl.textContent = t("pdfTomorrow");
+  pdfTodayEl.querySelector(".pdf-label").textContent = t("pdfToday");
+  pdfTomorrowEl.querySelector(".pdf-label").textContent = t("pdfTomorrow");
   document.getElementById("disclaimer-tz-prefix").textContent = t("disclaimerTimezonePrefix");
   document.getElementById("disclaimer-tz-bold").textContent = t("swissLocalTime");
   document.getElementById("disclaimer-tz-suffix").textContent = t("disclaimerTimezoneSuffix");
