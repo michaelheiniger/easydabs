@@ -163,6 +163,8 @@ function formatSwissDateTime(iso) {
   return CH_DATETIME_FMT.format(new Date(iso));
 }
 
+const SHV_AIRSPACE_DOC_URL = "https://airspace.shv-fsvl.ch/doc/beta/geojson";
+
 function popupHtml(props) {
   const badgeClass = props.on_chart ? "chart" : "not-chart";
   const badgeText = props.on_chart ? t("popupOnChart") : t("popupNotOnChart");
@@ -170,7 +172,9 @@ function popupHtml(props) {
     props.geometry_source === "polygon"
       ? t("shapePolygon")
       : props.geometry_source === "airspace"
-        ? t("shapeAirspace")
+        ? t("shapeAirspace", {
+            link: `<a href="${SHV_AIRSPACE_DOC_URL}" target="_blank" rel="noopener">${t("shapeAirspaceLink")}</a>`,
+          })
         : t("shapeCircle", { km: (props.radius_m / 1000).toFixed(2) });
   // Only show the NOTAM number separately when it differs from the id -
   // for most areas the id already IS the NOTAM number (no separate name).

@@ -167,6 +167,19 @@ test.describe("validity time formatting", () => {
   });
 });
 
+test.describe("area popup", () => {
+  test("airspace-sourced outline links to the SHV/FSVL data documentation", async ({ page }) => {
+    const fc = JSON.parse(JSON.stringify(FIXTURE_FC));
+    fc.features[0].properties.geometry_source = "airspace";
+    await mockDabsData(page, fc);
+    await page.goto("/web/index.html");
+    await page.locator(".area-item").first().click();
+    const link = page.locator(".area-popup a", { hasText: "SHV/FSVL airspace data" });
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("href", "https://airspace.shv-fsvl.ch/doc/beta/geojson");
+  });
+});
+
 test.describe("date tabs", () => {
   test("switching tabs reloads the area list", async ({ page }) => {
     await page.goto("/web/index.html");
