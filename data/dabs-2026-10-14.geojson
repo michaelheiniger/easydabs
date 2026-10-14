@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-14",
-    "version": 3,
-    "generated_utc": "2026-10-14T10:45:00+00:00"
+    "version": 4,
+    "generated_utc": "2026-10-14T13:45:00+00:00"
   },
   "features": [
     {
@@ -13,90 +13,66 @@
         "coordinates": [
           [
             [
-              8.01472222222222,
-              46.7877777777778
+              8.85722222222222,
+              46.9986111111111
             ],
             [
-              7.95833333333333,
-              46.7563888888889
+              8.83777777777778,
+              46.9986111111111
             ],
             [
-              7.66777777777778,
-              46.7391666666667
+              8.83777777777778,
+              47.0541666666667
             ],
             [
-              7.59611111111111,
-              46.8211111111111
+              8.85166666666667,
+              47.0569444444444
             ],
             [
-              8.00277777777778,
-              47.0413888888889
+              8.87666666666667,
+              47.0569444444444
             ],
             [
-              8.02444444444444,
+              8.88777777777778,
               47.0486111111111
             ],
             [
-              8.16055555555556,
-              47.0511111111111
-            ],
-            [
-              8.32722222222222,
-              46.9647222222222
-            ],
-            [
-              8.34083333333334,
-              46.9297222222222
-            ],
-            [
-              8.39944444444444,
-              46.9411111111111
-            ],
-            [
-              8.43166666666667,
-              46.7211111111111
-            ],
-            [
-              8.04111111111111,
-              46.7877777777778
-            ],
-            [
-              8.01472222222222,
-              46.7877777777778
+              8.85722222222222,
+              46.9986111111111
             ]
           ]
         ]
       },
       "properties": {
-        "id": "LSR2",
-        "notam": "W2759/26",
+        "id": "LSD12",
+        "notam": "W0316/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-14T11:35:00+00:00",
-        "valid_to_utc": "2026-10-14T12:15:00+00:00",
+        "valid_from_utc": "2026-10-14T11:00:00+00:00",
+        "valid_to_utc": "2026-10-14T21:00:00+00:00",
         "lower": {
-          "raw": "FL100",
-          "meters": 3048,
-          "feet": 10000,
-          "flight_level": 100,
-          "gnd": false
+          "raw": "GND",
+          "meters": 0,
+          "feet": 0,
+          "flight_level": null,
+          "gnd": true
         },
         "upper": {
-          "raw": "FL130",
-          "meters": 3962,
-          "feet": 13000,
-          "flight_level": 130,
+          "raw": "1800m / 5900ft",
+          "meters": 1800,
+          "feet": 5900,
+          "flight_level": null,
           "gnd": false
         },
         "center": {
-          "lat": 46.803333,
-          "lon": 8.022222
+          "lat": 47.027778,
+          "lon": 8.857222
         },
-        "radius_m": 32600,
+        "radius_m": 3600,
         "radius_candidates_m": {
-          "table_km": 32600
+          "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR2 HOHGANT ACT."
+        "text": "D-AREA LSD12 SIHLTAL ACT."
       }
     },
     {
@@ -1142,7 +1118,286 @@
           "table_km": 2600
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR38 GLAUBENBERG-WASSERFALLEN ACT DUE TO FRNG. Version 3 - generated: 14.10.2026 10:45 UTC"
+        "text": "R-AREA LSR38 GLAUBENBERG-WASSERFALLEN ACT DUE TO FRNG."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              8.51138888888889,
+              46.9627777777778
+            ],
+            [
+              8.42611111111111,
+              46.9461111111111
+            ],
+            [
+              8.34083333333334,
+              46.9297222222222
+            ],
+            [
+              8.33472222222222,
+              46.8808333333333
+            ],
+            [
+              8.32861111111111,
+              46.8322222222222
+            ],
+            [
+              8.42972222222222,
+              46.85
+            ],
+            [
+              8.53055555555556,
+              46.8675
+            ],
+            [
+              8.52111111111111,
+              46.915
+            ],
+            [
+              8.51138888888889,
+              46.9627777777778
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "LSR39B",
+        "notam": null,
+        "on_chart": true,
+        "valid_from_utc": "2026-10-14T12:00:00+00:00",
+        "valid_to_utc": "2026-10-14T14:00:00+00:00",
+        "lower": {
+          "raw": "2750m / 9000ft",
+          "meters": 2750,
+          "feet": 9000,
+          "flight_level": null,
+          "gnd": false
+        },
+        "upper": {
+          "raw": "FL130",
+          "meters": 3962,
+          "feet": 13000,
+          "flight_level": 130,
+          "gnd": false
+        },
+        "center": {
+          "lat": 46.897778,
+          "lon": 8.420278
+        },
+        "radius_m": 10100,
+        "radius_candidates_m": {
+          "table_km": 10100
+        },
+        "geometry_source": "airspace",
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              8.50583333333333,
+              46.9819444444444
+            ],
+            [
+              8.51138888888889,
+              46.9627777777778
+            ],
+            [
+              8.52111111111111,
+              46.915
+            ],
+            [
+              8.53055555555556,
+              46.8675
+            ],
+            [
+              8.6375,
+              46.8861111111111
+            ],
+            [
+              8.74472222222222,
+              46.9044444444444
+            ],
+            [
+              8.85166666666667,
+              46.9230555555556
+            ],
+            [
+              8.83638888888889,
+              46.9752777777778
+            ],
+            [
+              8.82111111111111,
+              47.0275
+            ],
+            [
+              8.71611111111111,
+              47.0125
+            ],
+            [
+              8.61083333333334,
+              46.9972222222222
+            ],
+            [
+              8.50583333333333,
+              46.9819444444444
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "LSR39C",
+        "notam": null,
+        "on_chart": true,
+        "valid_from_utc": "2026-10-14T12:00:00+00:00",
+        "valid_to_utc": "2026-10-14T14:00:00+00:00",
+        "lower": {
+          "raw": "2750m / 9000ft",
+          "meters": 2750,
+          "feet": 9000,
+          "flight_level": null,
+          "gnd": false
+        },
+        "upper": {
+          "raw": "FL130",
+          "meters": 3962,
+          "feet": 13000,
+          "flight_level": 130,
+          "gnd": false
+        },
+        "center": {
+          "lat": 46.947778,
+          "lon": 8.675833
+        },
+        "radius_m": 14200,
+        "radius_candidates_m": {
+          "table_km": 14200
+        },
+        "geometry_source": "airspace",
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              9.49333333333334,
+              46.8516666666667
+            ],
+            [
+              9.49166666666667,
+              46.8516666666667
+            ],
+            [
+              9.48722222222222,
+              46.8541666666667
+            ],
+            [
+              9.47861111111111,
+              46.8577777777778
+            ],
+            [
+              9.48027777777778,
+              46.8636111111111
+            ],
+            [
+              9.48944444444444,
+              46.8669444444444
+            ],
+            [
+              9.49416666666667,
+              46.8652777777778
+            ],
+            [
+              9.50194444444444,
+              46.8597222222222
+            ],
+            [
+              9.50194444444444,
+              46.8575
+            ],
+            [
+              9.50083333333333,
+              46.8566666666667
+            ],
+            [
+              9.50138888888889,
+              46.8538888888889
+            ],
+            [
+              9.50472222222222,
+              46.8516666666667
+            ],
+            [
+              9.5025,
+              46.8480555555556
+            ],
+            [
+              9.50111111111111,
+              46.8477777777778
+            ],
+            [
+              9.49805555555556,
+              46.8463888888889
+            ],
+            [
+              9.49583333333333,
+              46.8463888888889
+            ],
+            [
+              9.49333333333334,
+              46.8516666666667
+            ],
+            [
+              9.49333333333334,
+              46.8516666666667
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "LSR57",
+        "notam": "W2709/26",
+        "on_chart": true,
+        "valid_from_utc": "2026-10-14T11:00:00+00:00",
+        "valid_to_utc": "2026-10-14T20:00:00+00:00",
+        "lower": {
+          "raw": "GND",
+          "meters": 0,
+          "feet": 0,
+          "flight_level": null,
+          "gnd": true
+        },
+        "upper": {
+          "raw": "2000m / 6500ft",
+          "meters": 2000,
+          "feet": 6500,
+          "flight_level": null,
+          "gnd": false
+        },
+        "center": {
+          "lat": 46.856111,
+          "lon": 9.491667
+        },
+        "radius_m": 1300,
+        "radius_candidates_m": {
+          "table_km": 1300
+        },
+        "geometry_source": "airspace",
+        "text": "R-AREA LSR57 ROSSBODEN-RHEINSAND ACT DUE TO FRNG."
       }
     },
     {
@@ -1445,7 +1700,7 @@
           "text_1_nm": 1111
         },
         "geometry_source": "circle",
-        "text": "HIGHLINE OBST ERECTED 3.9KM NNW HLP LEYSIN, BTN TOUR D AI AND TOUR DE MAYEN, RADIUS 1.0KM (462225N0070018E RADIUS 0.6NM). MARKED WITH WINDSOCKS AND RED OBST LGT. MAX ALT UP TO 186M AGL / 612FT AGL, 2319M AMSL / 7609FT AMSL."
+        "text": "HIGHLINE OBST ERECTED 3.9KM NNW HLP LEYSIN, BTN TOUR D AI AND TOUR DE MAYEN, RADIUS 1.0KM (462225N0070018E RADIUS 0.6NM). MARKED WITH WINDSOCKS AND RED OBST LGT. MAX ALT UP TO 186M AGL / 612FT AGL, 2319M AMSL / 7609FT AMSL. Version 4 - generated: 14.10.2026 13:45 UTC"
       }
     },
     {
