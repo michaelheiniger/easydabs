@@ -45,7 +45,7 @@
       },
       "properties": {
         "id": "LSD12",
-        "notam": null,
+        "notam": "W0317/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-15T06:00:00+00:00",
         "valid_to_utc": "2026-10-15T10:00:00+00:00",
@@ -72,7 +72,7 @@
           "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "D-AREA LSD12 SIHLTAL ACT."
+        "text": "D-AREA LSD12 SIHLTAL ACT. 1100 - 2100"
       }
     },
     {
@@ -1051,7 +1051,7 @@
       },
       "properties": {
         "id": "LSR39B",
-        "notam": null,
+        "notam": "W2773/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-15T07:00:00+00:00",
         "valid_to_utc": "2026-10-15T09:00:00+00:00",
@@ -1078,7 +1078,7 @@
           "table_km": 10100
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS"
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1200 - 1400                                                                                   HIGHER."
       }
     },
     {
@@ -1140,7 +1140,7 @@
       },
       "properties": {
         "id": "LSR39C",
-        "notam": null,
+        "notam": "W2774/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-15T07:00:00+00:00",
         "valid_to_utc": "2026-10-15T09:00:00+00:00",
@@ -1167,7 +1167,7 @@
           "table_km": 14200
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS"
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1200 - 1400                                                                                   HIGHER."
       }
     },
     {
@@ -1253,7 +1253,7 @@
       },
       "properties": {
         "id": "LSR57",
-        "notam": null,
+        "notam": "W2709/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-15T06:00:00+00:00",
         "valid_to_utc": "2026-10-15T10:00:00+00:00",
@@ -1280,7 +1280,7 @@
           "table_km": 1300
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR57 ROSSBODEN-RHEINSAND ACT DUE TO FRNG."
+        "text": "R-AREA LSR57 ROSSBODEN-RHEINSAND ACT DUE TO FRNG. 1100 - 2000"
       }
     },
     {
@@ -1583,7 +1583,7 @@
           "text_1_nm": 1111
         },
         "geometry_source": "circle",
-        "text": "HIGHLINE OBST ERECTED 3.9KM NNW HLP LEYSIN, BTN TOUR D AI AND TOUR DE MAYEN, RADIUS 1.0KM (462225N0070018E RADIUS 0.6NM). MARKED WITH WINDSOCKS AND RED OBST LGT. MAX ALT UP TO 186M AGL / 612FT AGL, 2319M AMSL / 7609FT AMSL. Version 1 - generated: 14.10.2026 13:43 UTC"
+        "text": "HIGHLINE OBST ERECTED 3.9KM NNW HLP LEYSIN, BTN TOUR D AI AND TOUR DE MAYEN, RADIUS 1.0KM (462225N0070018E RADIUS 0.6NM). MARKED WITH WINDSOCKS AND RED OBST LGT. MAX ALT UP TO 186M AGL / 612FT AGL, 2319M AMSL / 7609FT AMSL."
       }
     },
     {
