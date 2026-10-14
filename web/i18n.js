@@ -31,6 +31,7 @@ const TRANSLATIONS = {
     shapeAirspace: "Exact outline from {link}",
     shapeAirspaceLink: "SHV/FSVL airspace data",
     shapeCircle: "Approximate circle, radius {km} km",
+    shapeUnmapped: "Not drawn on map: covering radius {km} km, too large to be meaningful — see NOTAM text",
     notamOriginalNote: "Original NOTAM text",
     statusNoFetch: "Could not reach data for {date}",
     statusNoData: "No DABS data published yet for {date}",
@@ -42,6 +43,7 @@ const TRANSLATIONS = {
     areaListHint: "↑ ↓ to navigate, click to select",
     areaListHintTouch: "Tap an area to select it",
     areaListEmpty: "No airspace areas for this day.",
+    areaItemUnmapped: "Wide area · not drawn on map",
   },
   fr: {
     pdfToday: "PDF : aujourd'hui",
@@ -68,6 +70,7 @@ const TRANSLATIONS = {
     shapeAirspace: "Contour exact d'après les {link}",
     shapeAirspaceLink: "données d'espace aérien SHV/FSVL",
     shapeCircle: "Cercle approximatif, rayon {km} km",
+    shapeUnmapped: "Non dessinée sur la carte : rayon de couverture de {km} km, trop grand pour être significatif — voir le texte du NOTAM",
     notamOriginalNote: "Texte NOTAM original",
     statusNoFetch: "Impossible d'accéder aux données pour le {date}",
     statusNoData: "Aucune donnée DABS publiée pour le {date}",
@@ -79,6 +82,7 @@ const TRANSLATIONS = {
     areaListHint: "↑ ↓ pour naviguer, cliquer pour sélectionner",
     areaListHintTouch: "Touchez une zone pour la sélectionner",
     areaListEmpty: "Aucune zone aérienne ce jour-là.",
+    areaItemUnmapped: "Zone étendue · non dessinée sur la carte",
   },
   de: {
     pdfToday: "PDF: Heute",
@@ -105,6 +109,7 @@ const TRANSLATIONS = {
     shapeAirspace: "Exakte Umrisse aus den {link}",
     shapeAirspaceLink: "SHV/FSVL-Luftraumdaten",
     shapeCircle: "Angenäherter Kreis, Radius {km} km",
+    shapeUnmapped: "Nicht auf der Karte eingezeichnet: Abdeckungsradius {km} km, zu gross für eine sinnvolle Darstellung — siehe NOTAM-Text",
     notamOriginalNote: "Original-NOTAM-Text",
     statusNoFetch: "Daten für {date} konnten nicht abgerufen werden",
     statusNoData: "Für {date} wurden noch keine DABS-Daten veröffentlicht",
@@ -116,6 +121,7 @@ const TRANSLATIONS = {
     areaListHint: "↑ ↓ zum Navigieren, Klick zum Auswählen",
     areaListHintTouch: "Gebiet antippen zum Auswählen",
     areaListEmpty: "Keine Luftraumzonen an diesem Tag.",
+    areaItemUnmapped: "Grossräumig · nicht auf der Karte eingezeichnet",
   },
   it: {
     pdfToday: "PDF: oggi",
@@ -142,6 +148,7 @@ const TRANSLATIONS = {
     shapeAirspace: "Contorno esatto dai {link}",
     shapeAirspaceLink: "dati dello spazio aereo SHV/FSVL",
     shapeCircle: "Cerchio approssimativo, raggio {km} km",
+    shapeUnmapped: "Non disegnata sulla mappa: raggio di copertura di {km} km, troppo ampio per essere significativo — vedi testo del NOTAM",
     notamOriginalNote: "Testo NOTAM originale",
     statusNoFetch: "Impossibile recuperare i dati per il {date}",
     statusNoData: "Nessun dato DABS pubblicato per il {date}",
@@ -153,6 +160,7 @@ const TRANSLATIONS = {
     areaListHint: "↑ ↓ per navigare, clicca per selezionare",
     areaListHintTouch: "Tocca un'area per selezionarla",
     areaListEmpty: "Nessuna zona aerea per questo giorno.",
+    areaItemUnmapped: "Zona estesa · non disegnata sulla mappa",
   },
 };
 

@@ -206,3 +206,13 @@ not reliably reproduce it.
   UTC offset - most visibly for 23:59, which rolls into 00:59/01:59 the *next* calendar day
   (correct math, wrong meaning: reads as "valid into tomorrow" when the source means "until
   end of today"). Every other time in the popup/list still gets the real UTC→CH conversion.
+- Some "Activities not shown on the DABS Chart Side" (e.g. military night flights
+  "WI AIRSPACE SWITZERLAND") come with a ~180 km covering circle around the country's
+  centre. `dabs_parser.py` marks any covering circle over `UNMAPPED_RADIUS_M` (100 km) as
+  `geometry_source: "unmapped"`; the frontend lists those but deliberately doesn't draw
+  them or include them in the overview `fitBounds`. A red disc over the whole country
+  says nothing, and it would zoom the overview out past swisstopo's coverage. Their
+  popup opens at the current map centre instead.
+- DABS brackets new/changed rows with `!` at the start and end of the line. The parser
+  blanks these out before matching. Without that, such rows silently fail `ROW_RE` and
+  get dropped, which is how the case above first went unnoticed.

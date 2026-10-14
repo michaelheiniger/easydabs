@@ -175,7 +175,9 @@ function popupHtml(props) {
         ? t("shapeAirspace", {
             link: `<a href="${SHV_AIRSPACE_DOC_URL}" target="_blank" rel="noopener">${t("shapeAirspaceLink")}</a>`,
           })
-        : t("shapeCircle", { km: (props.radius_m / 1000).toFixed(2) });
+        : props.geometry_source === "unmapped"
+          ? t("shapeUnmapped", { km: (props.radius_m / 1000).toFixed(1) })
+          : t("shapeCircle", { km: (props.radius_m / 1000).toFixed(2) });
   // Only show the NOTAM number separately when it differs from the id -
   // for most areas the id already IS the NOTAM number (no separate name).
   const notamSuffix = props.notam && props.notam !== props.id ? ` (${props.notam})` : "";
@@ -230,7 +232,7 @@ function blinkLayer(layer, baseStyle) {
 }
 
 let currentFc = null;
-let currentAreas = []; // [{ feature, layer, baseStyle, itemEl }]
+let currentAreas = []; // [{ feature, layer, baseStyle, itemEl }]; layer is null if unmapped
 let selectedIndex = -1;
 
 function renderFeatures(fc) {
@@ -250,6 +252,18 @@ function renderFeatures(fc) {
 
   const bounds = [];
   features.forEach((feature, index) => {
+    const itemEl = buildAreaListItem(feature, index);
+    areaListEl.appendChild(itemEl);
+
+    // "Unmapped" areas have only a country-sized covering circle (see
+    // UNMAPPED_RADIUS_M in dabs_parser.py) - drawing it would paint all of
+    // Switzerland red and zoom the overview out past swisstopo's coverage.
+    // They're listed, with their details in a popup, but not drawn.
+    if (feature.properties.geometry_source === "unmapped") {
+      currentAreas.push({ feature, layer: null, baseStyle: null, itemEl });
+      return;
+    }
+
     const baseStyle = styleFor(feature);
     const layer = L.geoJSON(feature, { style: baseStyle });
     layer.bindPopup(popupHtml(feature.properties), { maxWidth: Math.min(300, window.innerWidth - 40) });
@@ -257,9 +271,6 @@ function renderFeatures(fc) {
     areasLayer.addLayer(layer);
     bounds.push(layer.getBounds());
     blinkLayer(layer, baseStyle);
-
-    const itemEl = buildAreaListItem(feature, index);
-    areaListEl.appendChild(itemEl);
     currentAreas.push({ feature, layer, baseStyle, itemEl });
   });
 
@@ -301,6 +312,12 @@ function buildAreaListItem(feature, index) {
   timeEl.className = "area-item-time";
   timeEl.textContent = formatTimeRange(props.valid_from_utc, props.valid_to_utc);
   text.append(idEl, timeEl);
+  if (props.geometry_source === "unmapped") {
+    const noteEl = document.createElement("div");
+    noteEl.className = "area-item-note";
+    noteEl.textContent = t("areaItemUnmapped");
+    text.append(noteEl);
+  }
 
   li.append(swatch, text);
   li.addEventListener("click", () => selectArea(index, { fly: true }));
@@ -316,6 +333,14 @@ function selectArea(index, { fly }) {
   const area = currentAreas[index];
   area.itemEl.classList.add("active");
   area.itemEl.scrollIntoView({ block: "nearest" });
+  if (!area.layer) {
+    // Nothing to zoom to: show the details over the current view instead.
+    L.popup({ maxWidth: Math.min(300, window.innerWidth - 40) })
+      .setLatLng(map.getCenter())
+      .setContent(popupHtml(area.feature.properties))
+      .openOn(map);
+    return;
+  }
   if (fly) {
     // Not animated: both flyTo and setView's animated zoom proved unreliable
     // here - their animation can take far longer than requested to settle,

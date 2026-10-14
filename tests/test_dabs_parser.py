@@ -195,6 +195,65 @@ class ParseTextTests(unittest.TestCase):
         self.assertEqual(props["valid_to_utc"], "2026-10-03T23:59:00+00:00")
 
 
+# Verbatim (column-aligned) excerpts from the real DABS 2026-10-14 v4 PDF, since the
+# cases below depend on pdftotext's actual indentation, not just whitespace runs.
+LAYOUT_TEXT = """\
+                                  KOSIF                                           DABS Date: 2026 OCT 14
+                                                                                  Version 4 - generated: 14.10.2026 13:45 UTC
+Firings / AIP-Areas / Warnings:
+ LSR39B        1200 - 1400        2750m / 9000ft   FL130             465352N 0082513E   10.1KM / 5.5NM       R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS
+ W2752/26                                                                                                    HIGHER.
+
+ W2590/26      0000 - 2359        GND              2300m / 7650ft    462225N 0070018E   1.1KM / 0.6NM        HIGHLINE OBST ERECTED 3.9KM NNW HLP LEYSIN.
+                                                                                                             LGT. MAX ALT UP TO 186M AGL.
+
+
+Page 2                                                                                                                                                                                     a MICAMS product
+                              KOSIF                                               DABS Date: 2026 OCT 14                                            E-mail:        kosif@skyguide.ch
+                                                                                   Version 4 - generated: 14.10.2026 13:45 UTC
+
+Activities not shown on the DABS Chart Side:
+! W2784/26    1745 - 2145      FL060             FL100              464500N 0080800E     181.5KM / 98.1NM     MIL NGT FLT WITH UNMANNED ACFT WILL TAKE PLACE WI AIRSPACE SWITZERLAND. OTHER           !
+                                                                                                              AIRSPACE USERS SHALL CTC TACTICAL OPS CENTER ON +41 58 467 29 10 FOR COOR.
+
+For detailed information regarding the DABS see AIP Switzerland GEN 3.1-5 or VFR GEN 1-0-4.
+! New or changed data regarding an earlier version of the DABS.
+"""
+
+
+class ParseLayoutTests(unittest.TestCase):
+    def setUp(self):
+        self.by_id = {f["properties"]["id"]: f["properties"] for f in parse_text(LAYOUT_TEXT)["features"]}
+
+    def test_feature_count(self):
+        self.assertEqual(set(self.by_id), {"LSR39B", "W2590/26", "W2784/26"})
+
+    def test_changed_row_marked_with_exclamation_marks_is_parsed(self):
+        props = self.by_id["W2784/26"]
+        self.assertFalse(props["on_chart"])
+        self.assertEqual(props["lower"]["flight_level"], 60)
+        self.assertEqual(
+            props["text"],
+            "MIL NGT FLT WITH UNMANNED ACFT WILL TAKE PLACE WI AIRSPACE SWITZERLAND. OTHER "
+            "AIRSPACE USERS SHALL CTC TACTICAL OPS CENTER ON +41 58 467 29 10 FOR COOR.",
+        )
+
+    def test_country_sized_covering_circle_is_unmapped(self):
+        self.assertEqual(self.by_id["W2784/26"]["geometry_source"], "unmapped")
+        self.assertEqual(self.by_id["W2590/26"]["geometry_source"], "circle")
+
+    def test_notam_line_sharing_a_line_with_item_e_continuation(self):
+        props = self.by_id["LSR39B"]
+        self.assertEqual(props["notam"], "W2752/26")
+        self.assertTrue(props["text"].endswith("WHICHEVER IS HIGHER."))
+
+    def test_next_page_letterhead_is_not_appended_to_last_row(self):
+        self.assertEqual(
+            self.by_id["W2590/26"]["text"],
+            "HIGHLINE OBST ERECTED 3.9KM NNW HLP LEYSIN. LGT. MAX ALT UP TO 186M AGL.",
+        )
+
+
 class ParseTextErrorTests(unittest.TestCase):
     def test_raises_when_no_rows_found(self):
         text = "DABS Date: 2026 OCT 03\nVersion 1 - generated: 03.10.2026 10:45 UTC\n"

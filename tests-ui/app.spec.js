@@ -180,6 +180,60 @@ test.describe("area popup", () => {
   });
 });
 
+test.describe("unmapped areas", () => {
+  // Off-chart activities whose only geometry is a country-sized covering
+  // circle (dabs_parser.py's UNMAPPED_RADIUS_M) are listed but not drawn.
+  function withUnmappedArea() {
+    const fc = JSON.parse(JSON.stringify(FIXTURE_FC));
+    const unmapped = JSON.parse(JSON.stringify(fc.features[1]));
+    Object.assign(unmapped.properties, {
+      id: "W2784/26",
+      notam: "W2784/26",
+      valid_from_utc: "2026-01-01T17:45:00+00:00",
+      valid_to_utc: "2026-01-01T21:45:00+00:00",
+      radius_m: 181500,
+      geometry_source: "unmapped",
+      text: "MIL NGT FLT WITH UNMANNED ACFT WILL TAKE PLACE WI AIRSPACE SWITZERLAND.",
+    });
+    fc.features.push(unmapped);
+    return fc;
+  }
+
+  test("is listed with a note but not drawn, and does not affect the overview zoom", async ({ page }) => {
+    await page.goto("/web/index.html");
+    await expect(page.locator(".area-item")).toHaveCount(FIXTURE_FC.features.length);
+    const baselineZoom = await page.evaluate(() => map.getZoom());
+
+    await mockDabsData(page, withUnmappedArea());
+    await page.reload();
+    const items = page.locator(".area-item");
+    await expect(items).toHaveCount(FIXTURE_FC.features.length + 1);
+    await expect(items.last()).toContainText("W2784/26");
+    await expect(items.last().locator(".area-item-note")).toBeVisible();
+    await expect(page.locator("path.leaflet-interactive")).toHaveCount(FIXTURE_FC.features.length);
+    expect(await page.evaluate(() => map.getZoom())).toBe(baselineZoom);
+  });
+
+  test("selecting it opens its popup without moving the map", async ({ page }) => {
+    await mockDabsData(page, withUnmappedArea());
+    await page.goto("/web/index.html");
+    const before = await page.evaluate(() => [map.getZoom(), map.getCenter()]);
+    await page.locator(".area-item").last().click();
+    await expect(page.locator(".area-popup")).toContainText("W2784/26");
+    await expect(page.locator(".area-popup")).toContainText("181.5 km");
+    expect(await page.evaluate(() => [map.getZoom(), map.getCenter()])).toEqual(before);
+  });
+
+  test("arrow-key navigation passes through it to the next drawn area", async ({ page }) => {
+    await mockDabsData(page, withUnmappedArea());
+    await page.goto("/web/index.html");
+    await page.locator(".area-item").last().click();
+    await page.keyboard.press("ArrowDown");
+    await expect(page.locator(".area-item").first()).toHaveClass(/active/);
+    await expect.poll(() => page.evaluate(() => map.getZoom())).toBe(AREA_SELECT_ZOOM);
+  });
+});
+
 test.describe("date tabs", () => {
   test("switching tabs reloads the area list", async ({ page }) => {
     await page.goto("/web/index.html");

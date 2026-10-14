@@ -292,6 +292,7 @@ body {
 }
 
 .area-item.active .area-item-time,
+.area-item.active .area-item-note,
 .area-item.active .area-item-id {
   color: #fff;
 }
@@ -305,9 +306,14 @@ body {
   font-size: 13px;
 }
 
-.area-item-time {
+.area-item-time,
+.area-item-note {
   font-size: 12px;
   color: var(--text-dim);
+}
+
+.area-item-note {
+  font-style: italic;
 }
 
 .area-list-empty {

@@ -24,7 +24,17 @@ ROW_RE = re.compile(
     rf"(?P<km>[\d.]+)KM / (?P<nm>[\d.]+)NM\s+(?P<text>.*)$"
 )
 NOTAM_RE = re.compile(r"^[A-Z]\d{4}/\d{2}$")
+NOTAM_LINE_RE = re.compile(r"^\s{0,5}(?P<notam>[A-Z]\d{4}/\d{2})(?:\s{2,}(?P<rest>.*))?$")
+PAGE_FOOTER_RE = re.compile(r"^\s*Page \d+\s")
 SECTION_RE = re.compile(r"^\s*(Firings / AIP-Areas / Warnings|Activities not shown on the DABS Chart Side):")
+# "! ... !" brackets a row that is new or changed since an earlier DABS version.
+# Blanked out (not deleted) so column-based indentation checks below still hold.
+CHANGE_MARK_RE = re.compile(r"^(\s*)!(?=\s)|\s!\s*$")
+# A covering circle this large isn't an area on the map, it's "somewhere in
+# Switzerland" (e.g. W2784/26 MIL NGT FLT WI AIRSPACE SWITZERLAND: 181.5 KM around
+# the country's centre) - which is why DABS lists these off-chart. Drawing it would
+# just paint the whole country red; the frontend lists these without drawing them.
+UNMAPPED_RADIUS_M = 100_000
 
 
 def dms(coord: str):
@@ -122,25 +132,35 @@ def parse_text(text: str):
         raise NotAvailableError(NOT_AVAILABLE_MSG)
     date, version, generated = parse_header(text)
 
-    rows, section = [], None
+    rows, section, row_open = [], None, False
     for line in text.splitlines():
+        line = CHANGE_MARK_RE.sub(lambda c: " " * len(c[0]), line).rstrip()
         s = SECTION_RE.match(line)
         if s:
             section = "chart" if s[1].startswith("Firings") else "not_on_chart"
+            row_open = False
             continue
         if section is None:
+            continue
+        if PAGE_FOOTER_RE.match(line):
+            # The next page's letterhead follows; its "Version N - generated" line
+            # is indented like an Item E continuation and must not be appended.
+            row_open = False
             continue
         m = ROW_RE.match(line)
         if m:
             rows.append({"section": section, "m": m, "extra_ids": [], "text": [m["text"].strip()]})
+            row_open = True
             continue
-        if not rows or rows[-1]["section"] != section or not line.strip():
+        if not row_open or not line.strip():
             continue
-        stripped = line.strip()
-        if NOTAM_RE.match(stripped) and len(line) - len(line.lstrip()) < 6:
-            rows[-1]["extra_ids"].append(stripped)          # NOTAM-Nr on its own line
+        n = NOTAM_LINE_RE.match(line)
+        if n:
+            rows[-1]["extra_ids"].append(n["notam"])        # NOTAM-Nr on its own line,
+            if n["rest"]:                                     # possibly sharing it with
+                rows[-1]["text"].append(n["rest"].strip())    # an Item E continuation
         elif len(line) - len(line.lstrip()) > 40:            # Item E continuation
-            rows[-1]["text"].append(stripped)
+            rows[-1]["text"].append(line.strip())
 
     if not rows:
         raise ValueError("No airspace rows found - layout changed?")
@@ -158,7 +178,7 @@ def parse_text(text: str):
         radius_m = max(cands.values())   # conservative: largest stated radius
         v0, v1 = m["val"].split(" - ")
         poly = polygon_from_text(item_e)
-        geom_kind = "polygon" if poly else "circle"
+        geom_kind = "polygon" if poly else "unmapped" if radius_m > UNMAPPED_RADIUS_M else "circle"
         ring = poly or circle(lat, lon, radius_m)
         features.append({
             "type": "Feature",
@@ -174,7 +194,9 @@ def parse_text(text: str):
                 "center": {"lat": round(lat, 6), "lon": round(lon, 6)},
                 "radius_m": radius_m,
                 "radius_candidates_m": cands,
-                "geometry_source": geom_kind,   # 'polygon' = from NOTAM text, 'circle' = covering circle
+                # 'polygon' = from NOTAM text, 'circle' = covering circle,
+                # 'unmapped' = covering circle too large to be meaningful (see UNMAPPED_RADIUS_M)
+                "geometry_source": geom_kind,
                 "text": item_e,
             },
         })
