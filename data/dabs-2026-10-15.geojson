@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-15",
-    "version": 1,
-    "generated_utc": "2026-10-14T13:43:00+00:00"
+    "version": 2,
+    "generated_utc": "2026-10-15T06:45:00+00:00"
   },
   "features": [
     {
@@ -73,79 +73,6 @@
         },
         "geometry_source": "airspace",
         "text": "D-AREA LSD12 SIHLTAL ACT. 1100 - 2100"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              6.35583333333333,
-              46.5797222222222
-            ],
-            [
-              6.37638888888889,
-              46.5691666666667
-            ],
-            [
-              6.34027777777778,
-              46.5363888888889
-            ],
-            [
-              6.36722222222222,
-              46.5258333333333
-            ],
-            [
-              6.35722222222222,
-              46.5022222222222
-            ],
-            [
-              6.27972222222222,
-              46.5330555555556
-            ],
-            [
-              6.35583333333333,
-              46.5797222222222
-            ],
-            [
-              6.35583333333333,
-              46.5797222222222
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR5",
-        "notam": "W2770/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-10-15T06:00:00+00:00",
-        "valid_to_utc": "2026-10-15T21:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "1700m / 5500ft",
-          "meters": 1700,
-          "feet": 5500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.540833,
-          "lon": 6.337778
-        },
-        "radius_m": 4600,
-        "radius_candidates_m": {
-          "table_km": 4600
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR5 BIERE ACT DUE TO MIL UAV."
       }
     },
     {
@@ -562,7 +489,7 @@
       },
       "properties": {
         "id": "LSR12",
-        "notam": "W2768/26",
+        "notam": "W2791/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-15T07:00:00+00:00",
         "valid_to_utc": "2026-10-15T20:00:00+00:00",
@@ -671,10 +598,10 @@
       },
       "properties": {
         "id": "LSR14",
-        "notam": "W2772/26",
+        "notam": "W2793/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-15T06:00:00+00:00",
-        "valid_to_utc": "2026-10-15T20:00:00+00:00",
+        "valid_from_utc": "2026-10-15T06:15:00+00:00",
+        "valid_to_utc": "2026-10-15T19:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -974,7 +901,7 @@
       },
       "properties": {
         "id": "LSR38",
-        "notam": "W0286/26",
+        "notam": "W2789/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-15T07:30:00+00:00",
         "valid_to_utc": "2026-10-15T21:00:00+00:00",
@@ -1859,8 +1786,8 @@
         "id": "W2742/26",
         "notam": "W2742/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-15T00:00:00+00:00",
-        "valid_to_utc": "2026-10-15T03:00:00+00:00",
+        "valid_from_utc": "2026-10-15T21:30:00+00:00",
+        "valid_to_utc": "2026-10-15T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -1886,7 +1813,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     }
   ]
