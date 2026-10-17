@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-17",
-    "version": 1,
-    "generated_utc": "2026-10-16T13:50:00+00:00"
+    "version": 2,
+    "generated_utc": "2026-10-17T06:45:00+00:00"
   },
   "features": [
     {
@@ -276,8 +276,8 @@
         ]
       },
       "properties": {
-        "id": "W2843/26",
-        "notam": "W2843/26",
+        "id": "W2844/26",
+        "notam": "W2844/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-17T00:00:00+00:00",
         "valid_to_utc": "2026-10-17T23:59:00+00:00",
