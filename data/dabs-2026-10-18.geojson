@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-18",
-    "version": 1,
-    "generated_utc": "2026-10-17T13:38:00+00:00"
+    "version": 3,
+    "generated_utc": "2026-10-18T10:45:00+00:00"
   },
   "features": [
     {
