@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-19",
-    "version": 1,
-    "generated_utc": "2026-10-18T13:35:00+00:00"
+    "version": 2,
+    "generated_utc": "2026-10-19T06:45:00+00:00"
   },
   "features": [
     {
@@ -614,9 +614,9 @@
       },
       "properties": {
         "id": "LSR14",
-        "notam": "W2819/26",
+        "notam": "W2848/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-19T08:00:00+00:00",
+        "valid_from_utc": "2026-10-19T10:00:00+00:00",
         "valid_to_utc": "2026-10-19T20:00:00+00:00",
         "lower": {
           "raw": "GND",
@@ -828,10 +828,10 @@
       },
       "properties": {
         "id": "LSR39B",
-        "notam": "W2822/26",
+        "notam": "W2852/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-19T07:00:00+00:00",
-        "valid_to_utc": "2026-10-19T09:00:00+00:00",
+        "valid_from_utc": "2026-10-19T12:00:00+00:00",
+        "valid_to_utc": "2026-10-19T14:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -855,7 +855,7 @@
           "table_km": 10100
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1200 - 1400                                                                                   HIGHER."
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -917,10 +917,10 @@
       },
       "properties": {
         "id": "LSR39C",
-        "notam": "W2823/26",
+        "notam": "W2854/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-19T07:00:00+00:00",
-        "valid_to_utc": "2026-10-19T09:00:00+00:00",
+        "valid_from_utc": "2026-10-19T12:00:00+00:00",
+        "valid_to_utc": "2026-10-19T14:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -944,7 +944,7 @@
           "table_km": 14200
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1200 - 1400                                                                                   HIGHER."
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
