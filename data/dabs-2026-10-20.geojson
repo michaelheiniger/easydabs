@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-20",
-    "version": 1,
-    "generated_utc": "2026-10-19T13:39:00+00:00"
+    "version": 3,
+    "generated_utc": "2026-10-20T10:45:00+00:00"
   },
   "features": [
     {
@@ -47,8 +47,8 @@
         "id": "LSD12",
         "notam": "W0317/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-20T06:00:00+00:00",
-        "valid_to_utc": "2026-10-20T10:00:00+00:00",
+        "valid_from_utc": "2026-10-20T11:00:00+00:00",
+        "valid_to_utc": "2026-10-20T21:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -72,7 +72,7 @@
           "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "D-AREA LSD12 SIHLTAL ACT. 1100 - 2100"
+        "text": "D-AREA LSD12 SIHLTAL ACT."
       }
     },
     {
@@ -372,7 +372,7 @@
       },
       "properties": {
         "id": "LSR11",
-        "notam": "W2837/26",
+        "notam": "W2860/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-20T06:00:00+00:00",
         "valid_to_utc": "2026-10-20T19:15:00+00:00",
@@ -505,7 +505,7 @@
       },
       "properties": {
         "id": "LSR11A",
-        "notam": "W2839/26",
+        "notam": "W2862/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-20T06:00:00+00:00",
         "valid_to_utc": "2026-10-20T19:15:00+00:00",
@@ -533,107 +533,6 @@
         },
         "geometry_source": "airspace",
         "text": "R-AREA LSR11A S-CHANF ACT."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              8.02638888888889,
-              46.2663888888889
-            ],
-            [
-              8.07805555555556,
-              46.2636111111111
-            ],
-            [
-              8.08055555555556,
-              46.2605555555556
-            ],
-            [
-              8.08722222222222,
-              46.2533333333333
-            ],
-            [
-              8.11027777777778,
-              46.2494444444444
-            ],
-            [
-              8.08111111111111,
-              46.2338888888889
-            ],
-            [
-              8.09416666666666,
-              46.1841666666667
-            ],
-            [
-              8.08083333333333,
-              46.1380555555556
-            ],
-            [
-              8.05722222222222,
-              46.1225
-            ],
-            [
-              8.015,
-              46.1136111111111
-            ],
-            [
-              7.99305555555556,
-              46.1622222222222
-            ],
-            [
-              7.97388888888889,
-              46.2225
-            ],
-            [
-              7.97527777777778,
-              46.2413888888889
-            ],
-            [
-              8.02638888888889,
-              46.2663888888889
-            ],
-            [
-              8.02638888888889,
-              46.2663888888889
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR12",
-        "notam": "W2817/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-10-20T07:00:00+00:00",
-        "valid_to_utc": "2026-10-20T20:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "6850m / 22500ft",
-          "meters": 6850,
-          "feet": 22500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.189167,
-          "lon": 8.043889
-        },
-        "radius_m": 8700,
-        "radius_candidates_m": {
-          "table_km": 8700
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR12 SIMPLON ACT DUE TO FRNG."
       }
     },
     {
@@ -715,9 +614,9 @@
       },
       "properties": {
         "id": "LSR14",
-        "notam": "W2848/26",
+        "notam": "W2868/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-20T08:00:00+00:00",
+        "valid_from_utc": "2026-10-20T11:30:00+00:00",
         "valid_to_utc": "2026-10-20T20:00:00+00:00",
         "lower": {
           "raw": "GND",
@@ -852,7 +751,7 @@
       },
       "properties": {
         "id": "LSR38",
-        "notam": "W2821/26",
+        "notam": "W2864/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-20T07:30:00+00:00",
         "valid_to_utc": "2026-10-20T21:00:00+00:00",
@@ -1108,68 +1007,6 @@
         },
         "geometry_source": "polygon",
         "text": "TEMPO R-AREA WEESEN ESTABLISHED WI AREA: 470705N0090503E 470733N0090634E 470717N0090704E 470649N0090516E 470705N0090503E (470711N0090603E RADIUS 0.7NM). ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS COOR CTC +41 79 514 25 14."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              8.395833,
-              47.362778
-            ],
-            [
-              8.421389,
-              47.3625
-            ],
-            [
-              8.419444,
-              47.350556
-            ],
-            [
-              8.3925,
-              47.352222
-            ],
-            [
-              8.395833,
-              47.362778
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "W2781/26",
-        "notam": "W2781/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-10-20T03:00:00+00:00",
-        "valid_to_utc": "2026-10-20T07:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "900m / 3000ft",
-          "meters": 900,
-          "feet": 3000,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 47.357222,
-          "lon": 8.406944
-        },
-        "radius_m": 1300,
-        "radius_candidates_m": {
-          "table_km": 1300,
-          "text_0_nm": 1296
-        },
-        "geometry_source": "polygon",
-        "text": "TEMPO R-AREA BIRMENSDORF ESTABLISHED WI AREA: 472146N0082345E 472145N0082517E 472102N0082510E 472108N0082333E 472146N0082345E (472127N0082425E RADIUS 0.7NM). ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS COOR CTC +41 76 830 80 97."
       }
     },
     {
@@ -1445,8 +1282,8 @@
         "id": "W2846/26",
         "notam": "W2846/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-20T00:00:00+00:00",
-        "valid_to_utc": "2026-10-20T03:00:00+00:00",
+        "valid_from_utc": "2026-10-20T21:30:00+00:00",
+        "valid_to_utc": "2026-10-20T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -1472,7 +1309,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     }
   ]
