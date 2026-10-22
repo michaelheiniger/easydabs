@@ -364,3 +364,106 @@ test.describe("collapsible panels", () => {
     expect(closedBox.height).toBeLessThan(openBox.height);
   });
 });
+
+test.describe("feedback form", () => {
+  // Never hit the real Web3Forms API from tests: capture what would be sent
+  // and answer the way Web3Forms does.
+  async function mockWeb3Forms(page, { success = true } = {}) {
+    const requests = [];
+    await page.route("https://api.web3forms.com/submit", (route) => {
+      requests.push(route.request().postDataJSON());
+      route.fulfill({
+        status: success ? 200 : 400,
+        contentType: "application/json",
+        body: JSON.stringify({ success, message: success ? "Email sent successfully!" : "Invalid access key" }),
+      });
+    });
+    return requests;
+  }
+
+  test("opens from the header and closes again", async ({ page }) => {
+    await page.goto("/web/index.html");
+    const dialog = page.locator("#feedback-dialog");
+    await expect(dialog).toBeHidden();
+    await page.locator("#feedback-open").click();
+    await expect(dialog).toBeVisible();
+    await page.locator("#feedback-cancel").click();
+    await expect(dialog).toBeHidden();
+  });
+
+  test("sends the message with the selected day and area attached", async ({ page }) => {
+    const requests = await mockWeb3Forms(page);
+    await page.goto("/web/index.html");
+    await page.locator(".area-item").nth(1).click();
+    await page.locator("#feedback-open").click();
+    await page.locator("#feedback-category").selectOption("time");
+    await page.locator("#feedback-message").fill("Upper limit should be FL95.");
+    await page.locator("#feedback-submit").click();
+
+    await expect(page.locator("#feedback-status")).toHaveAttribute("data-kind", "success");
+    await expect(page.locator("#feedback-message")).toHaveValue("");
+    expect(requests).toHaveLength(1);
+    const sent = requests[0];
+    expect(sent.message).toBe("Upper limit should be FL95.");
+    expect(sent.category).toBe("time");
+    expect(sent.selected_area).toBe("W5678/26");
+    expect(sent.dabs_date).toBe("2026-01-01 v1");
+    expect(sent.selected_day).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(sent.app_version).toBe("dev");
+    expect(sent.access_key).toBeTruthy();
+    // No reply address given: must not be sent as an empty "email" field.
+    expect(sent).not.toHaveProperty("email");
+  });
+
+  test("includes the reply address only when one is given", async ({ page }) => {
+    const requests = await mockWeb3Forms(page);
+    await page.goto("/web/index.html");
+    await page.locator("#feedback-open").click();
+    await page.locator("#feedback-message").fill("Hello");
+    await page.locator("#feedback-email").fill("pilot@example.com");
+    await page.locator("#feedback-submit").click();
+    await expect(page.locator("#feedback-status")).toHaveAttribute("data-kind", "success");
+    expect(requests[0].email).toBe("pilot@example.com");
+  });
+
+  test("does not send an empty message", async ({ page }) => {
+    const requests = await mockWeb3Forms(page);
+    await page.goto("/web/index.html");
+    await page.locator("#feedback-open").click();
+    await page.locator("#feedback-submit").click();
+    await page.waitForTimeout(300);
+    expect(requests).toHaveLength(0);
+  });
+
+  test("shows an error and keeps the message when sending fails", async ({ page }) => {
+    await mockWeb3Forms(page, { success: false });
+    await page.goto("/web/index.html");
+    await page.locator("#feedback-open").click();
+    await page.locator("#feedback-message").fill("Something is off");
+    await page.locator("#feedback-submit").click();
+    await expect(page.locator("#feedback-status")).toHaveAttribute("data-kind", "error");
+    await expect(page.locator("#feedback-message")).toHaveValue("Something is off");
+  });
+
+  test("arrow keys inside the form don't change the selected area", async ({ page }) => {
+    await page.goto("/web/index.html");
+    await page.locator(".area-item").first().click();
+    await page.locator("#feedback-open").click();
+    await page.locator("#feedback-message").focus();
+    await page.keyboard.press("ArrowDown");
+    await page.locator("#feedback-category").focus();
+    await page.keyboard.press("ArrowDown");
+    await expect(page.locator(".area-item.active .area-item-id")).toHaveText("TEST1");
+  });
+
+  test("button sits in the first header row next to the language dropdown on mobile", async ({ page }) => {
+    await page.setViewportSize({ width: 360, height: 740 });
+    await page.goto("/web/index.html");
+    const btn = await page.locator("#feedback-open").boundingBox();
+    const select = await page.locator("#lang-select").boundingBox();
+    const title = await page.locator("#app-header h1").boundingBox();
+    expect(Math.abs(btn.y + btn.height / 2 - (select.y + select.height / 2))).toBeLessThan(4);
+    expect(btn.y).toBeLessThan(title.y + title.height);
+    expect(btn.x + btn.width).toBeLessThanOrEqual(select.x);
+  });
+});

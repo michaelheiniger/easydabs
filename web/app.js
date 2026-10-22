@@ -232,6 +232,7 @@ function blinkLayer(layer, baseStyle) {
 }
 
 let currentFc = null;
+let currentDate = null; // the selected tab's date (YYYY-MM-DD)
 let currentAreas = []; // [{ feature, layer, baseStyle, itemEl }]; layer is null if unmapped
 let selectedIndex = -1;
 
@@ -375,8 +376,9 @@ function moveSelection(delta) {
 
 document.addEventListener("keydown", (e) => {
   if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+  if (feedbackDialogEl.open) return;
   const tag = document.activeElement?.tagName;
-  if (tag === "INPUT" || tag === "TEXTAREA") return;
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
   e.preventDefault();
   moveSelection(e.key === "ArrowDown" ? 1 : -1);
 });
@@ -385,6 +387,7 @@ async function loadDate(date) {
   hideStatus();
   metaEl.textContent = "";
   currentFc = null;
+  currentDate = date;
   areasLayer.clearLayers();
 
   const url = `${DATA_DIR}/dabs-${date}.geojson`;
@@ -450,6 +453,97 @@ function selectTab(date, offset) {
   loadDate(date);
 }
 
+// Feedback goes through Web3Forms (https://web3forms.com), which emails it to
+// the maintainer without the address ever appearing on this page or in
+// this repo. The access key only identifies where to deliver - it's meant to
+// be public and can't be used to read submissions.
+const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
+const WEB3FORMS_ACCESS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY";
+
+const feedbackDialogEl = document.getElementById("feedback-dialog");
+const feedbackFormEl = document.getElementById("feedback-form");
+const feedbackStatusEl = document.getElementById("feedback-status");
+const feedbackSubmitEl = document.getElementById("feedback-submit");
+
+function setFeedbackStatus(key, kind) {
+  feedbackStatusEl.textContent = key ? t(key) : "";
+  feedbackStatusEl.dataset.kind = kind || "";
+}
+
+document.getElementById("feedback-open").addEventListener("click", () => {
+  setFeedbackStatus(null);
+  feedbackDialogEl.showModal();
+});
+document.getElementById("feedback-cancel").addEventListener("click", () => feedbackDialogEl.close());
+
+// What the user was looking at, so a report like "this area is wrong" can be
+// matched to the exact data it was about without a round-trip of questions.
+function feedbackContext() {
+  const selected = currentAreas[selectedIndex]?.feature.properties;
+  const p = currentFc?.properties || {};
+  return {
+    selected_day: currentDate || "",
+    dabs_date: p.dabs_date ? `${p.dabs_date} v${p.version}` : "",
+    selected_area: selected ? selected.id : "",
+    app_version: APP_VERSION,
+    language: currentLang,
+    page: location.href,
+    user_agent: navigator.userAgent,
+  };
+}
+
+feedbackFormEl.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = new FormData(feedbackFormEl);
+  if (form.get("botcheck")) return;
+  const category = feedbackFormEl.elements.category;
+  const payload = {
+    access_key: WEB3FORMS_ACCESS_KEY,
+    subject: `EasyDABS feedback: ${category.selectedOptions[0].textContent}`,
+    from_name: "EasyDABS",
+    category: category.value,
+    message: form.get("message"),
+    ...feedbackContext(),
+  };
+  // Web3Forms uses "email" as the reply-to address; omit it entirely
+  // rather than sending an empty one.
+  const email = form.get("email").trim();
+  if (email) payload.email = email;
+
+  feedbackSubmitEl.disabled = true;
+  setFeedbackStatus("feedbackSending");
+  try {
+    const res = await fetch(WEB3FORMS_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const body = await res.json().catch(() => ({}));
+    if (!res.ok || !body.success) throw new Error(body.message || `HTTP ${res.status}`);
+    feedbackFormEl.reset();
+    setFeedbackStatus("feedbackSuccess", "success");
+  } catch {
+    setFeedbackStatus("feedbackError", "error");
+  } finally {
+    feedbackSubmitEl.disabled = false;
+  }
+});
+
+function applyFeedbackTranslations() {
+  document.getElementById("feedback-open").textContent = t("feedbackButton");
+  document.getElementById("feedback-title").textContent = t("feedbackTitle");
+  document.getElementById("feedback-intro").textContent = t("feedbackIntro");
+  document.getElementById("feedback-category-label").textContent = t("feedbackCategory");
+  for (const option of feedbackFormEl.elements.category.options) {
+    option.textContent = t(`feedbackCat_${option.value}`);
+  }
+  document.getElementById("feedback-message-label").textContent = t("feedbackMessage");
+  document.getElementById("feedback-email-label").textContent = t("feedbackEmail");
+  document.getElementById("feedback-context-note").textContent = t("feedbackContextNote");
+  document.getElementById("feedback-cancel").textContent = t("feedbackClose");
+  feedbackSubmitEl.textContent = t("feedbackSend");
+}
+
 function applyStaticTranslations() {
   document.getElementById("legend-title").textContent = t("legendTitle");
   document.getElementById("legend-polygon").textContent = t("legendPolygon");
@@ -467,6 +561,7 @@ function applyStaticTranslations() {
   areaListTitleEl.textContent = t("areaListTitle");
   areaListHintEl.textContent = t(IS_TOUCH ? "areaListHintTouch" : "areaListHint");
 
+  applyFeedbackTranslations();
   applyTabLabels();
   rebuildLayersControl();
 }

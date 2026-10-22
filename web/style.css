@@ -169,6 +169,20 @@ body {
   color: #fff;
 }
 
+.feedback-btn {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #161b22;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.feedback-btn:hover { background: #21262d; }
+
 /* Compact dropdown alternative to .lang-switch, shown only on narrow
    screens (see the <=480px media query) where four buttons don't fit next
    to the title without wrapping onto their own row. */
@@ -368,10 +382,16 @@ body {
     display: none;
   }
 
+  /* Sits in the first row with the language dropdown, together pushed to
+     the right edge. */
+  .feedback-btn {
+    order: 0;
+    margin-left: auto;
+  }
+
   .lang-select {
     display: block;
     order: 0;
-    margin-left: auto;
   }
 
   .date-tab {
@@ -540,4 +560,103 @@ body {
 
 .leaflet-interactive {
   transition: fill-opacity 0.15s linear, stroke-width 0.15s linear;
+}
+
+.feedback-dialog {
+  width: min(480px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #0d1117;
+  color: var(--text);
+}
+
+.feedback-dialog::backdrop {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.feedback-dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.feedback-dialog h2 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+}
+
+.feedback-intro,
+.feedback-note {
+  margin: 0 0 6px 0;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+
+.feedback-dialog label {
+  margin-top: 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feedback-dialog select,
+.feedback-dialog textarea,
+.feedback-dialog input {
+  width: 100%;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #161b22;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+}
+
+.feedback-dialog textarea {
+  resize: vertical;
+}
+
+/* Honeypot: present for bots, never shown to people. */
+.feedback-dialog .feedback-botcheck {
+  display: none;
+}
+
+.feedback-status {
+  margin: 0;
+  font-size: 13px;
+}
+
+.feedback-status:empty { display: none; }
+.feedback-status[data-kind="success"] { color: #4ade80; }
+.feedback-status[data-kind="error"] { color: #f87171; }
+
+.feedback-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.feedback-actions button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: #161b22;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.feedback-actions button.primary {
+  background: var(--chart-color);
+  border-color: var(--chart-color);
+  color: #fff;
+}
+
+.feedback-actions button:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
