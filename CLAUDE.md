@@ -132,6 +132,17 @@ English, and a machine translation of safety-critical airspace text would be act
 dangerous. Every popup labels the raw text as original/English so this reads as
 intentional. Don't "fix" this.
 
+## Feedback form
+
+The header's "Report an error" button opens a native `<dialog>` (`#feedback-dialog`) that
+POSTs to Web3Forms (`WEB3FORMS_ENDPOINT`/`WEB3FORMS_ACCESS_KEY` in `app.js`), which emails
+the maintainer. Reporters need no account, and the maintainer's address appears nowhere on
+the page or in the repo. The access key only routes submissions; it's meant to be public.
+`feedbackContext()` attaches the selected tab date, the loaded DABS date/version, the
+selected area, `APP_VERSION`, language and user agent, so a report can be matched to the
+exact data it was about. Spam protection is Web3Forms' `botcheck` honeypot field. UI tests
+intercept `api.web3forms.com` - never let them hit the real endpoint.
+
 ## Mobile
 
 Two breakpoints in `style.css`: `760px` (stacks the area list below the map instead of
