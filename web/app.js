@@ -458,7 +458,7 @@ function selectTab(date, offset) {
 // this repo. The access key only identifies where to deliver - it's meant to
 // be public and can't be used to read submissions.
 const WEB3FORMS_ENDPOINT = "https://api.web3forms.com/submit";
-const WEB3FORMS_ACCESS_KEY = "YOUR_WEB3FORMS_ACCESS_KEY";
+const WEB3FORMS_ACCESS_KEY = "f414638d-75d2-4f03-895c-20b82ab280a1";
 
 const feedbackDialogEl = document.getElementById("feedback-dialog");
 const feedbackFormEl = document.getElementById("feedback-form");
