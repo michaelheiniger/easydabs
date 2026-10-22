@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-22",
-    "version": 1,
-    "generated_utc": "2026-10-21T13:33:00+00:00"
+    "version": 2,
+    "generated_utc": "2026-10-22T06:45:00+00:00"
   },
   "features": [
     {
@@ -263,7 +263,7 @@
       },
       "properties": {
         "id": "LSR12",
-        "notam": "W2876/26",
+        "notam": "W2892/26",
         "on_chart": true,
         "valid_from_utc": "2026-10-22T07:00:00+00:00",
         "valid_to_utc": "2026-10-22T16:00:00+00:00",
@@ -566,9 +566,9 @@
       },
       "properties": {
         "id": "LSR49",
-        "notam": "W2890/26",
+        "notam": "W2895/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-22T06:00:00+00:00",
+        "valid_from_utc": "2026-10-22T08:00:00+00:00",
         "valid_to_utc": "2026-10-22T16:00:00+00:00",
         "lower": {
           "raw": "GND",
@@ -1234,8 +1234,8 @@
         "id": "W2846/26",
         "notam": "W2846/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-22T00:00:00+00:00",
-        "valid_to_utc": "2026-10-22T03:00:00+00:00",
+        "valid_from_utc": "2026-10-22T21:30:00+00:00",
+        "valid_to_utc": "2026-10-22T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -1261,7 +1261,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     }
   ]
