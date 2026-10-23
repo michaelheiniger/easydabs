@@ -254,6 +254,41 @@ class ParseLayoutTests(unittest.TestCase):
         )
 
 
+EMPTY_TEXT = """\
+DABS Date: 2026 OCT 24
+Version 1 - generated: 23.10.2026 13:22 UTC
+
+Firings / AIP-Areas / Warnings:
+Firing-Nr Validity Lower Limit Upper Limit Center Point Covering Radius NOTAM Item E
+{pad}There are no planned activities for 24.10.2026
+
+Activities not shown on the DABS Chart Side:
+NOTAM-Nr Validity Lower Limit Upper Limit Center Point Covering Radius NOTAM Item E
+{pad}There are no planned activities for 24.10.2026
+""".format(pad=" " * 86)
+
+
+class ParseEmptyDayTests(unittest.TestCase):
+    def test_day_without_activities_yields_no_features(self):
+        fc = parse_text(EMPTY_TEXT)
+        self.assertEqual(fc["features"], [])
+        self.assertEqual(fc["properties"]["dabs_date"], "2026-10-24")
+        self.assertEqual(fc["properties"]["version"], 1)
+
+    def test_one_empty_section_alongside_rows(self):
+        text = FIXTURE_TEXT.split("Activities not shown")[0] + (
+            "Activities not shown on the DABS Chart Side:\n"
+            "There are no planned activities for 03.10.2026\n")
+        fc = parse_text(text)
+        self.assertEqual(len(fc["features"]), 2)
+        self.assertTrue(all(f["properties"]["on_chart"] for f in fc["features"]))
+
+    def test_raises_when_a_section_has_neither_rows_nor_empty_statement(self):
+        text = EMPTY_TEXT.replace("There are no planned activities for 24.10.2026", "garbled", 1)
+        with self.assertRaises(ValueError):
+            parse_text(text)
+
+
 class ParseTextErrorTests(unittest.TestCase):
     def test_raises_when_no_rows_found(self):
         text = "DABS Date: 2026 OCT 03\nVersion 1 - generated: 03.10.2026 10:45 UTC\n"

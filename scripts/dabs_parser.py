@@ -27,6 +27,8 @@ NOTAM_RE = re.compile(r"^[A-Z]\d{4}/\d{2}$")
 NOTAM_LINE_RE = re.compile(r"^\s{0,5}(?P<notam>[A-Z]\d{4}/\d{2})(?:\s{2,}(?P<rest>.*))?$")
 PAGE_FOOTER_RE = re.compile(r"^\s*Page \d+\s")
 SECTION_RE = re.compile(r"^\s*(Firings / AIP-Areas / Warnings|Activities not shown on the DABS Chart Side):")
+# What DABS prints in place of a section's rows on a quiet day.
+NO_ACTIVITIES_RE = re.compile(r"There are no planned activities for \d{2}\.\d{2}\.\d{4}")
 # "! ... !" brackets a row that is new or changed since an earlier DABS version.
 # Blanked out (not deleted) so column-based indentation checks below still hold.
 CHANGE_MARK_RE = re.compile(r"^(\s*)!(?=\s)|\s!\s*$")
@@ -133,11 +135,13 @@ def parse_text(text: str):
     date, version, generated = parse_header(text)
 
     rows, section, row_open = [], None, False
+    sections = {}  # section -> True once it explicitly says it has no activities
     for line in text.splitlines():
         line = CHANGE_MARK_RE.sub(lambda c: " " * len(c[0]), line).rstrip()
         s = SECTION_RE.match(line)
         if s:
             section = "chart" if s[1].startswith("Firings") else "not_on_chart"
+            sections.setdefault(section, False)
             row_open = False
             continue
         if section is None:
@@ -152,6 +156,10 @@ def parse_text(text: str):
             rows.append({"section": section, "m": m, "extra_ids": [], "text": [m["text"].strip()]})
             row_open = True
             continue
+        if NO_ACTIVITIES_RE.search(line):
+            sections[section] = True
+            row_open = False
+            continue
         if not row_open or not line.strip():
             continue
         n = NOTAM_LINE_RE.match(line)
@@ -162,7 +170,12 @@ def parse_text(text: str):
         elif len(line) - len(line.lstrip()) > 40:            # Item E continuation
             rows[-1]["text"].append(line.strip())
 
-    if not rows:
+    # Zero rows is only legitimate when every section says so explicitly; anything
+    # else (no sections found, or a section with neither rows nor that statement)
+    # means the layout changed and rows are being silently dropped.
+    with_rows = {r["section"] for r in rows}
+    unexplained = [s for s, empty in sections.items() if s not in with_rows and not empty]
+    if not sections or unexplained:
         raise ValueError("No airspace rows found - layout changed?")
 
     features = []
