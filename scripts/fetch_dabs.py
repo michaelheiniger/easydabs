@@ -10,12 +10,21 @@ that day's DABS isn't published yet: that stops the script cleanly (exit code 0)
 keeping whatever was already written for earlier sources. Exact area outlines from
 shv_airspaces are best-effort: if that API fails, circles are kept and a warning is printed. The same applies when the
 downloaded PDF just says the DABS "is not available yet".
+
+Each successfully parsed PDF is also kept as data/pdf/dabs-<date>-v<version>-<generated>.pdf.
+The timestamp is the PDF's own "generated" time (UTC, marked "-UTC" in the name), not
+the time it was downloaded, so fetching the same version again just overwrites the same
+file instead of adding a new one. A PDF that fails to parse is kept for debugging as
+data/pdf/failed/<label>-<download time>-UTC.pdf, since it has no parsed header to name
+it after.
 """
 import json
+import shutil
 import sys
 import tempfile
 import urllib.error
 import urllib.request
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -34,9 +43,16 @@ def fetch(url: str, dest: Path):
         f.write(r.read())
 
 
+def pdf_name(fc) -> str:
+    props = fc["properties"]
+    generated = datetime.fromisoformat(props["generated_utc"]).astimezone(timezone.utc).strftime("%Y%m%d_%H%M-UTC")
+    return f"dabs-{props['dabs_date']}-v{props['version']}-{generated}.pdf"
+
+
 def main():
     data_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).parent.parent / "data"
-    data_dir.mkdir(parents=True, exist_ok=True)
+    pdf_dir = data_dir / "pdf"
+    pdf_dir.mkdir(parents=True, exist_ok=True)
 
     # Exact outlines are an enhancement: if this BETA API is down, fall back to the
     # covering circles rather than failing the whole run.
@@ -66,12 +82,18 @@ def main():
                 print(f"No document for {label} available (not published yet)")
                 sys.exit(0)
             except Exception as e:
-                print(f"PARSE ERROR ({label}): {e}", file=sys.stderr)
+                failed_dir = pdf_dir / "failed"
+                failed_dir.mkdir(exist_ok=True)
+                stamp = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S-UTC")
+                failed_path = failed_dir / f"{label}-{stamp}.pdf"
+                shutil.copyfile(pdf_path, failed_path)
+                print(f"PARSE ERROR ({label}): {e} (PDF kept as {failed_path})", file=sys.stderr)
                 sys.exit(1)
             if airspaces:
                 apply_airspace_polygons(fc, airspaces)
             out_path = data_dir / f"dabs-{fc['properties']['dabs_date']}.geojson"
             out_path.write_text(json.dumps(fc, indent=2, ensure_ascii=False))
+            shutil.copyfile(pdf_path, pdf_dir / pdf_name(fc))
             print(
                 f"OK: {label} -> {out_path.name}, {len(fc['features'])} areas, "
                 f"v{fc['properties']['version']}",

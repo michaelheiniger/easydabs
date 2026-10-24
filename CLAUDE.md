@@ -17,6 +17,15 @@ scripts/fetch_dabs.py    Downloads today's + tomorrow's PDFs from skybriefing.co
                           silently.
 data/*.geojson           Output of fetch_dabs.py. Filename date comes from the PDF's own
                           header (dabs_date), not wall-clock - see parse_header().
+data/pdf/*.pdf           Every successfully parsed source PDF, named
+                          dabs-<date>-v<version>-<generated>-UTC.pdf. The timestamp is the
+                          PDF's own "generated" header time (UTC), not download time,
+                          so the hourly cron re-fetching an unchanged version writes the
+                          same file and doesn't produce a commit.
+data/pdf/failed/*.pdf    PDFs that failed to parse, named <label>-<download time>-UTC.pdf
+                          (no parsed header to name them after). Kept for debugging.
+                          In CI a parse failure skips the commit step, so update-dabs.yml
+                          uploads these as the run's "failed-dabs-pdfs" artifact instead.
 web/                     Static frontend: index.html, app.js, i18n.js, style.css.
                           No build step, no framework, no bundler. Leaflet loaded from
                           unpkg. Deployed as-is.

@@ -21,6 +21,17 @@ jobs:
       - name: Fetch and parse DABS PDFs
         run: python3 scripts/fetch_dabs.py
 
+      # A parse failure exits before the commit step, so the PDF that broke the
+      # parser would vanish with the runner. Keep it as a run artifact instead.
+      - name: Upload PDFs that failed to parse
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failed-dabs-pdfs
+          path: data/pdf/failed/
+          if-no-files-found: ignore
+          retention-days: 30
+
       - name: Commit and push if changed
         env:
           GH_TOKEN: ${{ github.token }}

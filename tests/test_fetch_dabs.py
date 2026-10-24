@@ -22,6 +22,10 @@ FC_TOMORROW = {
 }
 
 
+def fake_fetch(url, dest):
+    dest.write_bytes(b"%PDF " + url.encode())
+
+
 class MainTests(unittest.TestCase):
     def setUp(self):
         # Never hit the real SHV API from unit tests.
@@ -31,7 +35,7 @@ class MainTests(unittest.TestCase):
 
     def test_writes_one_geojson_file_per_source(self):
         with tempfile.TemporaryDirectory() as tmp:
-            with patch.object(fetch_dabs, "fetch"), \
+            with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY, FC_TOMORROW]):
                 sys.argv = ["fetch_dabs.py", tmp]
                 fetch_dabs.main()
@@ -43,10 +47,27 @@ class MainTests(unittest.TestCase):
             self.assertEqual(json.loads(today_path.read_text()), FC_TODAY)
             self.assertEqual(json.loads(tomorrow_path.read_text()), FC_TOMORROW)
 
+    def test_keeps_pdf_named_after_its_own_generated_timestamp(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
+                 patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY, FC_TOMORROW]):
+                sys.argv = ["fetch_dabs.py", tmp]
+                fetch_dabs.main()
+
+            pdf_dir = Path(tmp) / "pdf"
+            self.assertEqual(
+                sorted(p.name for p in pdf_dir.iterdir()),
+                ["dabs-2026-10-03-v1-20261003_1045-UTC.pdf", "dabs-2026-10-04-v1-20261003_1325-UTC.pdf"],
+            )
+            self.assertEqual(
+                (pdf_dir / "dabs-2026-10-03-v1-20261003_1045-UTC.pdf").read_bytes(),
+                b"%PDF " + fetch_dabs.SOURCES["today"].encode(),
+            )
+
     def test_creates_data_dir_if_missing(self):
         with tempfile.TemporaryDirectory() as tmp:
             target = Path(tmp) / "nested" / "data"
-            with patch.object(fetch_dabs, "fetch"), \
+            with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY, FC_TOMORROW]):
                 sys.argv = ["fetch_dabs.py", str(target)]
                 fetch_dabs.main()
@@ -62,8 +83,14 @@ class MainTests(unittest.TestCase):
 
     def test_404_stops_cleanly_keeping_earlier_sources(self):
         not_found = urllib.error.HTTPError("https://example.test", 404, "Not Found", {}, None)
+
+        def fetch_today_only(url, dest):
+            if url == fetch_dabs.SOURCES["tomorrow"]:
+                raise not_found
+            fake_fetch(url, dest)
+
         with tempfile.TemporaryDirectory() as tmp:
-            with patch.object(fetch_dabs, "fetch", side_effect=[None, not_found]), \
+            with patch.object(fetch_dabs, "fetch", side_effect=fetch_today_only), \
                  patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY]), \
                  patch("builtins.print") as mock_print:
                 sys.argv = ["fetch_dabs.py", tmp]
@@ -76,7 +103,7 @@ class MainTests(unittest.TestCase):
 
     def test_not_available_placeholder_stops_cleanly_keeping_earlier_sources(self):
         with tempfile.TemporaryDirectory() as tmp:
-            with patch.object(fetch_dabs, "fetch"), \
+            with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse",
                               side_effect=[FC_TODAY, fetch_dabs.NotAvailableError("x")]), \
                  patch("builtins.print"):
@@ -98,12 +125,27 @@ class MainTests(unittest.TestCase):
 
     def test_exits_nonzero_when_parse_fails(self):
         with tempfile.TemporaryDirectory() as tmp:
-            with patch.object(fetch_dabs, "fetch"), \
+            with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse", side_effect=ValueError("bad layout")):
                 sys.argv = ["fetch_dabs.py", tmp]
                 with self.assertRaises(SystemExit) as ctx:
                     fetch_dabs.main()
                 self.assertEqual(ctx.exception.code, 1)
+
+    def test_keeps_pdf_that_fails_to_parse(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
+                 patch.object(fetch_dabs, "parse", side_effect=ValueError("bad layout")), \
+                 patch("sys.stderr"):
+                sys.argv = ["fetch_dabs.py", tmp]
+                with self.assertRaises(SystemExit):
+                    fetch_dabs.main()
+
+            failed = list((Path(tmp) / "pdf" / "failed").iterdir())
+            self.assertEqual(len(failed), 1)
+            self.assertRegex(failed[0].name, r"^today-\d{8}_\d{6}-UTC\.pdf$")
+            self.assertEqual(failed[0].read_bytes(), b"%PDF " + fetch_dabs.SOURCES["today"].encode())
+            self.assertEqual([p.name for p in (Path(tmp) / "pdf").glob("*.pdf")], [])
 
 
 class FetchTests(unittest.TestCase):
