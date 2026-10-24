@@ -27,8 +27,9 @@ NOTAM_RE = re.compile(r"^[A-Z]\d{4}/\d{2}$")
 NOTAM_LINE_RE = re.compile(r"^\s{0,5}(?P<notam>[A-Z]\d{4}/\d{2})(?:\s{2,}(?P<rest>.*))?$")
 PAGE_FOOTER_RE = re.compile(r"^\s*Page \d+\s")
 SECTION_RE = re.compile(r"^\s*(Firings / AIP-Areas / Warnings|Activities not shown on the DABS Chart Side):")
-# What DABS prints in place of a section's rows on a quiet day.
-NO_ACTIVITIES_RE = re.compile(r"There are no planned activities for \d{2}\.\d{2}\.\d{4}")
+# What DABS prints in place of a section's rows on a quiet day: either the full
+# sentence, or (seen on a section that's empty while the other has rows) a bare "None".
+NO_ACTIVITIES_RE = re.compile(r"There are no planned activities for \d{2}\.\d{2}\.\d{4}|^\s*None$")
 # "! ... !" brackets a row that is new or changed since an earlier DABS version.
 # Blanked out (not deleted) so column-based indentation checks below still hold.
 CHANGE_MARK_RE = re.compile(r"^(\s*)!(?=\s)|\s!\s*$")

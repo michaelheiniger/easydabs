@@ -283,6 +283,15 @@ class ParseEmptyDayTests(unittest.TestCase):
         self.assertEqual(len(fc["features"]), 2)
         self.assertTrue(all(f["properties"]["on_chart"] for f in fc["features"]))
 
+    def test_bare_none_marks_a_section_empty(self):
+        text = FIXTURE_TEXT.split("Activities not shown")[0] + (
+            "Activities not shown on the DABS Chart Side:\n"
+            "NOTAM-Nr Validity Lower Limit Upper Limit Center Point Covering Radius NOTAM Item E\n"
+            + " " * 103 + "None\n")
+        fc = parse_text(text)
+        self.assertEqual(len(fc["features"]), 2)
+        self.assertTrue(all(f["properties"]["on_chart"] for f in fc["features"]))
+
     def test_raises_when_a_section_has_neither_rows_nor_empty_statement(self):
         text = EMPTY_TEXT.replace("There are no planned activities for 24.10.2026", "garbled", 1)
         with self.assertRaises(ValueError):
