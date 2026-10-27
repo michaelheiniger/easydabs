@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-27",
-    "version": 1,
-    "generated_utc": "2026-10-26T14:34:00+00:00"
+    "version": 3,
+    "generated_utc": "2026-10-27T11:45:00+00:00"
   },
   "features": [
     {
@@ -47,8 +47,8 @@
         "id": "LSD12",
         "notam": "W0317/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-27T07:00:00+00:00",
-        "valid_to_utc": "2026-10-27T11:00:00+00:00",
+        "valid_from_utc": "2026-10-27T12:00:00+00:00",
+        "valid_to_utc": "2026-10-27T21:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -72,7 +72,7 @@
           "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "D-AREA LSD12 SIHLTAL ACT. 1200 - 2100"
+        "text": "D-AREA LSD12 SIHLTAL ACT."
       }
     },
     {
@@ -241,8 +241,8 @@
         "id": "LSR39B",
         "notam": "W2921/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-27T08:00:00+00:00",
-        "valid_to_utc": "2026-10-27T10:00:00+00:00",
+        "valid_from_utc": "2026-10-27T13:00:00+00:00",
+        "valid_to_utc": "2026-10-27T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -266,7 +266,7 @@
           "table_km": 10100
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -330,8 +330,8 @@
         "id": "LSR39C",
         "notam": "W2922/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-27T08:00:00+00:00",
-        "valid_to_utc": "2026-10-27T10:00:00+00:00",
+        "valid_from_utc": "2026-10-27T13:00:00+00:00",
+        "valid_to_utc": "2026-10-27T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -355,7 +355,7 @@
           "table_km": 14200
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -465,9 +465,9 @@
       },
       "properties": {
         "id": "LSR49",
-        "notam": "W2871/26",
+        "notam": "W2934/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-27T07:00:00+00:00",
+        "valid_from_utc": "2026-10-27T08:00:00+00:00",
         "valid_to_utc": "2026-10-27T17:00:00+00:00",
         "lower": {
           "raw": "GND",
@@ -768,8 +768,8 @@
         "id": "W2885/26",
         "notam": "W2885/26",
         "on_chart": true,
-        "valid_from_utc": "2026-10-27T00:00:00+00:00",
-        "valid_to_utc": "2026-10-27T04:00:00+00:00",
+        "valid_from_utc": "2026-10-27T22:30:00+00:00",
+        "valid_to_utc": "2026-10-27T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -795,7 +795,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     }
   ]
