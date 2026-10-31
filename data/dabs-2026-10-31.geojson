@@ -2,79 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-10-31",
-    "version": 1,
-    "generated_utc": "2026-10-30T14:30:00+00:00"
+    "version": 3,
+    "generated_utc": "2026-10-31T11:45:00+00:00"
   },
-  "features": [
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              6.393333,
-              46.726667
-            ],
-            [
-              6.436944,
-              46.7275
-            ],
-            [
-              6.439444,
-              46.734444
-            ],
-            [
-              6.4425,
-              46.720833
-            ],
-            [
-              6.417222,
-              46.709722
-            ],
-            [
-              6.390833,
-              46.701111
-            ],
-            [
-              6.393333,
-              46.726667
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "W2923/26",
-        "notam": "W2923/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-10-31T04:00:00+00:00",
-        "valid_to_utc": "2026-10-31T07:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "1050m / 3500ft",
-          "meters": 1050,
-          "feet": 3500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.717778,
-          "lon": 6.415
-        },
-        "radius_m": 2778,
-        "radius_candidates_m": {
-          "table_km": 2700,
-          "text_0_nm": 2778
-        },
-        "geometry_source": "polygon",
-        "text": "TEMPO R-AREA VALLORBE ESTABLISHED WI AREA: 464336N0062336E 464339N0062613E 464404N0062622E 464315N0062633E 464235N0062502E 464204N0062327E 464336N0062336E (464304N0062454E RADIUS 1.5NM). DUE TO MIL EXER. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS COOR CTC +41 79 313 17 14."
-      }
-    }
-  ]
+  "features": []
 }
