@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-03",
-    "version": 1,
-    "generated_utc": "2026-11-02T14:46:00+00:00"
+    "version": 4,
+    "generated_utc": "2026-11-03T14:45:00+00:00"
   },
   "features": [
     {
@@ -47,8 +47,8 @@
         "id": "LSD12",
         "notam": "W0317/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-03T07:00:00+00:00",
-        "valid_to_utc": "2026-11-03T11:00:00+00:00",
+        "valid_from_utc": "2026-11-03T12:00:00+00:00",
+        "valid_to_utc": "2026-11-03T21:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -72,124 +72,7 @@
           "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "D-AREA LSD12 SIHLTAL ACT. 1200 - 2100"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              9.06944444444444,
-              47.0480555555556
-            ],
-            [
-              9.05027777777778,
-              47.1897222222222
-            ],
-            [
-              9.15944444444444,
-              47.2736111111111
-            ],
-            [
-              9.30416666666667,
-              47.3125
-            ],
-            [
-              9.58305555555556,
-              47.3108333333333
-            ],
-            [
-              9.55666666666667,
-              47.2961111111111
-            ],
-            [
-              9.54694444444444,
-              47.2766666666667
-            ],
-            [
-              9.53083333333334,
-              47.2702777777778
-            ],
-            [
-              9.52805555555556,
-              47.2511111111111
-            ],
-            [
-              9.505,
-              47.2236111111111
-            ],
-            [
-              9.4875,
-              47.1811111111111
-            ],
-            [
-              9.50916666666667,
-              47.1430555555556
-            ],
-            [
-              9.52277777777778,
-              47.0963888888889
-            ],
-            [
-              9.51416666666666,
-              47.0855555555556
-            ],
-            [
-              9.47388888888889,
-              47.0633333333333
-            ],
-            [
-              9.47527777777778,
-              47.0541666666667
-            ],
-            [
-              9.48222222222222,
-              47.0569444444444
-            ],
-            [
-              9.485,
-              47.0491666666667
-            ],
-            [
-              9.06944444444444,
-              47.0480555555556
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR3",
-        "notam": "W2967/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-03T14:40:00+00:00",
-        "valid_to_utc": "2026-11-03T15:25:00+00:00",
-        "lower": {
-          "raw": "FL100",
-          "meters": 3048,
-          "feet": 10000,
-          "flight_level": 100,
-          "gnd": false
-        },
-        "upper": {
-          "raw": "FL130",
-          "meters": 3962,
-          "feet": 13000,
-          "flight_level": 130,
-          "gnd": false
-        },
-        "center": {
-          "lat": 47.179722,
-          "lon": 9.325556
-        },
-        "radius_m": 24400,
-        "radius_candidates_m": {
-          "table_km": 24400
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR3 SPEER ACT."
+        "text": "D-AREA LSD12 SIHLTAL ACT."
       }
     },
     {
@@ -339,8 +222,8 @@
         "id": "LSR6",
         "notam": "W2899/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-03T07:45:00+00:00",
-        "valid_to_utc": "2026-11-03T11:00:00+00:00",
+        "valid_from_utc": "2026-11-03T12:30:00+00:00",
+        "valid_to_utc": "2026-11-03T15:30:00+00:00",
         "lower": {
           "raw": "1850m / 6000ft",
           "meters": 1850,
@@ -364,7 +247,7 @@
           "table_km": 13300
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR6 AXALP ACT. 1230 - 1530"
+        "text": "R-AREA LSR6 AXALP ACT."
       }
     },
     {
@@ -451,200 +334,6 @@
         "coordinates": [
           [
             [
-              9.11972222222222,
-              46.5261111111111
-            ],
-            [
-              9.17722222222222,
-              46.5216666666667
-            ],
-            [
-              9.18027777777778,
-              46.5077777777778
-            ],
-            [
-              9.16833333333333,
-              46.4944444444444
-            ],
-            [
-              9.18111111111111,
-              46.4727777777778
-            ],
-            [
-              9.16805555555556,
-              46.4625
-            ],
-            [
-              9.13611111111111,
-              46.465
-            ],
-            [
-              9.11111111111111,
-              46.4788888888889
-            ],
-            [
-              9.08583333333333,
-              46.4744444444444
-            ],
-            [
-              9.07083333333333,
-              46.4805555555556
-            ],
-            [
-              9.11972222222222,
-              46.5261111111111
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR9",
-        "notam": "W2960/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-03T07:00:00+00:00",
-        "valid_to_utc": "2026-11-03T21:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "4700m / 15500ft",
-          "meters": 4700,
-          "feet": 15500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.495278,
-          "lon": 9.128611
-        },
-        "radius_m": 4800,
-        "radius_candidates_m": {
-          "table_km": 4800
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR9 HINTERRHEIN ACT DUE TO FRNG."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              9.26666666666667,
-              47.2236111111111
-            ],
-            [
-              9.2825,
-              47.215
-            ],
-            [
-              9.2925,
-              47.2119444444444
-            ],
-            [
-              9.31861111111111,
-              47.2169444444444
-            ],
-            [
-              9.32944444444444,
-              47.22
-            ],
-            [
-              9.33861111111111,
-              47.2341666666667
-            ],
-            [
-              9.33472222222222,
-              47.245
-            ],
-            [
-              9.33,
-              47.2472222222222
-            ],
-            [
-              9.3225,
-              47.2475
-            ],
-            [
-              9.31722222222222,
-              47.2494444444444
-            ],
-            [
-              9.31361111111111,
-              47.2525
-            ],
-            [
-              9.30944444444444,
-              47.2533333333333
-            ],
-            [
-              9.29416666666667,
-              47.2533333333333
-            ],
-            [
-              9.28388888888889,
-              47.2486111111111
-            ],
-            [
-              9.27111111111111,
-              47.2408333333333
-            ],
-            [
-              9.26388888888889,
-              47.2255555555556
-            ],
-            [
-              9.26666666666667,
-              47.2236111111111
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR14",
-        "notam": "W2782/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-03T06:30:00+00:00",
-        "valid_to_utc": "2026-11-03T17:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "2300m / 7500ft",
-          "meters": 2300,
-          "feet": 7500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 47.233611,
-          "lon": 9.300278
-        },
-        "radius_m": 2900,
-        "radius_candidates_m": {
-          "table_km": 2900
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR14 SANTIS ACT DUE TO MIL UAV."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
               7.01555555555556,
               47.4580555555556
             ],
@@ -701,10 +390,10 @@
       },
       "properties": {
         "id": "LSR18",
-        "notam": "W2886/26",
+        "notam": "W2975/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-03T08:00:00+00:00",
-        "valid_to_utc": "2026-11-03T20:00:00+00:00",
+        "valid_from_utc": "2026-11-03T09:30:00+00:00",
+        "valid_to_utc": "2026-11-03T16:30:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -780,8 +469,8 @@
         "id": "LSR39B",
         "notam": "W2961/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-03T08:00:00+00:00",
-        "valid_to_utc": "2026-11-03T10:00:00+00:00",
+        "valid_from_utc": "2026-11-03T13:00:00+00:00",
+        "valid_to_utc": "2026-11-03T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -805,7 +494,7 @@
           "table_km": 10100
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                   HIGHER."
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -869,8 +558,8 @@
         "id": "LSR39C",
         "notam": "W2962/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-03T08:00:00+00:00",
-        "valid_to_utc": "2026-11-03T10:00:00+00:00",
+        "valid_from_utc": "2026-11-03T13:00:00+00:00",
+        "valid_to_utc": "2026-11-03T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -894,7 +583,7 @@
           "table_km": 14200
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                   HIGHER."
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -1170,8 +859,8 @@
         "id": "W2885/26",
         "notam": "W2885/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-03T00:00:00+00:00",
-        "valid_to_utc": "2026-11-03T04:00:00+00:00",
+        "valid_from_utc": "2026-11-03T22:30:00+00:00",
+        "valid_to_utc": "2026-11-03T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -1197,7 +886,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     },
     {
@@ -1501,6 +1190,307 @@
         },
         "geometry_source": "circle",
         "text": "TEMPO R-AREA MOLLIS ESTABLISHED, RADIUS 7.4KM (470442N0090353E RADIUS 4.0NM). DUE TO MIL EXER. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS COOR CTC 134.830 OR +41 79 457 85 48."
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              8.133333,
+              48.382266
+            ],
+            [
+              8.374155,
+              48.37416
+            ],
+            [
+              8.612433,
+              48.349925
+            ],
+            [
+              8.84566,
+              48.309818
+            ],
+            [
+              9.071393,
+              48.254262
+            ],
+            [
+              9.287291,
+              48.183842
+            ],
+            [
+              9.491141,
+              48.099295
+            ],
+            [
+              9.680886,
+              48.001503
+            ],
+            [
+              9.854647,
+              47.891479
+            ],
+            [
+              10.010743,
+              47.770357
+            ],
+            [
+              10.147709,
+              47.639375
+            ],
+            [
+              10.264306,
+              47.499864
+            ],
+            [
+              10.359525,
+              47.353229
+            ],
+            [
+              10.432601,
+              47.200935
+            ],
+            [
+              10.483002,
+              47.044488
+            ],
+            [
+              10.510435,
+              46.885425
+            ],
+            [
+              10.51484,
+              46.725291
+            ],
+            [
+              10.496377,
+              46.565632
+            ],
+            [
+              10.455423,
+              46.407973
+            ],
+            [
+              10.392558,
+              46.253806
+            ],
+            [
+              10.308553,
+              46.10458
+            ],
+            [
+              10.204356,
+              45.961685
+            ],
+            [
+              10.081082,
+              45.826442
+            ],
+            [
+              9.939994,
+              45.700094
+            ],
+            [
+              9.782493,
+              45.583791
+            ],
+            [
+              9.610101,
+              45.478588
+            ],
+            [
+              9.424446,
+              45.385433
+            ],
+            [
+              9.227254,
+              45.305162
+            ],
+            [
+              9.020325,
+              45.23849
+            ],
+            [
+              8.805529,
+              45.186011
+            ],
+            [
+              8.584788,
+              45.148191
+            ],
+            [
+              8.36006,
+              45.125365
+            ],
+            [
+              8.133333,
+              45.117734
+            ],
+            [
+              7.906607,
+              45.125365
+            ],
+            [
+              7.681879,
+              45.148191
+            ],
+            [
+              7.461137,
+              45.186011
+            ],
+            [
+              7.246342,
+              45.23849
+            ],
+            [
+              7.039413,
+              45.305162
+            ],
+            [
+              6.84222,
+              45.385433
+            ],
+            [
+              6.656566,
+              45.478588
+            ],
+            [
+              6.484174,
+              45.583791
+            ],
+            [
+              6.326672,
+              45.700094
+            ],
+            [
+              6.185585,
+              45.826442
+            ],
+            [
+              6.062311,
+              45.961685
+            ],
+            [
+              5.958114,
+              46.10458
+            ],
+            [
+              5.874108,
+              46.253806
+            ],
+            [
+              5.811243,
+              46.407973
+            ],
+            [
+              5.770289,
+              46.565632
+            ],
+            [
+              5.751827,
+              46.725291
+            ],
+            [
+              5.756231,
+              46.885425
+            ],
+            [
+              5.783665,
+              47.044488
+            ],
+            [
+              5.834066,
+              47.200935
+            ],
+            [
+              5.907141,
+              47.353229
+            ],
+            [
+              6.002361,
+              47.499864
+            ],
+            [
+              6.118957,
+              47.639375
+            ],
+            [
+              6.255924,
+              47.770357
+            ],
+            [
+              6.41202,
+              47.891479
+            ],
+            [
+              6.585781,
+              48.001503
+            ],
+            [
+              6.775525,
+              48.099295
+            ],
+            [
+              6.979375,
+              48.183842
+            ],
+            [
+              7.195274,
+              48.254262
+            ],
+            [
+              7.421007,
+              48.309818
+            ],
+            [
+              7.654233,
+              48.349925
+            ],
+            [
+              7.892512,
+              48.37416
+            ],
+            [
+              8.133333,
+              48.382266
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "id": "W2976/26",
+        "notam": "W2976/26",
+        "on_chart": false,
+        "valid_from_utc": "2026-11-03T17:00:00+00:00",
+        "valid_to_utc": "2026-11-03T20:00:00+00:00",
+        "lower": {
+          "raw": "GND",
+          "meters": 0,
+          "feet": 0,
+          "flight_level": null,
+          "gnd": true
+        },
+        "upper": {
+          "raw": "FL130",
+          "meters": 3962,
+          "feet": 13000,
+          "flight_level": 130,
+          "gnd": false
+        },
+        "center": {
+          "lat": 46.75,
+          "lon": 8.133333
+        },
+        "radius_m": 181500,
+        "radius_candidates_m": {
+          "table_km": 181500
+        },
+        "geometry_source": "unmapped",
+        "text": "MIL NGT FLT WITH HEL AND PROPELLER ACFT WILL TAKE PLACE WI FLW TRG AREAS: CHAUX- DE-FONDS, UZWIL, ZUGERSEE, ALPSTEIN, BURGDORF, MOUDON, TICINO REF VFR MANUAL RAC 3-2-3 (MIL NGT FLT CHART). UPPER LIMIT: AIRSPACE CLASS E OR MAX ACCORDING TO ITEM G."
       }
     }
   ]
