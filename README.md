@@ -33,7 +33,10 @@ air displays, obstacles and similar items.
    downloads today's and tomorrow's DABS PDFs from Skybriefing.
 2. `scripts/dabs_parser.py` extracts the text with `pdftotext` and parses each entry
    into GeoJSON. `scripts/shv_airspaces.py` swaps circles for exact polygons from the
-   [SHV/FSVL airspace API](https://airspace.shv-fsvl.ch/) where it has them.
+   [SHV/FSVL airspace API](https://airspace.shv-fsvl.ch/) where it has them. Those outlines
+   change about once a year, so a separate workflow (`.github/workflows/update-airspaces.yml`)
+   fetches them once a day, early in the morning, and keeps the ones the DABS uses in
+   `data/shv/`; the hourly run reads that copy.
 3. The result is committed to `data/dabs-<date>.geojson`, but only when the content has
    actually changed. Source PDFs are archived under `data/pdf/`.
 4. The same run writes the versioned format for apps to `api/v1/` (`scripts/api_v1.py`):
@@ -52,12 +55,12 @@ stale data online.
 | Path | Contents |
 | --- | --- |
 | `scripts/` | Fetching and parsing scripts (Python standard library only) |
-| `data/` | Generated GeoJSON per day, plus the archived source PDFs |
+| `data/` | Generated GeoJSON per day, the archived source PDFs, and the kept SHV/FSVL outlines (`data/shv/`) |
 | `api/v1/` | The versioned format for apps: generated days and index, their JSON Schemas and documentation |
 | `web/` | The frontend: `index.html`, `app.js`, `i18n.js`, `style.css` |
 | `tests/` | Python unit tests for the parser and fetch scripts |
 | `tests-ui/` | Playwright tests for the frontend |
-| `.github/workflows/` | Tests, hourly data update, Pages deployment |
+| `.github/workflows/` | Tests, hourly data update, daily airspace update, Pages deployment |
 
 ## Running locally
 

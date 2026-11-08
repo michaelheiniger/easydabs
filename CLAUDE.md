@@ -21,6 +21,10 @@ scripts/api_v1.py        Maps the parser's GeoJSON to the versioned format for a
                           website's and may change; api/v1 is a contract with apps (see
                           api/v1/README.md): only additive changes within v1, anything
                           else goes to a new api/v2. Keep the schemas in sync.
+scripts/shv_airspaces.py Swaps covering circles for SHV/FSVL outlines. Run on its own, keeps
+                          the DABS-activated airspaces in data/shv/dabs-airspaces.geojson;
+                          fetch_dabs.py reads that copy (fetching once only if it is missing),
+                          since the outlines change about once a year.
 data/*.geojson           Output of fetch_dabs.py. Filename date comes from the PDF's own
                           header (dabs_date), not wall-clock - see parse_header().
 data/pdf/*.pdf           Every successfully parsed source PDF, named
@@ -47,6 +51,8 @@ tests-ui/                Playwright suite for the frontend (see "UI tests" below
   tests.yml               Python + UI tests, on every PR and push to main.
   update-dabs.yml          Hourly cron: runs fetch_dabs.py, commits data/ and api/ to
                             main only if content actually changed (no commit spam).
+  update-airspaces.yml     Daily, early morning UTC: runs shv_airspaces.py, commits data/shv/
+                            if the outlines changed.
   deploy-pages.yml         On push to main: stages the site into a temp dir, stamps the
                             commit SHA onto web/*.{css,js} URLs there, deploys via
                             actions/deploy-pages. See "Cache-busting" below for why.

@@ -8,7 +8,8 @@ Fails loudly (exit code 1) if a fetch or parse fails, so a scheduled job never
 silently leaves stale data published. The one exception is a 404, which just means
 that day's DABS isn't published yet: that stops the script cleanly (exit code 0),
 keeping whatever was already written for earlier sources. Exact area outlines from
-shv_airspaces are best-effort: if that API fails, circles are kept and a warning is printed. The same applies when the
+shv_airspaces are best-effort, read from the copy kept in data/shv/ (refreshed daily by
+update-airspaces.yml) and fetched once if there is none: if that fails, circles are kept and a warning is printed. The same applies when the
 downloaded PDF just says the DABS "is not available yet".
 
 Each successfully parsed PDF is also kept as data/pdf/dabs-<date>-v<version>-<generated>.pdf.
@@ -33,7 +34,14 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 import api_v1
 from dabs_parser import NotAvailableError, parse
-from shv_airspaces import apply_airspace_polygons, fetch_airspaces
+from shv_airspaces import (
+    KEPT_FILE,
+    apply_airspace_polygons,
+    dabs_airspaces,
+    fetch_airspaces,
+    load_airspaces,
+    save_airspaces,
+)
 
 SOURCES = {
     "today": "https://www.skybriefing.com/o/dabs?today",
@@ -53,6 +61,23 @@ def pdf_name(fc) -> str:
     return f"dabs-{props['dabs_date']}-v{props['version']}-{generated}.pdf"
 
 
+def airspaces_for(data_dir: Path):
+    """Exact outlines from the copy the daily job keeps; fetched and kept once if there is none yet.
+
+    They are an enhancement: if this BETA API is down, the covering circles stay rather than
+    the whole run failing."""
+    kept = load_airspaces(data_dir / KEPT_FILE)
+    if kept is not None:
+        return kept
+    try:
+        fetched = dabs_airspaces(fetch_airspaces())
+    except Exception as e:
+        print(f"WARNING: airspace outlines unavailable, using circles: {e}", file=sys.stderr)
+        return None
+    save_airspaces(data_dir / KEPT_FILE, fetched)
+    return fetched
+
+
 def main():
     repo = Path(__file__).parent.parent
     data_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else repo / "data"
@@ -60,13 +85,7 @@ def main():
     pdf_dir = data_dir / "pdf"
     pdf_dir.mkdir(parents=True, exist_ok=True)
 
-    # Exact outlines are an enhancement: if this BETA API is down, fall back to the
-    # covering circles rather than failing the whole run.
-    try:
-        airspaces = fetch_airspaces()
-    except Exception as e:
-        print(f"WARNING: airspace outlines unavailable, using circles: {e}", file=sys.stderr)
-        airspaces = None
+    airspaces = airspaces_for(data_dir)
 
     not_published = False
     with tempfile.TemporaryDirectory() as tmp:

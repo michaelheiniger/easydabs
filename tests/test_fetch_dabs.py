@@ -219,5 +219,31 @@ class FetchTests(unittest.TestCase):
             self.assertEqual(seen_requests[0].get_header("User-agent"), "easydabs/1.0")
 
 
+class AirspacesForTests(unittest.TestCase):
+    LSR7 = {"type": "Feature", "properties": {"Name": "LSR7 Hongrin", "DABS": True},
+            "geometry": {"type": "Polygon", "coordinates": [[[7.0, 46.0], [7.1, 46.0], [7.1, 46.1], [7.0, 46.0]]]}}
+    CTR = {"type": "Feature", "properties": {"Name": "CTR Bern", "DABS": False},
+           "geometry": {"type": "Polygon", "coordinates": [[[7.4, 46.9], [7.5, 46.9], [7.5, 47.0], [7.4, 46.9]]]}}
+
+    def test_uses_the_kept_copy_without_asking_the_api(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            kept = fetch_dabs.dabs_airspaces({"features": [self.LSR7]})
+            fetch_dabs.save_airspaces(Path(tmp) / fetch_dabs.KEPT_FILE, kept)
+            with patch.object(fetch_dabs, "fetch_airspaces", side_effect=AssertionError("asked the API")):
+                self.assertEqual(fetch_dabs.airspaces_for(Path(tmp)), kept)
+
+    def test_fetches_and_keeps_the_dabs_airspaces_once_when_none_are_kept(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch_airspaces", return_value={"features": [self.LSR7, self.CTR]}):
+                airspaces = fetch_dabs.airspaces_for(Path(tmp))
+            self.assertEqual([f["properties"]["Name"] for f in airspaces["features"]], ["LSR7 Hongrin"])
+            self.assertEqual(fetch_dabs.load_airspaces(Path(tmp) / fetch_dabs.KEPT_FILE), airspaces)
+
+    def test_keeps_the_circles_when_the_api_is_down(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch_airspaces", side_effect=OSError("down")), patch("sys.stderr"):
+                self.assertIsNone(fetch_dabs.airspaces_for(Path(tmp)))
+
+
 if __name__ == "__main__":
     unittest.main()

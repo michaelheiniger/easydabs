@@ -7,12 +7,21 @@ by area id (e.g. DABS 'LSR7' <-> SHV 'LSR7 Hongrin').
 
 Docs: https://airspace.shv-fsvl.ch/doc/beta/geojson (BETA API - hence the fail-soft
 callers, see fetch_dabs.py).
+
+The outlines change about once a year, so they are not fetched on every hourly run:
+run on its own (python shv_airspaces.py [data_dir]), this script keeps the airspaces
+the DABS activates in data/shv/, and update-airspaces.yml runs it once a day, early in
+the morning. fetch_dabs.py reads that copy.
 """
 import json
 import re
+import sys
 import urllib.request
+from pathlib import Path
 
 URL = "https://airspace.shv-fsvl.ch/api/beta/geojson/airspaces"
+# Relative to the data directory.
+KEPT_FILE = Path("shv") / "dabs-airspaces.geojson"
 
 
 def _norm(s: str) -> str:
@@ -67,3 +76,39 @@ def apply_airspace_polygons(fc: dict, airspaces: dict) -> int:
         props["geometry_source"] = "airspace"
         replaced += 1
     return replaced
+
+
+def dabs_airspaces(airspaces: dict) -> dict:
+    """Only the airspaces the DABS activates: all apply_airspace_polygons() uses."""
+    return {
+        "type": "FeatureCollection",
+        "features": [f for f in airspaces.get("features", []) if f.get("properties", {}).get("DABS")],
+    }
+
+
+def save_airspaces(path: Path, airspaces: dict) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(airspaces, ensure_ascii=False, separators=(",", ":")))
+
+
+def load_airspaces(path: Path):
+    """The kept airspaces, or None when there is no readable copy."""
+    try:
+        return json.loads(path.read_text())
+    except (FileNotFoundError, ValueError):
+        return None
+
+
+def main():
+    data_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).parent.parent / "data"
+    try:
+        airspaces = dabs_airspaces(fetch_airspaces())
+    except Exception as e:  # fail loudly for CI; the copy kept so far stays in use
+        print(f"FETCH ERROR: {e}", file=sys.stderr)
+        sys.exit(1)
+    save_airspaces(data_dir / KEPT_FILE, airspaces)
+    print(f"OK: {len(airspaces['features'])} DABS airspaces kept", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    main()

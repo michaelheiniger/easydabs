@@ -1,11 +1,18 @@
 import copy
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 
-from shv_airspaces import apply_airspace_polygons, index_by_id  # noqa: E402
+from shv_airspaces import (  # noqa: E402
+    apply_airspace_polygons,
+    dabs_airspaces,
+    index_by_id,
+    load_airspaces,
+    save_airspaces,
+)
 
 RING_A = [[7.0, 46.0], [7.1, 46.0], [7.1, 46.1], [7.0, 46.0]]
 RING_B = [[8.0, 46.0], [8.1, 46.0], [8.1, 46.1], [8.0, 46.0]]
@@ -72,6 +79,31 @@ class ApplyTests(unittest.TestCase):
         f = shv("LSR7 Hongrin", RING_A)
         f["geometry"]["type"] = "Point"
         self.assertEqual(index_by_id({"features": [f]}), {})
+
+
+class KeepTests(unittest.TestCase):
+    def test_keeps_only_the_airspaces_the_dabs_activates(self):
+        airspaces = {"features": [shv("LSR7 Hongrin", RING_A), shv("CTR Bern", RING_B, dabs=False)]}
+        kept = dabs_airspaces(airspaces)
+        self.assertEqual([f["properties"]["Name"] for f in kept["features"]], ["LSR7 Hongrin"])
+        self.assertEqual(kept["type"], "FeatureCollection")
+
+    def test_reads_back_what_it_saved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "shv" / "dabs-airspaces.geojson"
+            kept = dabs_airspaces({"features": [shv("LSR7 Hongrin", RING_A)]})
+            save_airspaces(path, kept)
+            self.assertEqual(load_airspaces(path), kept)
+
+    def test_nothing_kept_reads_as_none(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertIsNone(load_airspaces(Path(tmp) / "missing.geojson"))
+
+    def test_an_unreadable_copy_reads_as_none(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "dabs-airspaces.geojson"
+            path.write_text('{"features": [')
+            self.assertIsNone(load_airspaces(path))
 
 
 if __name__ == "__main__":
