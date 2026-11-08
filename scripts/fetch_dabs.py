@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Fetch today's and tomorrow's DABS PDFs from Skybriefing and parse them into GeoJSON.
 
-Usage: python fetch_dabs.py [data_dir]
+Usage: python fetch_dabs.py [data_dir [api_dir]]
 
 Requires: poppler-utils (pdftotext), same as dabs_parser.py. No Python dependencies.
 Fails loudly (exit code 1) if a fetch or parse fails, so a scheduled job never
@@ -17,6 +17,9 @@ the time it was downloaded, so fetching the same version again just overwrites t
 file instead of adding a new one. A PDF that fails to parse is kept for debugging as
 data/pdf/failed/<label>-<download time>-UTC.pdf, since it has no parsed header to name
 it after.
+
+Each parsed day is also written in the versioned format for apps (api_v1.py), and the
+index of the days still to come is rewritten, even when a day isn't published yet.
 """
 import json
 import shutil
@@ -28,6 +31,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
+import api_v1
 from dabs_parser import NotAvailableError, parse
 from shv_airspaces import apply_airspace_polygons, fetch_airspaces
 
@@ -50,7 +54,9 @@ def pdf_name(fc) -> str:
 
 
 def main():
-    data_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).parent.parent / "data"
+    repo = Path(__file__).parent.parent
+    data_dir = Path(sys.argv[1]) if len(sys.argv) > 1 else repo / "data"
+    api_dir = Path(sys.argv[2]) if len(sys.argv) > 2 else repo / "api" / "v1"
     pdf_dir = data_dir / "pdf"
     pdf_dir.mkdir(parents=True, exist_ok=True)
 
@@ -62,6 +68,7 @@ def main():
         print(f"WARNING: airspace outlines unavailable, using circles: {e}", file=sys.stderr)
         airspaces = None
 
+    not_published = False
     with tempfile.TemporaryDirectory() as tmp:
         for label, url in SOURCES.items():
             pdf_path = Path(tmp) / f"{label}.pdf"
@@ -70,7 +77,8 @@ def main():
             except urllib.error.HTTPError as e:
                 if e.code == 404:
                     print(f"No document for {label} available")
-                    sys.exit(0)
+                    not_published = True
+                    break
                 print(f"FETCH ERROR ({label}): {e}", file=sys.stderr)
                 sys.exit(1)
             except Exception as e:
@@ -80,7 +88,8 @@ def main():
                 fc = parse(str(pdf_path))
             except NotAvailableError:
                 print(f"No document for {label} available (not published yet)")
-                sys.exit(0)
+                not_published = True
+                break
             except Exception as e:
                 failed_dir = pdf_dir / "failed"
                 failed_dir.mkdir(exist_ok=True)
@@ -93,12 +102,17 @@ def main():
                 apply_airspace_polygons(fc, airspaces)
             out_path = data_dir / f"dabs-{fc['properties']['dabs_date']}.geojson"
             out_path.write_text(json.dumps(fc, indent=2, ensure_ascii=False))
+            api_v1.write_day(api_dir, fc)
             shutil.copyfile(pdf_path, pdf_dir / pdf_name(fc))
             print(
                 f"OK: {label} -> {out_path.name}, {len(fc['features'])} areas, "
                 f"v{fc['properties']['version']}",
                 file=sys.stderr,
             )
+
+    api_v1.write_index(api_dir, api_v1.utc_today())
+    if not_published:
+        sys.exit(0)
 
 
 if __name__ == "__main__":

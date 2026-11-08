@@ -15,6 +15,12 @@ scripts/fetch_dabs.py    Downloads today's + tomorrow's PDFs from skybriefing.co
                           runs them through dabs_parser, writes data/dabs-<date>.geojson.
                           Fails loudly (exit 1) on any error - never publish stale data
                           silently.
+scripts/api_v1.py        Maps the parser's GeoJSON to the versioned format for apps and
+                          writes api/v1 (called by fetch_dabs.py; run on its own it
+                          rebuilds api/v1 from data/). The parser's output is the
+                          website's and may change; api/v1 is a contract with apps (see
+                          api/v1/README.md): only additive changes within v1, anything
+                          else goes to a new api/v2. Keep the schemas in sync.
 data/*.geojson           Output of fetch_dabs.py. Filename date comes from the PDF's own
                           header (dabs_date), not wall-clock - see parse_header().
 data/pdf/*.pdf           Every successfully parsed source PDF, named
@@ -30,11 +36,16 @@ web/                     Static frontend: index.html, app.js, i18n.js, style.css
                           No build step, no framework, no bundler. Leaflet loaded from
                           unpkg. Deployed as-is.
 index.html (repo root)   Redirects to web/index.html, so the Pages root URL works.
-tests/                   Python unittest suite for the parser/fetch scripts.
+api/v1/                  Generated days (dabs-<date>.json) and index.json, plus the
+                          hand-written JSON Schemas and README describing the format.
+                          The day-file glob in api_v1.py must not match the schemas.
+tests/                   Python unittest suite for the parser/fetch scripts. Needs
+                          requirements-dev.txt (jsonschema, test-only: the scripts stay
+                          standard-library only).
 tests-ui/                Playwright suite for the frontend (see "UI tests" below).
 .github/workflows/
   tests.yml               Python + UI tests, on every PR and push to main.
-  update-dabs.yml          Hourly cron: runs fetch_dabs.py, commits data/*.geojson to
+  update-dabs.yml          Hourly cron: runs fetch_dabs.py, commits data/ and api/ to
                             main only if content actually changed (no commit spam).
   deploy-pages.yml         On push to main: stages the site into a temp dir, stamps the
                             commit SHA onto web/*.{css,js} URLs there, deploys via
@@ -44,7 +55,9 @@ tests-ui/                Playwright suite for the frontend (see "UI tests" below
 ## Running things locally
 
 ```bash
-# Python tests (parser/fetch logic)
+# Python tests (parser/fetch logic) - first time only:
+pip install -r requirements-dev.txt
+# every time:
 python -m unittest discover -s tests -p "test_*.py" -v
 
 # UI tests (frontend behavior) - first time only:

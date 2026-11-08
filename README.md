@@ -36,7 +36,11 @@ air displays, obstacles and similar items.
    [SHV/FSVL airspace API](https://airspace.shv-fsvl.ch/) where it has them.
 3. The result is committed to `data/dabs-<date>.geojson`, but only when the content has
    actually changed. Source PDFs are archived under `data/pdf/`.
-4. The static frontend in `web/` (plain HTML/JS/CSS with [Leaflet](https://leafletjs.com/),
+4. The same run writes the versioned format for apps to `api/v1/` (`scripts/api_v1.py`):
+   one file per day and an index of the days still to come. Unlike the website's files,
+   this format is a contract, described in [`api/v1/README.md`](api/v1/README.md) and
+   checked against its JSON Schemas in CI.
+5. The static frontend in `web/` (plain HTML/JS/CSS with [Leaflet](https://leafletjs.com/),
    no build step) loads the GeoJSON and renders it. It is deployed to GitHub Pages by
    `.github/workflows/deploy-pages.yml`.
 
@@ -49,6 +53,7 @@ stale data online.
 | --- | --- |
 | `scripts/` | Fetching and parsing scripts (Python standard library only) |
 | `data/` | Generated GeoJSON per day, plus the archived source PDFs |
+| `api/v1/` | The versioned format for apps: generated days and index, their JSON Schemas and documentation |
 | `web/` | The frontend: `index.html`, `app.js`, `i18n.js`, `style.css` |
 | `tests/` | Python unit tests for the parser and fetch scripts |
 | `tests-ui/` | Playwright tests for the frontend |
@@ -75,7 +80,12 @@ python3 scripts/fetch_dabs.py
 
 ## Tests
 
-Python tests (parser and fetch logic; they need neither `pdftotext` nor network access):
+Python tests (parser and fetch logic; they need neither `pdftotext` nor network access).
+They need `jsonschema`, to check the API files; the scripts themselves don't:
+
+```bash
+pip install -r requirements-dev.txt
+```
 
 ```bash
 python -m unittest discover -s tests -p "test_*.py" -v

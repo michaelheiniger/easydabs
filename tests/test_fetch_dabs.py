@@ -3,6 +3,7 @@ import sys
 import tempfile
 import unittest
 import urllib.error
+from datetime import date
 from pathlib import Path
 from unittest.mock import patch
 
@@ -26,18 +27,60 @@ def fake_fetch(url, dest):
     dest.write_bytes(b"%PDF " + url.encode())
 
 
+def api_dir(tmp) -> str:
+    # Always passed explicitly: the default is the repository's own api/v1.
+    return str(Path(tmp) / "api" / "v1")
+
+
 class MainTests(unittest.TestCase):
     def setUp(self):
         # Never hit the real SHV API from unit tests.
         patcher = patch.object(fetch_dabs, "fetch_airspaces", return_value=None)
         patcher.start()
         self.addCleanup(patcher.stop)
+        today = patch.object(fetch_dabs.api_v1, "utc_today", return_value=date(2026, 10, 3))
+        today.start()
+        self.addCleanup(today.stop)
+
+    def test_writes_each_day_and_the_index_in_the_api_format(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
+                 patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY, FC_TOMORROW]):
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
+                fetch_dabs.main()
+
+            api = Path(api_dir(tmp))
+            self.assertEqual(
+                sorted(p.name for p in api.iterdir()),
+                ["dabs-2026-10-03.json", "dabs-2026-10-04.json", "index.json"],
+            )
+            index = json.loads((api / "index.json").read_text())
+            self.assertEqual([d["dabs_date"] for d in index["days"]], ["2026-10-03", "2026-10-04"])
+
+    def test_index_is_written_when_tomorrow_is_not_published_yet(self):
+        not_found = urllib.error.HTTPError("https://example.test", 404, "Not Found", {}, None)
+
+        def fetch_today_only(url, dest):
+            if url == fetch_dabs.SOURCES["tomorrow"]:
+                raise not_found
+            fake_fetch(url, dest)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            with patch.object(fetch_dabs, "fetch", side_effect=fetch_today_only), \
+                 patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY]), \
+                 patch("builtins.print"):
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
+                with self.assertRaises(SystemExit):
+                    fetch_dabs.main()
+
+            index = json.loads((Path(api_dir(tmp)) / "index.json").read_text())
+            self.assertEqual([d["dabs_date"] for d in index["days"]], ["2026-10-03"])
 
     def test_writes_one_geojson_file_per_source(self):
         with tempfile.TemporaryDirectory() as tmp:
             with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY, FC_TOMORROW]):
-                sys.argv = ["fetch_dabs.py", tmp]
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
                 fetch_dabs.main()
 
             today_path = Path(tmp) / "dabs-2026-10-03.geojson"
@@ -51,7 +94,7 @@ class MainTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY, FC_TOMORROW]):
-                sys.argv = ["fetch_dabs.py", tmp]
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
                 fetch_dabs.main()
 
             pdf_dir = Path(tmp) / "pdf"
@@ -69,14 +112,14 @@ class MainTests(unittest.TestCase):
             target = Path(tmp) / "nested" / "data"
             with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY, FC_TOMORROW]):
-                sys.argv = ["fetch_dabs.py", str(target)]
+                sys.argv = ["fetch_dabs.py", str(target), api_dir(tmp)]
                 fetch_dabs.main()
             self.assertTrue(target.is_dir())
 
     def test_exits_nonzero_when_fetch_fails(self):
         with tempfile.TemporaryDirectory() as tmp:
             with patch.object(fetch_dabs, "fetch", side_effect=OSError("network down")):
-                sys.argv = ["fetch_dabs.py", tmp]
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
                 with self.assertRaises(SystemExit) as ctx:
                     fetch_dabs.main()
                 self.assertEqual(ctx.exception.code, 1)
@@ -93,7 +136,7 @@ class MainTests(unittest.TestCase):
             with patch.object(fetch_dabs, "fetch", side_effect=fetch_today_only), \
                  patch.object(fetch_dabs, "parse", side_effect=[FC_TODAY]), \
                  patch("builtins.print") as mock_print:
-                sys.argv = ["fetch_dabs.py", tmp]
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
                 with self.assertRaises(SystemExit) as ctx:
                     fetch_dabs.main()
                 self.assertEqual(ctx.exception.code, 0)
@@ -107,7 +150,7 @@ class MainTests(unittest.TestCase):
                  patch.object(fetch_dabs, "parse",
                               side_effect=[FC_TODAY, fetch_dabs.NotAvailableError("x")]), \
                  patch("builtins.print"):
-                sys.argv = ["fetch_dabs.py", tmp]
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
                 with self.assertRaises(SystemExit) as ctx:
                     fetch_dabs.main()
                 self.assertEqual(ctx.exception.code, 0)
@@ -118,7 +161,7 @@ class MainTests(unittest.TestCase):
         server_error = urllib.error.HTTPError("https://example.test", 500, "Server Error", {}, None)
         with tempfile.TemporaryDirectory() as tmp:
             with patch.object(fetch_dabs, "fetch", side_effect=server_error):
-                sys.argv = ["fetch_dabs.py", tmp]
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
                 with self.assertRaises(SystemExit) as ctx:
                     fetch_dabs.main()
                 self.assertEqual(ctx.exception.code, 1)
@@ -127,7 +170,7 @@ class MainTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse", side_effect=ValueError("bad layout")):
-                sys.argv = ["fetch_dabs.py", tmp]
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
                 with self.assertRaises(SystemExit) as ctx:
                     fetch_dabs.main()
                 self.assertEqual(ctx.exception.code, 1)
@@ -137,7 +180,7 @@ class MainTests(unittest.TestCase):
             with patch.object(fetch_dabs, "fetch", side_effect=fake_fetch), \
                  patch.object(fetch_dabs, "parse", side_effect=ValueError("bad layout")), \
                  patch("sys.stderr"):
-                sys.argv = ["fetch_dabs.py", tmp]
+                sys.argv = ["fetch_dabs.py", tmp, api_dir(tmp)]
                 with self.assertRaises(SystemExit):
                     fetch_dabs.main()
 
