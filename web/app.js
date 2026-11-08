@@ -142,21 +142,42 @@ function chZoneLabel(date) {
   return CH_DATETIME_FMT.formatToParts(date).find((p) => p.type === "timeZoneName").value;
 }
 
-function formatTimeRange(fromIso, toIso) {
+// Swiss calendar date of an instant, to tell when an end falls on the next day.
+const CH_DATE_FMT = new Intl.DateTimeFormat("en-CA", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  timeZone: "Europe/Zurich",
+});
+const LAST_PRINTED_MINUTE_MS = 60 * 1000;
+
+// DABS times are real UTC instants, and a DABS day is a UTC day: all-day
+// activities read 0000-2359 and night windows follow the clock change in UTC
+// (see the api/v1 README). 2359 stands for the end of that UTC day, and
+// 0000/2359 mark where the bulletin cuts an activity that may run on into the
+// previous or next day's DABS. Converted to Swiss time like any instant.
+function validityOf(fromIso, toIso) {
   const from = new Date(fromIso);
-  const to = new Date(toIso);
-  // 00:00 and 23:59 UTC are DABS's own "start/end of this day" sentinels,
-  // not real instants - converting them faithfully to Swiss local time
-  // would shift them by the UTC offset (e.g. 23:59 UTC rolling into
-  // 01:59/00:59 the *next* calendar day), which misreads as "valid into
-  // tomorrow"/"valid since yesterday" even though the source means "all
-  // day, today". Show both as local 00:00/23:59 directly instead of doing
-  // the timezone conversion.
-  const isStartOfDay = from.getUTCHours() === 0 && from.getUTCMinutes() === 0;
-  const isEndOfDay = to.getUTCHours() === 23 && to.getUTCMinutes() === 59;
-  const fromDisplay = isStartOfDay ? "00:00" : CH_HM_FMT.format(from);
-  const toDisplay = isEndOfDay ? "23:59" : CH_HM_FMT.format(to);
-  return `${fromDisplay}–${toDisplay} ${chZoneLabel(from)} (${t("swissLocalTime")})`;
+  const printedTo = new Date(toIso);
+  const startsWithDay = from.getUTCHours() === 0 && from.getUTCMinutes() === 0;
+  const endsWithDay = printedTo.getUTCHours() === 23 && printedTo.getUTCMinutes() === 59;
+  const to = endsWithDay ? new Date(printedTo.getTime() + LAST_PRINTED_MINUTE_MS) : printedTo;
+  return { from, to, startsWithDay, endsWithDay };
+}
+
+function formatTimeRange(fromIso, toIso) {
+  const { from, to } = validityOf(fromIso, toIso);
+  const nextDay = CH_DATE_FMT.format(to) !== CH_DATE_FMT.format(from) ? ` ${t("nextDay")}` : "";
+  return `${CH_HM_FMT.format(from)}–${CH_HM_FMT.format(to)}${nextDay} ${chZoneLabel(from)} (${t("swissLocalTime")})`;
+}
+
+// Where the bulletin cuts an activity at its UTC day, say that it may go on.
+function validityNotesHtml(fromIso, toIso) {
+  const { startsWithDay, endsWithDay } = validityOf(fromIso, toIso);
+  const notes = [];
+  if (startsWithDay) notes.push(t("validityMayHaveStarted"));
+  if (endsWithDay) notes.push(t("validityMayGoOn"));
+  return notes.map((note) => `<div class="validity-note">${note}</div>`).join("");
 }
 
 function formatSwissDateTime(iso) {
@@ -185,7 +206,7 @@ function popupHtml(props) {
     <div class="area-popup">
       <h3>${props.id}${notamSuffix}<span class="badge ${badgeClass}">${badgeText}</span></h3>
       <dl>
-        <dt>${t("popupValidity")}</dt><dd>${formatTimeRange(props.valid_from_utc, props.valid_to_utc)}</dd>
+        <dt>${t("popupValidity")}</dt><dd>${formatTimeRange(props.valid_from_utc, props.valid_to_utc)}${validityNotesHtml(props.valid_from_utc, props.valid_to_utc)}</dd>
         <dt>${t("popupVertical")}</dt><dd>${formatAlt(props.lower)} &ndash; ${formatAlt(props.upper)}</dd>
         <dt>${t("popupShape")}</dt><dd>${geomNote}</dd>
       </dl>

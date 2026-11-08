@@ -101,69 +101,51 @@ test.describe("area selection", () => {
 });
 
 test.describe("validity time formatting", () => {
-  test('a 23:59 UTC end time shows as 23:59 local, not rolled into the next day', async ({ page }) => {
-    // Regression test: 23:59 UTC is DABS's "end of this day" sentinel, not a
-    // real instant. Converting it faithfully to Swiss local time rolls it
-    // into 01:59/00:59 the *next* calendar day, which reads as "valid into
-    // tomorrow" even though the source means "until end of today".
-    const fc = {
-      type: "FeatureCollection",
-      properties: { dabs_date: "2026-01-01", version: 1, generated_utc: "2026-01-01T10:00:00+00:00" },
-      features: [
-        {
-          type: "Feature",
-          geometry: { type: "Polygon", coordinates: [[[7.0, 47.0], [7.01, 47.0], [7.01, 47.01], [7.0, 47.01], [7.0, 47.0]]] },
-          properties: {
-            id: "ENDOFDAY", notam: "ENDOFDAY", on_chart: true,
-            valid_from_utc: "2026-01-01T05:00:00+00:00",
-            valid_to_utc: "2026-01-01T23:59:00+00:00",
-            lower: { raw: "GND", meters: 0, feet: 0, flight_level: null, gnd: true },
-            upper: { raw: "1000m / 3281ft", meters: 1000, feet: 3281, flight_level: null, gnd: false },
-            center: { lat: 47.005, lon: 7.005 }, radius_m: 500,
-            radius_candidates_m: { table_km: 500 }, geometry_source: "circle",
-            text: "TEST END OF DAY.",
-          },
-        },
-      ],
-    };
-    await mockDabsData(page, fc);
+  // DABS times are UTC and a DABS day is a UTC day: 2359 stands for the end of
+  // that day, and 0000/2359 mark where the bulletin cuts an activity that may
+  // run on. Times are converted to Swiss time like any instant (CET in January).
+  function withValidity(fromUtc, toUtc) {
+    const fc = JSON.parse(JSON.stringify(FIXTURE_FC));
+    fc.features = [fc.features[0]];
+    Object.assign(fc.features[0].properties, { valid_from_utc: fromUtc, valid_to_utc: toUtc });
+    return fc;
+  }
+
+  test("converts UTC times to Swiss time", async ({ page }) => {
+    await mockDabsData(page, withValidity("2026-01-01T05:00:00+00:00", "2026-01-01T10:00:00+00:00"));
     await page.goto("/web/index.html");
     const timeText = await page.locator(".area-item-time").first().textContent();
-    expect(timeText).toContain("23:59");
-    expect(timeText).not.toMatch(/0[01]:59/);
+    expect(timeText).toMatch(/^06:00–11:00 /);
   });
 
-  test('a 00:00 UTC start time shows as 00:00 local, not shifted into the prior evening', async ({ page }) => {
-    // Regression test: 00:00 UTC is DABS's "start of this day" sentinel,
-    // not a real instant. Converting it faithfully to Swiss local time
-    // shifts it to 01:00/02:00 the *same* day, which is a smaller, less
-    // obviously-wrong error than the 23:59 case, but still means "start of
-    // day" (00:00) and "start of day plus the CH/UTC offset" display
-    // differently.
-    const fc = {
-      type: "FeatureCollection",
-      properties: { dabs_date: "2026-01-01", version: 1, generated_utc: "2026-01-01T10:00:00+00:00" },
-      features: [
-        {
-          type: "Feature",
-          geometry: { type: "Polygon", coordinates: [[[7.0, 47.0], [7.01, 47.0], [7.01, 47.01], [7.0, 47.01], [7.0, 47.0]]] },
-          properties: {
-            id: "STARTOFDAY", notam: "STARTOFDAY", on_chart: true,
-            valid_from_utc: "2026-01-01T00:00:00+00:00",
-            valid_to_utc: "2026-01-01T10:00:00+00:00",
-            lower: { raw: "GND", meters: 0, feet: 0, flight_level: null, gnd: true },
-            upper: { raw: "1000m / 3281ft", meters: 1000, feet: 3281, flight_level: null, gnd: false },
-            center: { lat: 47.005, lon: 7.005 }, radius_m: 500,
-            radius_candidates_m: { table_km: 500 }, geometry_source: "circle",
-            text: "TEST START OF DAY.",
-          },
-        },
-      ],
-    };
-    await mockDabsData(page, fc);
+  test("an activity printed until 2359 UTC lasts until 01:00 Swiss time the next day", async ({ page }) => {
+    await mockDabsData(page, withValidity("2026-01-01T05:00:00+00:00", "2026-01-01T23:59:00+00:00"));
     await page.goto("/web/index.html");
     const timeText = await page.locator(".area-item-time").first().textContent();
-    expect(timeText).toMatch(/^00:00/);
+    expect(timeText).toMatch(/^06:00–01:00 \(\+1 day\)/);
+  });
+
+  test("an activity printed from 0000 UTC starts at 01:00 Swiss time", async ({ page }) => {
+    await mockDabsData(page, withValidity("2026-01-01T00:00:00+00:00", "2026-01-01T10:00:00+00:00"));
+    await page.goto("/web/index.html");
+    const timeText = await page.locator(".area-item-time").first().textContent();
+    expect(timeText).toMatch(/^01:00–11:00 /);
+  });
+
+  test("an activity cut at both ends of its UTC day says it may have begun before and may go on", async ({ page }) => {
+    await mockDabsData(page, withValidity("2026-01-01T00:00:00+00:00", "2026-01-01T23:59:00+00:00"));
+    await page.goto("/web/index.html");
+    await page.locator(".area-item").first().click();
+    const notes = page.locator(".area-popup .validity-note");
+    await expect(notes).toHaveText([/begun the day before/, /go on the next day/]);
+  });
+
+  test("an activity within its day has no note", async ({ page }) => {
+    await mockDabsData(page, withValidity("2026-01-01T05:00:00+00:00", "2026-01-01T10:00:00+00:00"));
+    await page.goto("/web/index.html");
+    await page.locator(".area-item").first().click();
+    await expect(page.locator(".area-popup")).toBeVisible();
+    await expect(page.locator(".area-popup .validity-note")).toHaveCount(0);
   });
 });
 

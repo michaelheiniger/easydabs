@@ -232,13 +232,12 @@ not reliably reproduce it.
 - `utc_iso(date, hhmm, end=False)` in `dabs_parser.py` has an unused `end` parameter.
   Harmless dead code, not worth a drive-by removal unless you're already editing that
   function for another reason.
-- `formatTimeRange()` in `app.js` special-cases `valid_from_utc`/`valid_to_utc` of exactly
-  00:00/23:59 UTC and displays them as 00:00/23:59 Swiss local time, *not* the
-  timezone-converted value. This is deliberate: those are DABS's own "start/end of this
-  day" sentinels, not real instants, and converting them faithfully would shift them by the
-  UTC offset - most visibly for 23:59, which rolls into 00:59/01:59 the *next* calendar day
-  (correct math, wrong meaning: reads as "valid into tomorrow" when the source means "until
-  end of today"). Every other time in the popup/list still gets the real UTC→CH conversion.
+- `formatTimeRange()` in `app.js` shows an activity printed 0000-2359 UTC as 01:00-01:00 (+1 day) in Swiss
+  winter time. This is right: DABS times are real UTC instants and a DABS day is a UTC day (all-day activities read
+  0000-2359; night windows follow the clock change in UTC), so 2359 stands for the end of the UTC day. The site used
+  to show such times as 00:00/23:59 Swiss time, which shortened night activities and shifted all-day ones by the UTC
+  offset. Where the bulletin cuts an activity at 0000 or 2359, the popup says it may have begun the day before or may
+  go on the next day (`validityOf()`, `validityNotesHtml()`). `api/v1/README.md` documents the same reading for apps.
 - Some "Activities not shown on the DABS Chart Side" (e.g. military night flights
   "WI AIRSPACE SWITZERLAND") come with a ~180 km covering circle around the country's
   centre. `dabs_parser.py` marks any covering circle over `UNMAPPED_RADIUS_M` (100 km) as
