@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-13",
-    "version": 1,
-    "generated_utc": "2026-11-12T14:34:00+00:00"
+    "version": 2,
+    "generated_utc": "2026-11-13T07:45:00+00:00"
   },
   "features": [
     {
@@ -69,10 +69,10 @@
       },
       "properties": {
         "id": "LSR2",
-        "notam": "W3064/26",
+        "notam": "W3075/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-13T07:40:00+00:00",
-        "valid_to_utc": "2026-11-13T08:25:00+00:00",
+        "valid_from_utc": "2026-11-13T12:40:00+00:00",
+        "valid_to_utc": "2026-11-13T13:20:00+00:00",
         "lower": {
           "raw": "FL100",
           "meters": 3048,
@@ -96,7 +96,7 @@
           "table_km": 32600
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR2 HOHGANT ACT. 1240 - 1320"
+        "text": "R-AREA LSR2 HOHGANT ACT. 1445 - 1525"
       }
     },
     {
@@ -300,131 +300,6 @@
         "coordinates": [
           [
             [
-              7.46805555555556,
-              46.5175
-            ],
-            [
-              7.47472222222222,
-              46.5225
-            ],
-            [
-              7.48527777777778,
-              46.5216666666667
-            ],
-            [
-              7.49027777777778,
-              46.5227777777778
-            ],
-            [
-              7.49861111111111,
-              46.5244444444444
-            ],
-            [
-              7.50222222222222,
-              46.5236111111111
-            ],
-            [
-              7.52666666666667,
-              46.5205555555556
-            ],
-            [
-              7.53,
-              46.5180555555556
-            ],
-            [
-              7.53833333333333,
-              46.5108333333333
-            ],
-            [
-              7.54055555555556,
-              46.5069444444444
-            ],
-            [
-              7.52694444444444,
-              46.4972222222222
-            ],
-            [
-              7.51055555555556,
-              46.4955555555556
-            ],
-            [
-              7.50444444444444,
-              46.5002777777778
-            ],
-            [
-              7.49944444444444,
-              46.4980555555556
-            ],
-            [
-              7.48972222222222,
-              46.4952777777778
-            ],
-            [
-              7.48083333333333,
-              46.5047222222222
-            ],
-            [
-              7.46694444444444,
-              46.5097222222222
-            ],
-            [
-              7.46333333333333,
-              46.5122222222222
-            ],
-            [
-              7.46555555555556,
-              46.5141666666667
-            ],
-            [
-              7.46805555555556,
-              46.5175
-            ],
-            [
-              7.46805555555556,
-              46.5175
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR10",
-        "notam": "W3058/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-13T07:00:00+00:00",
-        "valid_to_utc": "2026-11-13T11:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "2900m / 9500ft",
-          "meters": 2900,
-          "feet": 9500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.509444,
-          "lon": 7.501944
-        },
-        "radius_m": 3000,
-        "radius_candidates_m": {
-          "table_km": 3000
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR10 FARMELBERG ACT DUE TO FRNG. 1200 - 1630"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
               9.26666666666667,
               47.2236111111111
             ],
@@ -497,7 +372,7 @@
       },
       "properties": {
         "id": "LSR14",
-        "notam": "W3060/26",
+        "notam": "W3076/26",
         "on_chart": true,
         "valid_from_utc": "2026-11-13T07:00:00+00:00",
         "valid_to_utc": "2026-11-13T16:00:00+00:00",
@@ -590,10 +465,10 @@
       },
       "properties": {
         "id": "LSR16",
-        "notam": "W3046/26",
+        "notam": "W3069/26",
         "on_chart": true,
         "valid_from_utc": "2026-11-13T07:00:00+00:00",
-        "valid_to_utc": "2026-11-13T16:30:00+00:00",
+        "valid_to_utc": "2026-11-13T11:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -617,7 +492,7 @@
           "table_km": 3700
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR16 ISONE 1 ACT DUE TO MIL UAV."
+        "text": "R-AREA LSR16 ISONE 1 ACT DUE TO MIL UAV. 1200 - 1530"
       }
     },
     {
@@ -663,10 +538,10 @@
       },
       "properties": {
         "id": "LSR17",
-        "notam": "W3048/26",
+        "notam": "W3073/26",
         "on_chart": true,
         "valid_from_utc": "2026-11-13T07:00:00+00:00",
-        "valid_to_utc": "2026-11-13T16:30:00+00:00",
+        "valid_to_utc": "2026-11-13T11:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -690,7 +565,7 @@
           "table_km": 2600
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR17 ISONE 2 ACT DUE TO MIL UAV."
+        "text": "R-AREA LSR17 ISONE 2 ACT DUE TO MIL UAV. 1200 - 1530"
       }
     },
     {
