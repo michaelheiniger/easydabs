@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-16",
-    "version": 1,
-    "generated_utc": "2026-11-15T14:41:00+00:00"
+    "version": 2,
+    "generated_utc": "2026-11-16T07:45:00+00:00"
   },
   "features": [
     {
@@ -392,172 +392,6 @@
         },
         "geometry_source": "airspace",
         "text": "R-AREA LSR15 ENTLEBUCH ACT."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              9.00944444444444,
-              46.1497222222222
-            ],
-            [
-              9.0325,
-              46.1483333333333
-            ],
-            [
-              9.06861111111111,
-              46.1355555555556
-            ],
-            [
-              9.08055555555556,
-              46.1219444444444
-            ],
-            [
-              9.0725,
-              46.1180555555556
-            ],
-            [
-              9.05277777777778,
-              46.1125
-            ],
-            [
-              9.02638888888889,
-              46.1130555555556
-            ],
-            [
-              9.00611111111111,
-              46.1133333333333
-            ],
-            [
-              8.98666666666666,
-              46.1194444444444
-            ],
-            [
-              8.98722222222222,
-              46.1305555555556
-            ],
-            [
-              8.99166666666667,
-              46.1430555555556
-            ],
-            [
-              9.00944444444444,
-              46.1497222222222
-            ],
-            [
-              9.00944444444444,
-              46.1497222222222
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR16",
-        "notam": "W3069/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-16T07:00:00+00:00",
-        "valid_to_utc": "2026-11-16T16:30:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "3200m / 10500ft",
-          "meters": 3200,
-          "feet": 10500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.126667,
-          "lon": 9.033333
-        },
-        "radius_m": 3700,
-        "radius_candidates_m": {
-          "table_km": 3700
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR16 ISONE 1 ACT DUE TO MIL UAV."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              8.98666666666666,
-              46.1194444444444
-            ],
-            [
-              9.00611111111111,
-              46.1133333333333
-            ],
-            [
-              9.02638888888889,
-              46.1130555555556
-            ],
-            [
-              9.01305555555556,
-              46.0997222222222
-            ],
-            [
-              8.99055555555556,
-              46.0952777777778
-            ],
-            [
-              8.9625,
-              46.1025
-            ],
-            [
-              8.98666666666666,
-              46.1194444444444
-            ],
-            [
-              8.98666666666666,
-              46.1194444444444
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR17",
-        "notam": "W3073/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-16T07:00:00+00:00",
-        "valid_to_utc": "2026-11-16T16:30:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "3200m / 10500ft",
-          "meters": 3200,
-          "feet": 10500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.107778,
-          "lon": 8.994444
-        },
-        "radius_m": 2600,
-        "radius_candidates_m": {
-          "table_km": 2600
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR17 ISONE 2 ACT DUE TO MIL UAV."
       }
     },
     {
@@ -1092,8 +926,8 @@
         "id": "W3015/26",
         "notam": "W3015/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-16T00:00:00+00:00",
-        "valid_to_utc": "2026-11-16T04:00:00+00:00",
+        "valid_from_utc": "2026-11-16T22:30:00+00:00",
+        "valid_to_utc": "2026-11-16T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -1119,7 +953,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     }
   ]
