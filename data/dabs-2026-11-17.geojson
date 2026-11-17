@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-17",
-    "version": 1,
-    "generated_utc": "2026-11-16T14:41:00+00:00"
+    "version": 3,
+    "generated_utc": "2026-11-17T11:45:00+00:00"
   },
   "features": [
     {
@@ -47,8 +47,8 @@
         "id": "LSD12",
         "notam": "W0319/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-17T07:00:00+00:00",
-        "valid_to_utc": "2026-11-17T11:00:00+00:00",
+        "valid_from_utc": "2026-11-17T12:00:00+00:00",
+        "valid_to_utc": "2026-11-17T21:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -72,7 +72,7 @@
           "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "D-AREA LSD12 SIHLTAL ACT. 1200 - 2100"
+        "text": "D-AREA LSD12 SIHLTAL ACT."
       }
     },
     {
@@ -150,208 +150,6 @@
         },
         "geometry_source": "airspace",
         "text": "R-AREA LSR7 HONGRIN ACT DUE TO FRNG."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              7.46805555555556,
-              46.5175
-            ],
-            [
-              7.47472222222222,
-              46.5225
-            ],
-            [
-              7.48527777777778,
-              46.5216666666667
-            ],
-            [
-              7.49027777777778,
-              46.5227777777778
-            ],
-            [
-              7.49861111111111,
-              46.5244444444444
-            ],
-            [
-              7.50222222222222,
-              46.5236111111111
-            ],
-            [
-              7.52666666666667,
-              46.5205555555556
-            ],
-            [
-              7.53,
-              46.5180555555556
-            ],
-            [
-              7.53833333333333,
-              46.5108333333333
-            ],
-            [
-              7.54055555555556,
-              46.5069444444444
-            ],
-            [
-              7.52694444444444,
-              46.4972222222222
-            ],
-            [
-              7.51055555555556,
-              46.4955555555556
-            ],
-            [
-              7.50444444444444,
-              46.5002777777778
-            ],
-            [
-              7.49944444444444,
-              46.4980555555556
-            ],
-            [
-              7.48972222222222,
-              46.4952777777778
-            ],
-            [
-              7.48083333333333,
-              46.5047222222222
-            ],
-            [
-              7.46694444444444,
-              46.5097222222222
-            ],
-            [
-              7.46333333333333,
-              46.5122222222222
-            ],
-            [
-              7.46555555555556,
-              46.5141666666667
-            ],
-            [
-              7.46805555555556,
-              46.5175
-            ],
-            [
-              7.46805555555556,
-              46.5175
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR10",
-        "notam": "W3071/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-17T07:00:00+00:00",
-        "valid_to_utc": "2026-11-17T11:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "2900m / 9500ft",
-          "meters": 2900,
-          "feet": 9500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.509444,
-          "lon": 7.501944
-        },
-        "radius_m": 3000,
-        "radius_candidates_m": {
-          "table_km": 3000
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR10 FARMELBERG ACT DUE TO FRNG. 1200 - 1630"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              8.19333333333333,
-              47.0341666666667
-            ],
-            [
-              8.13472222222222,
-              46.9908333333333
-            ],
-            [
-              8.07638888888889,
-              46.9477777777778
-            ],
-            [
-              8.00027777777778,
-              46.8916666666667
-            ],
-            [
-              7.86166666666667,
-              46.9641666666667
-            ],
-            [
-              8.00166666666667,
-              47.04
-            ],
-            [
-              8.12861111111111,
-              47.0822222222222
-            ],
-            [
-              8.18583333333333,
-              47.0380555555556
-            ],
-            [
-              8.19333333333333,
-              47.0341666666667
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR15",
-        "notam": "W3094/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-17T07:45:00+00:00",
-        "valid_to_utc": "2026-11-17T11:00:00+00:00",
-        "lower": {
-          "raw": "1700m / 5500ft",
-          "meters": 1700,
-          "feet": 5500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "upper": {
-          "raw": "FL100",
-          "meters": 3048,
-          "feet": 10000,
-          "flight_level": 100,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.999444,
-          "lon": 8.026944
-        },
-        "radius_m": 13300,
-        "radius_candidates_m": {
-          "table_km": 13300
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR15 ENTLEBUCH ACT. 1245 - 1600"
       }
     },
     {
@@ -662,8 +460,8 @@
         "id": "LSR39B",
         "notam": "W3091/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-17T08:00:00+00:00",
-        "valid_to_utc": "2026-11-17T10:00:00+00:00",
+        "valid_from_utc": "2026-11-17T13:00:00+00:00",
+        "valid_to_utc": "2026-11-17T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -687,7 +485,7 @@
           "table_km": 10100
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -751,8 +549,8 @@
         "id": "LSR39C",
         "notam": "W3092/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-17T08:00:00+00:00",
-        "valid_to_utc": "2026-11-17T10:00:00+00:00",
+        "valid_from_utc": "2026-11-17T13:00:00+00:00",
+        "valid_to_utc": "2026-11-17T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -776,7 +574,7 @@
           "table_km": 14200
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -1052,8 +850,8 @@
         "id": "W3015/26",
         "notam": "W3015/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-17T00:00:00+00:00",
-        "valid_to_utc": "2026-11-17T04:00:00+00:00",
+        "valid_from_utc": "2026-11-17T22:30:00+00:00",
+        "valid_to_utc": "2026-11-17T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -1079,7 +877,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     }
   ]
