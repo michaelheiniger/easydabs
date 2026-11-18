@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-18",
-    "version": 1,
-    "generated_utc": "2026-11-17T14:40:00+00:00"
+    "version": 3,
+    "generated_utc": "2026-11-18T11:45:00+00:00"
   },
   "features": [
     {
@@ -47,8 +47,8 @@
         "id": "LSD12",
         "notam": "W0319/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-18T07:00:00+00:00",
-        "valid_to_utc": "2026-11-18T11:00:00+00:00",
+        "valid_from_utc": "2026-11-18T12:00:00+00:00",
+        "valid_to_utc": "2026-11-18T21:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -72,7 +72,7 @@
           "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "D-AREA LSD12 SIHLTAL ACT. 1200 - 2100"
+        "text": "D-AREA LSD12 SIHLTAL ACT."
       }
     },
     {
@@ -726,8 +726,8 @@
         "id": "LSR39B",
         "notam": "W3104/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-18T08:00:00+00:00",
-        "valid_to_utc": "2026-11-18T10:00:00+00:00",
+        "valid_from_utc": "2026-11-18T13:00:00+00:00",
+        "valid_to_utc": "2026-11-18T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -751,7 +751,7 @@
           "table_km": 10100
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -815,8 +815,8 @@
         "id": "LSR39C",
         "notam": "W3103/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-18T08:00:00+00:00",
-        "valid_to_utc": "2026-11-18T10:00:00+00:00",
+        "valid_from_utc": "2026-11-18T13:00:00+00:00",
+        "valid_to_utc": "2026-11-18T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -840,7 +840,7 @@
           "table_km": 14200
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -1116,8 +1116,8 @@
         "id": "B1990/26",
         "notam": "B1990/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-18T07:30:00+00:00",
-        "valid_to_utc": "2026-11-18T11:00:00+00:00",
+        "valid_from_utc": "2026-11-18T12:30:00+00:00",
+        "valid_to_utc": "2026-11-18T16:00:00+00:00",
         "lower": {
           "raw": "900m / 3000ft",
           "meters": 900,
@@ -1417,8 +1417,8 @@
         "id": "B1991/26",
         "notam": "B1991/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-18T07:30:00+00:00",
-        "valid_to_utc": "2026-11-18T11:00:00+00:00",
+        "valid_from_utc": "2026-11-18T12:30:00+00:00",
+        "valid_to_utc": "2026-11-18T16:00:00+00:00",
         "lower": {
           "raw": "3050m / 10000ft",
           "meters": 3050,
@@ -1718,8 +1718,8 @@
         "id": "B1992/26",
         "notam": "B1992/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-18T07:30:00+00:00",
-        "valid_to_utc": "2026-11-18T11:00:00+00:00",
+        "valid_from_utc": "2026-11-18T12:30:00+00:00",
+        "valid_to_utc": "2026-11-18T16:00:00+00:00",
         "lower": {
           "raw": "1850m / 6000ft",
           "meters": 1850,
@@ -2019,8 +2019,8 @@
         "id": "W3015/26",
         "notam": "W3015/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-18T00:00:00+00:00",
-        "valid_to_utc": "2026-11-18T04:00:00+00:00",
+        "valid_from_utc": "2026-11-18T22:30:00+00:00",
+        "valid_to_utc": "2026-11-18T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -2046,7 +2046,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     }
   ]
