@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-24",
-    "version": 1,
-    "generated_utc": "2026-11-23T14:26:00+00:00"
+    "version": 2,
+    "generated_utc": "2026-11-24T07:45:00+00:00"
   },
   "features": [
     {
@@ -292,83 +292,6 @@
         "coordinates": [
           [
             [
-              7.10527777777778,
-              46.4263888888889
-            ],
-            [
-              7.10527777777778,
-              46.4180555555556
-            ],
-            [
-              7.06,
-              46.3886111111111
-            ],
-            [
-              7.00194444444444,
-              46.3719444444444
-            ],
-            [
-              6.965,
-              46.365
-            ],
-            [
-              6.95138888888889,
-              46.3808333333333
-            ],
-            [
-              7.00444444444444,
-              46.4238888888889
-            ],
-            [
-              7.05083333333333,
-              46.4302777777778
-            ],
-            [
-              7.10527777777778,
-              46.4263888888889
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR7",
-        "notam": "W3149/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-24T03:00:00+00:00",
-        "valid_to_utc": "2026-11-24T21:00:00+00:00",
-        "lower": {
-          "raw": "GND",
-          "meters": 0,
-          "feet": 0,
-          "flight_level": null,
-          "gnd": true
-        },
-        "upper": {
-          "raw": "4700m / 15500ft",
-          "meters": 4700,
-          "feet": 15500,
-          "flight_level": null,
-          "gnd": false
-        },
-        "center": {
-          "lat": 46.402222,
-          "lon": 7.029167
-        },
-        "radius_m": 6500,
-        "radius_candidates_m": {
-          "table_km": 6500
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR7 HONGRIN ACT DUE TO FRNG."
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
               7.46805555555556,
               46.5175
             ],
@@ -457,7 +380,7 @@
       },
       "properties": {
         "id": "LSR10",
-        "notam": "W3106/26",
+        "notam": "W3163/26",
         "on_chart": true,
         "valid_from_utc": "2026-11-24T07:00:00+00:00",
         "valid_to_utc": "2026-11-24T11:00:00+00:00",
@@ -1083,9 +1006,9 @@
       },
       "properties": {
         "id": "LSR18",
-        "notam": "W3135/26",
+        "notam": "W3166/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-24T05:00:00+00:00",
+        "valid_from_utc": "2026-11-24T07:00:00+00:00",
         "valid_to_utc": "2026-11-24T22:00:00+00:00",
         "lower": {
           "raw": "GND",
@@ -2455,8 +2378,8 @@
         "id": "W3137/26",
         "notam": "W3137/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-24T00:00:00+00:00",
-        "valid_to_utc": "2026-11-24T04:00:00+00:00",
+        "valid_from_utc": "2026-11-24T22:30:00+00:00",
+        "valid_to_utc": "2026-11-24T23:59:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -2482,7 +2405,7 @@
           "text_1_nm": 370
         },
         "geometry_source": "circle",
-        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
+        "text": "TEMPO R-AREA AMLIKON ESTABLISHED RADIUS 0.2KM (473426N0090252E RADIUS 0.2NM). WX MEASUREMENTS BY REMOTELY PILOTED AERIAL SYSTEM WILL TAKE PLACE. WHITE BLINKING PSN LGT WITH VISUAL RANGE OF AT LEAST 3KM. ENTRY PROHIBITED WHEN ACT EXC HEL EMERG MEDICAL SER (HEMS). FOR INFO ON ACT AND HEMS CTC TEL +41 79 772 93 32 AND REFER TO WWW.MAP.GEO.ADMIN.CH TOPIC AVIATION UAS AWARENESS MAP."
       }
     }
   ]
