@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-25",
-    "version": 1,
-    "generated_utc": "2026-11-24T14:48:00+00:00"
+    "version": 3,
+    "generated_utc": "2026-11-25T11:45:00+00:00"
   },
   "features": [
     {
@@ -47,8 +47,8 @@
         "id": "LSD12",
         "notam": "W0319/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-25T07:00:00+00:00",
-        "valid_to_utc": "2026-11-25T11:00:00+00:00",
+        "valid_from_utc": "2026-11-25T12:00:00+00:00",
+        "valid_to_utc": "2026-11-25T21:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -72,7 +72,7 @@
           "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "D-AREA LSD12 SIHLTAL ACT. 1200 - 2100"
+        "text": "D-AREA LSD12 SIHLTAL ACT."
       }
     },
     {
@@ -287,10 +287,10 @@
       },
       "properties": {
         "id": "LSR10",
-        "notam": "W3163/26",
+        "notam": "W3179/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-25T07:00:00+00:00",
-        "valid_to_utc": "2026-11-25T11:00:00+00:00",
+        "valid_from_utc": "2026-11-25T12:00:00+00:00",
+        "valid_to_utc": "2026-11-25T21:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -314,7 +314,7 @@
           "table_km": 3000
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR10 FARMELBERG ACT DUE TO FRNG. 1200 - 2100"
+        "text": "R-AREA LSR10 FARMELBERG ACT DUE TO FRNG."
       }
     },
     {
@@ -420,7 +420,7 @@
       },
       "properties": {
         "id": "LSR11",
-        "notam": "W3145/26",
+        "notam": "W3177/26",
         "on_chart": true,
         "valid_from_utc": "2026-11-25T07:00:00+00:00",
         "valid_to_utc": "2026-11-25T16:00:00+00:00",
@@ -553,7 +553,7 @@
       },
       "properties": {
         "id": "LSR11A",
-        "notam": "W3143/26",
+        "notam": "W3175/26",
         "on_chart": true,
         "valid_from_utc": "2026-11-25T07:00:00+00:00",
         "valid_to_utc": "2026-11-25T16:00:00+00:00",
@@ -899,8 +899,8 @@
         "id": "LSR39B",
         "notam": "W3168/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-25T08:00:00+00:00",
-        "valid_to_utc": "2026-11-25T10:00:00+00:00",
+        "valid_from_utc": "2026-11-25T13:00:00+00:00",
+        "valid_to_utc": "2026-11-25T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -924,7 +924,7 @@
           "table_km": 10100
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -988,8 +988,8 @@
         "id": "LSR39C",
         "notam": "W3167/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-25T08:00:00+00:00",
-        "valid_to_utc": "2026-11-25T10:00:00+00:00",
+        "valid_from_utc": "2026-11-25T13:00:00+00:00",
+        "valid_to_utc": "2026-11-25T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -1013,7 +1013,7 @@
           "table_km": 14200
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -1289,8 +1289,8 @@
         "id": "B2028/26",
         "notam": "B2028/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-25T07:30:00+00:00",
-        "valid_to_utc": "2026-11-25T11:00:00+00:00",
+        "valid_from_utc": "2026-11-25T12:30:00+00:00",
+        "valid_to_utc": "2026-11-25T16:00:00+00:00",
         "lower": {
           "raw": "3050m / 10000ft",
           "meters": 3050,
@@ -1590,8 +1590,8 @@
         "id": "B2029/26",
         "notam": "B2029/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-25T07:30:00+00:00",
-        "valid_to_utc": "2026-11-25T11:00:00+00:00",
+        "valid_from_utc": "2026-11-25T12:30:00+00:00",
+        "valid_to_utc": "2026-11-25T16:00:00+00:00",
         "lower": {
           "raw": "1850m / 6000ft",
           "meters": 1850,
@@ -1891,8 +1891,8 @@
         "id": "B2030/26",
         "notam": "B2030/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-25T07:30:00+00:00",
-        "valid_to_utc": "2026-11-25T11:00:00+00:00",
+        "valid_from_utc": "2026-11-25T12:30:00+00:00",
+        "valid_to_utc": "2026-11-25T16:00:00+00:00",
         "lower": {
           "raw": "900m / 3000ft",
           "meters": 900,
