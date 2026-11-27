@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-27",
-    "version": 2,
-    "generated_utc": "2026-11-27T07:45:00+00:00"
+    "version": 4,
+    "generated_utc": "2026-11-27T14:45:00+00:00"
   },
   "features": [
     {
@@ -47,8 +47,8 @@
         "id": "LSD12",
         "notam": "W0319/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-27T07:00:00+00:00",
-        "valid_to_utc": "2026-11-27T11:00:00+00:00",
+        "valid_from_utc": "2026-11-27T12:00:00+00:00",
+        "valid_to_utc": "2026-11-27T17:00:00+00:00",
         "lower": {
           "raw": "GND",
           "meters": 0,
@@ -72,124 +72,7 @@
           "table_km": 3600
         },
         "geometry_source": "airspace",
-        "text": "D-AREA LSD12 SIHLTAL ACT. 1200 - 1700"
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Polygon",
-        "coordinates": [
-          [
-            [
-              9.06944444444444,
-              47.0480555555556
-            ],
-            [
-              9.05027777777778,
-              47.1897222222222
-            ],
-            [
-              9.15944444444444,
-              47.2736111111111
-            ],
-            [
-              9.30416666666667,
-              47.3125
-            ],
-            [
-              9.58305555555556,
-              47.3108333333333
-            ],
-            [
-              9.55666666666667,
-              47.2961111111111
-            ],
-            [
-              9.54694444444444,
-              47.2766666666667
-            ],
-            [
-              9.53083333333334,
-              47.2702777777778
-            ],
-            [
-              9.52805555555556,
-              47.2511111111111
-            ],
-            [
-              9.505,
-              47.2236111111111
-            ],
-            [
-              9.4875,
-              47.1811111111111
-            ],
-            [
-              9.50916666666667,
-              47.1430555555556
-            ],
-            [
-              9.52277777777778,
-              47.0963888888889
-            ],
-            [
-              9.51416666666666,
-              47.0855555555556
-            ],
-            [
-              9.47388888888889,
-              47.0633333333333
-            ],
-            [
-              9.47527777777778,
-              47.0541666666667
-            ],
-            [
-              9.48222222222222,
-              47.0569444444444
-            ],
-            [
-              9.485,
-              47.0491666666667
-            ],
-            [
-              9.06944444444444,
-              47.0480555555556
-            ]
-          ]
-        ]
-      },
-      "properties": {
-        "id": "LSR3",
-        "notam": "W3214/26",
-        "on_chart": true,
-        "valid_from_utc": "2026-11-27T09:45:00+00:00",
-        "valid_to_utc": "2026-11-27T10:25:00+00:00",
-        "lower": {
-          "raw": "FL100",
-          "meters": 3048,
-          "feet": 10000,
-          "flight_level": 100,
-          "gnd": false
-        },
-        "upper": {
-          "raw": "FL130",
-          "meters": 3962,
-          "feet": 13000,
-          "flight_level": 130,
-          "gnd": false
-        },
-        "center": {
-          "lat": 47.179722,
-          "lon": 9.325556
-        },
-        "radius_m": 24400,
-        "radius_candidates_m": {
-          "table_km": 24400
-        },
-        "geometry_source": "airspace",
-        "text": "R-AREA LSR3 SPEER ACT. 1245 - 1325"
+        "text": "D-AREA LSD12 SIHLTAL ACT."
       }
     },
     {
@@ -407,8 +290,8 @@
         "id": "LSR39B",
         "notam": "W3199/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-27T08:00:00+00:00",
-        "valid_to_utc": "2026-11-27T10:00:00+00:00",
+        "valid_from_utc": "2026-11-27T13:00:00+00:00",
+        "valid_to_utc": "2026-11-27T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -432,7 +315,7 @@
           "table_km": 10100
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39B BRISEN ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     },
     {
@@ -496,8 +379,8 @@
         "id": "LSR39C",
         "notam": "W3200/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-27T08:00:00+00:00",
-        "valid_to_utc": "2026-11-27T10:00:00+00:00",
+        "valid_from_utc": "2026-11-27T13:00:00+00:00",
+        "valid_to_utc": "2026-11-27T15:00:00+00:00",
         "lower": {
           "raw": "2750m / 9000ft",
           "meters": 2750,
@@ -521,7 +404,7 @@
           "table_km": 14200
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS 1300 - 1500                                                                                    HIGHER."
+        "text": "R-AREA LSR39C STOOS ACT. LOWER LIMIT 9000FT AMSL OR 2000FT GND WHICHEVER IS HIGHER."
       }
     }
   ]
