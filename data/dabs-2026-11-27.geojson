@@ -2,8 +2,8 @@
   "type": "FeatureCollection",
   "properties": {
     "dabs_date": "2026-11-27",
-    "version": 1,
-    "generated_utc": "2026-11-26T14:25:00+00:00"
+    "version": 2,
+    "generated_utc": "2026-11-27T07:45:00+00:00"
   },
   "features": [
     {
@@ -162,10 +162,10 @@
       },
       "properties": {
         "id": "LSR3",
-        "notam": "W3208/26",
+        "notam": "W3214/26",
         "on_chart": true,
-        "valid_from_utc": "2026-11-27T07:45:00+00:00",
-        "valid_to_utc": "2026-11-27T08:25:00+00:00",
+        "valid_from_utc": "2026-11-27T09:45:00+00:00",
+        "valid_to_utc": "2026-11-27T10:25:00+00:00",
         "lower": {
           "raw": "FL100",
           "meters": 3048,
@@ -189,7 +189,7 @@
           "table_km": 24400
         },
         "geometry_source": "airspace",
-        "text": "R-AREA LSR3 SPEER ACT. 0945 - 1025"
+        "text": "R-AREA LSR3 SPEER ACT. 1245 - 1325"
       }
     },
     {
